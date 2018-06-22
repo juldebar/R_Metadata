@@ -9,7 +9,7 @@ Some samples to generate metadata from various sources
 - Relationnal database
  - Postgres and Postgis,
 - NetCDF files
- - accessible with OPeNDAP on a Thredds server
+ - `accessible` with OPeNDAP on a Thredds server
 
 ##  Underlying R packages
 
