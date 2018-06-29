@@ -3,10 +3,11 @@
 publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCMI_metadata,dataverse_name,dataverse_user_name){
   number_row<-nrow(DCMI_metadata)
   for (i in 1:number_row) {
-    # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
+    #################################### LOAD METADATA FROM SPREADSHEET / DATA FRAME #############################################
     metadata <- NULL
     metadata <- DCMI_metadata[i,]
     metadata$Permanent_Identifier <- metadata$Identifier
+    #################################### SPLIT KEYWORDS #############################################
     # if(is.na(metadata$Rights)){metadata$Rights="NO RIGHTS"}
     #   keywords_metadata <-NULL
     #   all_keywords <-NULL
@@ -20,7 +21,10 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     #   keywords_metadata$all_keywords <- all_keywords
     #   TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
     #   keywords_metadata$TopicCategory <- TopicCategory
+    #################################################################################################
     
+    #################################### MAP DATAVERSE AND DCMI METADATA ELEMENTS #############################################
+    # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
     Dataverse_metadata <- list(identifier=metadata$Identifier,
                             title = metadata$Title,
                             creator = dataverse_user_name,
@@ -28,7 +32,7 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
                             date=metadata$Date,
                             type = metadata$Type,
                             # language = metadata$Language,
-                            # Relation = metadata$Relation,
+                            relation = metadata$Relation,
                             extent = paste(metadata$Relation,metadata$Temporal_Coverage,sep=" & "),
                             spatial = metadata$Spatial_Coverage,
                             temporal = metadata$Temporal_Coverage,
@@ -38,14 +42,13 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     for (k in list_keywords) {
       Dataverse_metadata <- c(Dataverse_metadata,subject = k)
     }
-    
-    # Add the dataset in the dataverse
+    #################################### ADD THIS DATASET IN THE DATAVERSE #############################################
     add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = Dataverse_metadata)
     # add_dataset_with_native <- create_dataset(dataverse_name, body = Dataverse_metadata)
   }
   }
 
-#################################### DELETE ALL DATASTES FROM A GIVEN DATAVERSE #############################################
+#################################### DELETE ALL DATASETS FROM A GIVEN DATAVERSE #############################################
 
 remove_all_datasets_from_a_dataverse <- function(dataverse){
   dataverse_data <- dataverse_contents(dataverse)
@@ -59,8 +62,5 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
     cat(this_dataset$id)
     delete_dataset(dataverse_data[[i]])
   }
-  }else{cat("The dataverse is already empty !")}
+  } else{cat("The dataverse is already empty !")}
 }
-
-
-
