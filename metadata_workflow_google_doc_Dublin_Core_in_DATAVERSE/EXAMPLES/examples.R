@@ -19,7 +19,7 @@ Dublin_Core_spreadsheat <- "https://docs.google.com/spreadsheets/d/1cYzSbiuGuvl0
 Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheat))
 # contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
 
-publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse(Dublin_Core_metadata,dataverse_name)
+publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse(Dublin_Core_metadata,dataverse_name,dataverse_user_name)
 
 #################################### EXAMPLE 2: DELETE ALL DATASETS FROM A GIVEN DATAVERSE #############################################
 my_dataverse <- get_dataverse(dataverse_name)

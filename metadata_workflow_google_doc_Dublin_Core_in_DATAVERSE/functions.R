@@ -1,27 +1,13 @@
 #################################### PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
 
 publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCMI_metadata,dataverse_name,dataverse_user_name){
-  number_row<-nrow(Dublin_Core_metadata)
+  number_row<-nrow(DCMI_metadata)
   for (i in 1:number_row) {
     # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
     metadata <- NULL
-    metadata <- Dublin_Core_metadata[i,]
-    
-    metadata$Identifier  <- Dublin_Core_metadata$Identifier[i]
+    metadata <- DCMI_metadata[i,]
     metadata$Permanent_Identifier <- metadata$Identifier
-    metadata$Title  <- Dublin_Core_metadata$Title[i]
-    metadata$Description <- Dublin_Core_metadata$Description[i]
-    metadata$Date  <- Dublin_Core_metadata$Date[i]
-    metadata$Type  <- Dublin_Core_metadata$Type[i]
-    metadata$Format  <- Dublin_Core_metadata$Format[i]
-    metadata$Language  <- Dublin_Core_metadata$Language[i] #  resource_language <- "eng"
-    metadata$Lineage  <- Dublin_Core_metadata$Lineage[i]
-    metadata$Rights  <- Dublin_Core_metadata$Rights[i] #UseLimitation <- "intellectualPropertyRights"
-    if(is.na(metadata$Rights)){metadata$Rights="NO RIGHTS"}
-    metadata$Spatial_Coverage  <- Dublin_Core_metadata$Spatial_Coverage[i]
-    metadata$Temporal_Coverage  <- Dublin_Core_metadata$Temporal_Coverage[i]
-    
-    metadata$Subject  <- Dublin_Core_metadata$Subject[i]
+    # if(is.na(metadata$Rights)){metadata$Rights="NO RIGHTS"}
     #   keywords_metadata <-NULL
     #   all_keywords <-NULL
     #   static_keywords<-NULL
@@ -35,7 +21,7 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     #   TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
     #   keywords_metadata$TopicCategory <- TopicCategory
     
-    DCMI_metadata <- list(identifier=metadata$Identifier,
+    Dataverse_metadata <- list(identifier=metadata$Identifier,
                             title = metadata$Title,
                             creator = dataverse_user_name,
                             description = metadata$Description,
@@ -50,12 +36,12 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
                             rights = metadata$Rights
                             )
     for (k in list_keywords) {
-      DCMI_metadata <- c(DCMI_metadata,subject = k)
+      Dataverse_metadata <- c(Dataverse_metadata,subject = k)
     }
     
     # Add the dataset in the dataverse
-    add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = DCMI_metadata)
-    # add_dataset_with_native <- create_dataset(dataverse_name, body = DCMI_metadata)
+    add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = Dataverse_metadata)
+    # add_dataset_with_native <- create_dataset(dataverse_name, body = Dataverse_metadata)
   }
   }
 
