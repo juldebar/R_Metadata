@@ -66,6 +66,7 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
   dataverse_data
   
   number_row<-length(dataverse_data)
+  if(number_row>0){
   for (i in 1:number_row) {
     cat("\n")  
     cat(i)
@@ -74,32 +75,8 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
     cat(this_dataset$id)
     delete_dataset(dataverse_data[[i]])
   }
+  }else{cat("The dataverse is already empty !")}
 }
-
-#################################### EXAMPLES #############################################
-
-rm(list=ls())
-
-library("dataverse")
-source("/home/julien/Bureau/CODES/DATAVERSE/credentials.R")
-
-
-#################################### EXAMPLE 1: PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
-
-Dublin_Core_spreadsheat <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
-Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheat))
-# contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
-
-my_dataverse <- get_dataverse(dataverse_name)
-publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse(Dublin_Core_metadata,my_dataverse)
-
-#################################### EXAMPLE 2: DELETE ALL DATASETS FROM A GIVEN DATAVERSE #############################################
-
-my_dataverse <- get_dataverse(dataverse_name)
-remove_all_datasets_from_a_dataverse(my_dataverse)
-
-
-
 
 
 
