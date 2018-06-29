@@ -1,6 +1,6 @@
 #################################### PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
 
-publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCMI_metadata,dataverse){
+publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCMI_metadata,dataverse_name,dataverse_user_name){
   number_row<-nrow(Dublin_Core_metadata)
   for (i in 1:number_row) {
     # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
@@ -35,9 +35,9 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     #   TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
     #   keywords_metadata$TopicCategory <- TopicCategory
     
-    julien_metadata <- list(identifier=metadata$Identifier,
+    DCMI_metadata <- list(identifier=metadata$Identifier,
                             title = metadata$Title,
-                            creator = "Barde, Julien",
+                            creator = dataverse_user_name,
                             description = metadata$Description,
                             date=metadata$Date,
                             type = metadata$Type,
@@ -50,12 +50,12 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
                             rights = metadata$Rights
                             )
     for (k in list_keywords) {
-      julien_metadata <- c(julien_metadata,subject = k)
+      DCMI_metadata <- c(DCMI_metadata,subject = k)
     }
     
-      # create the dataset
-    julien_dataset_sword <- dataverse::initiate_sword_dataset("dataverse_julien_a_mano", body = julien_metadata)
-    # dataset_native_julien <- create_dataset("dataverse_julien_a_mano", body = julien_metadata)
+    # Add the dataset in the dataverse
+    add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = DCMI_metadata)
+    # add_dataset_with_native <- create_dataset(dataverse_name, body = DCMI_metadata)
   }
   }
 
@@ -63,8 +63,6 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
 
 remove_all_datasets_from_a_dataverse <- function(dataverse){
   dataverse_data <- dataverse_contents(dataverse)
-  dataverse_data
-  
   number_row<-length(dataverse_data)
   if(number_row>0){
   for (i in 1:number_row) {
