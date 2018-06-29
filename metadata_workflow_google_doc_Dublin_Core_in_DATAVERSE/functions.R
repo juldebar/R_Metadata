@@ -11,7 +11,7 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
     Dataverse_metadata <- list(identifier=metadata$Identifier,
                             title = metadata$Title,
-                            creator = dataverse_user_name,
+                            # creator = dataverse_user_name,
                             description = metadata$Description,
                             date=metadata$Date,
                             type = metadata$Type,
@@ -32,6 +32,10 @@ publish_all_datasets_from_Dublin_Core_spreadsheet_in_a_dataverse <- function(DCM
     urls <-return_urls_as_data_frame(metadata$Relation)
     for (u in urls$http_URLs_links) {
       Dataverse_metadata <- c(Dataverse_metadata,relation = u)
+    }
+    contacts <-return_contacts_as_data_frame(metadata$Creator)
+    for (c in contacts$contact) {
+      Dataverse_metadata <- c(Dataverse_metadata,creator = c)
     }
     
     #################################### ADD THIS DATASET IN THE DATAVERSE #############################################
@@ -60,7 +64,11 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
 
 
 #################################### COMMON FUNCTIONS FOR SPREADSHEETS (CSV, GOOGLE DOC...) #############################################
-
+# contacts<-Dublin_Core_metadata$Creator[1]
+# test_contacts<-return_contacts_as_data_frame(contacts)
+# test_contacts
+# test_relations$http_URLs_links
+# all_relations <- the_relations
 
 return_contacts_as_data_frame <- function(all_contacts){
   contacts_metadata <-NULL
@@ -76,7 +84,8 @@ return_contacts_as_data_frame <- function(all_contacts){
     contact_role <- c(contact_role,split_contact[[1]][1]) # to be done Ã  changer  
     split_contact[[1]][1]  
   }
-  contacts_roles_data_frame <- data.frame(contact=contact_email, RoleCode=contact_role, dataset=metadata$Identifier,stringsAsFactors=FALSE)
+  # contacts_roles_data_frame <- data.frame(contact=contact_email, RoleCode=contact_role, dataset=metadata$Identifier,stringsAsFactors=FALSE) #dataset=metadata$Identifier => A VIRER 
+  contacts_roles_data_frame <- data.frame(contact=contact_email, RoleCode=contact_role,stringsAsFactors=FALSE)
   return(contacts_roles_data_frame)
 }
 
