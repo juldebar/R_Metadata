@@ -56,3 +56,5 @@ COMMENT ON COLUMN metadata.provenance IS '"provenance" metadata element as defin
 COMMENT ON COLUMN metadata.supplemental_information IS 'additional comments ?';
 COMMENT ON COLUMN metadata.database_table_name IS 'inutile ?';
 
+-- COLUMNS TO BE ADDED  ? => Permanent_Identifier, Parent_Metadata_Identifier, Purpose, Update_frequency, Credits, 
+
