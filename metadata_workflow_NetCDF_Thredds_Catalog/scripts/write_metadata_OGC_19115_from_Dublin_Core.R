@@ -48,7 +48,8 @@ add_contacts_and_roles_OGC_19115 <- function(config, metadata_identifier, contac
           res$setName(the_contact$setNameISOOnlineResource)
           contact$setOnlineResource(res)
           rp$setContactInfo(contact)
-          listContacts= append(listContacts, rp)
+          # listContacts= append(listContacts, rp)
+          listContacts[[length(listContacts)+1]] <- rp
         }
       }
     }
@@ -111,56 +112,13 @@ prepareDataQualityWithLineage <- function(config, lineage_statement, lineage_ste
   return(dq)
 }
 
-#prepareDataQualityWithGenealogy
-#@param config
-#@param genealogy a data.frame given the genealogy from SARDARA
-#@returns an object of class ISODataQuality
-prepareDataQualityWithGenealogy <- function(config, genealogy){
-  
-  if(nrow(genealogy)==0) return(NULL)
-  
-  lineage_statement <- ""
-  tableTypes <- c("raw_dataset", "mapping", "codelist")
-  for(tableType in tableTypes){
-    
-    mappings <- genealogy[genealogy$table_type == tableType,]
-    if(nrow(mappings)>0){
-      section_title <- switch(tableType,
-                              "raw_dataset" = "Source dataset(s)",
-                              "mapping" = "Codelist mapping(s)",
-                              "codelist" = "Codelists"
-      )
-      lineage_statement <- paste0(lineage_statement, "* ", section_title, ":\n")
-      for(i in 1:nrow(mappings)){
-        mapping <- mappings[i,]
-        link <- sprintf("%s/srv/eng/catalog.search#/metadata/%s", config$sdi$geonetwork$url, mapping$dataset_permanent_identifier)
-        #TODO voir pour plus tard, comment ajouter une description
-        lineage_statement <- paste0(lineage_statement, "- ", link, " (",mapping$metadata_mapping_relation_type,")\n")
-      }
-      lineage_statement <- paste0(lineage_statement,"\n")
-    }
-  }
-  
-  #add lineage
-  dq <- NULL
-  if(lineage_statement != ""){
-    dq <- ISODataQuality$new()
-    scope <- ISOScope$new()
-    scope$setLevel("dataset")
-    dq$setScope(scope)
-    lineage <- ISOLineage$new()
-    lineage$setStatement(lineage_statement)
-    dq$setLineage(lineage)
-  }
-  return(dq)
-}
 
 #-----------------------------------------------------------------------------------------------------
-#extractLineage.SARDARA
-#@param lineage Lineage information as string extracted from Sardara metadata table
-#       ("step: text1. step: text2. .... step: textN.")
+#extractLineage
+#@param lineage Lineage information as string extracted from metadata table
+#       ("step1: text1. step2: text2. .... stepN: textN.")
 #@returns an object of class "list" with the step contents
-extractLineage.SARDARA <- function(lineage){
+extractLineage <- function(lineage){
   lineage_steps <- as.list(unlist(strsplit(lineage, "step[0-9]:"))) #@eblondel 12/08/2017 apply regular expression to detect step nb
   lineage_steps <- lineage_steps[sapply(lineage_steps, function(x){return(nchar(x)>0)})]
   lineage_steps <- lapply(lineage_steps, function(x){
@@ -174,18 +132,6 @@ extractLineage.SARDARA <- function(lineage){
 }
 
 #-----------------------------------------------------------------------------------------------------------------------
-#Get list of raw genealogy mappings for a given 'SARDARA' dataset
-#@param config
-#@note SARDARA specific
-getRawGenealogy.SARDARA <- function(config, dataset){
-  mappings_query <- sprintf("select src.dataset_permanent_identifier,metadata_mapping_relation_type,trg.dataset_permanent_identifier,src.table_type  from metadata.metadata_mapping
-                            join metadata.metadata trg on trg.id_metadata=metadata_mapping.metadata_mapping_id_from
-                            join metadata.metadata src on src.id_metadata=metadata_mapping.metadata_mapping_id_to
-                            where metadata_mapping_id_from=%s", metadata$Identifier)
-  mappings <-dbGetQuery(config$db$con, mappings_query)
-  return(mappings)
-}
-
 
 #write_metadata_OGC_19115
 write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
@@ -221,7 +167,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   #  TODO MANAGE "hierarchyLevelName" metadata element @julien
   logger.info("Add the contacts and roles for this METADATA sheet")  
   expected_role=c("pointOfContact","metadata")
-  listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
+  listContacts <- add_contacts_and_roles_OGC_19115(config, metadata_identifier=metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
   for(listContact in listContacts){
     md$addContact(listContact)
   }
@@ -260,6 +206,8 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
       # md$setSpatialRepresentationInfo(VSR)
       md$addSpatialRepresentationInfo(VSR)
       
+    }else{
+      # A FAIRE => RASTER
     }
   }
   logger.info("SpatialRepresentation section is set !")  
@@ -297,7 +245,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   #organization contact
   logger.info("Write contacts and roles for Data Identification Section")  
   expected_role=c("publisher","principalInvestigator")
-  listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
+  listContacts <- add_contacts_and_roles_OGC_19115(config, metadata_identifier=metadata$Identifier, contacts_roles=contacts_metadata$contacts_roles, expected_role)
   for(listContact in listContacts){
     # SERVICE$pointOfContact <- c(SERVICE$pointOfContact, serviceContact)
     IDENT$addPointOfContact(listContact)
@@ -439,26 +387,15 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("Identification information (MD_Identification) section is set!") 
   
   
-  # OGC 19115 SECTION => Identification with ISO 19119 Service Identification
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-----------------------------------------------------------------------------------------------------------------")  
+  logger.info("OGC 19115 SECTION => Identification with ISO 19119 Service Identification => TO BE DONE FOR NETCDF ??")  
+  logger.info("-----------------------------------------------------------------------------------------------------------------")  
   
-  # TODO @julien => MANAGE THE CONDITION FOR GN2 
-  if(metadata$Dataset_Type=='raw_dataset'){
-    
-    logger.info("Add contacts and roles for SERVICE")  
-    expected_role=c("publisher","principalInvestigator")
-    listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
-    
-    dataset_columns <- getDatasetColumns.SARDARA(config, metadata$Permanent_Identifier)
-    DICTIONNARY_FIELDS <- config$gsheets$dictionnary
-    dsd <- createDSD(config = config, fields = dataset_columns, dictionnary = DICTIONNARY_FIELDS)
-    dataset_last_year = 2015
-    SERVICE <-createTimeseriesServiceIdentification(config, dataset,dataset_last_year,listContacts,dsd)
-    md$addIdentificationInfo(SERVICE)
-  }
+  # md$addIdentificationInfo(SERVICE)
   
-  # OGC 19115 SECTION => Distribution
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-----------------------------------------------------------------------------------------------------------------")  
+  logger.info("OGC 19115 SECTION => Distribution")  
+  logger.info("-----------------------------------------------------------------------------------------------------------------")  
   
   distrib <- ISODistribution$new()
   dto <- ISODigitalTransferOptions$new()  
@@ -482,7 +419,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   
   format <- ISOFormat$new()
   format$setName(metadata$Format)
-  format$setVersion("Postgres 9 and Postgis 2") # to be done => stored in the spreadsheet
+  format$setVersion("NetCDF4") # to be done => stored in the spreadsheet
   # format$setAmendmentNumber("2")
   # format$setSpecification("specification")
   distrib$addFormat(format)
@@ -494,50 +431,47 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   # OGC 19115 SECTION => Data Quality
   #-------------------------------------------------------------------------------------------------------------------
   
-  #add Data  / lineage for steps
+  #add Data  / lineage and related steps (if exists)
   
-  # TODO @julien @paul @emmanuel => REPLACE THIS TEXT BY REAL DESCRIPTION WHEN READY
-  #example of lineage
-  lineage_statement <- "Data management workflow description"
-  lineage_steps <- list()
   lineage <- metadata$Lineage
-  if(!is.na(lineage) & metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
-    logger.info("Add Lineage process steps")  
+  if(!is.na(lineage)){
     #create lineage
-    lineage_steps <- extractLineage.SARDARA(lineage)
-    DQ1 <- prepareDataQualityWithLineage(config, lineage_statement, lineage_steps, mdDate, metadata$Identifier, contacts_metadata$contacts_roles)
-    md$addDataQualityInfo(DQ1)
-  }
+    #Data Quality Genealogy
+    #----------------------
+    if (grepl("step1",lineage)){
+      logger.info("Add Lineage process steps")  
+      lineage_steps <- list()
+      lineage_steps <- extractLineage(lineage)
+      DQ1 <- prepareDataQualityWithLineage(config, lineage_statement, lineage_steps, mdDate, metadata$Identifier, contacts_metadata$contacts_roles)
+      md$addDataQualityInfo(DQ1)
+    }
+    lineage_statement <- "Data management workflow description"
+    dq <- ISODataQuality$new()
+    scope <- ISOScope$new()
+    scope$setLevel("dataset")
+    dq$setScope(scope)
+    lineage <- ISOLineage$new()
+    lineage$setStatement(lineage_statement)
+    dq$setLineage(lineage)
+    genealogy <- lineage
+    md$addDataQualityInfo(dq) # @julien => passage à vérifier et comparer avec les exemples de Sardara et google doc
+    }
   
-  #Data Quality Genealogy
-  #----------------------
-  if(metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
-    
-  genealogy <- getRawGenealogy.SARDARA(config, dataset)
-  DQ2 <- prepareDataQualityWithGenealogy(config, genealogy)
-  # TODO @julien @paul @emmanuel => check why ths condition is needed 
-  if(is.null(DQ2)){logger.info("No lineage")}else{md$addDataQualityInfo(DQ2)}
-  }
   logger.info("Data Quality Info section added")
   
+  # OGC 19115 SECTION => Content Info -> COVERAGE
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("CONTENT INFO IS NOT MANAGED  BY GEOMETA AT THIS STAGE ??")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
   
-  # OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription
-  #-------------------------------------------------------------------------------------------------------------------
-  
-  # CF EXAMPLE HERE => https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19110_(Feature_Catalog)
-  if (metadata$Dataset_Type=='raw_dataset'){
-    logger.info("Adding Feature catalogue description to METADATA")
-    dsd_pid <- paste(metadata$Permanent_Identifier,"_data_structure_definition",sep="")
-    fcd <- createFeatureCatalogueDescription(config, dsd_pid)
-    md$addContentInfo(fcd)
-  }else{
-    logger.info("No Feature Catalogue description for codelists/mappings")
-  }
+    # fcd <- createFeatureCatalogueDescription(config, dsd_pid)
+    # md$addContentInfo(fcd)
   
   return(md)
 }
 
-
+  
+  
 #push_metadata_in_geonetwork
 #@param config
 #@param metadata$Permanent_Identifier

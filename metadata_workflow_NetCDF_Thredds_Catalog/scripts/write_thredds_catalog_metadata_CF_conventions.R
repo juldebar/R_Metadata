@@ -50,7 +50,7 @@ write_thredds_catalog_metadata <- function(config, source){
   logger.info("===================================================================================================================")
   
   Thredds_URL<-source$url
-  # Thredds_URL<-"http://mdst-macroes.ird.fr:8080/thredds/BlueBridge/MOI/Chl-a/Chl_4km/catalog.xml"
+  # Thredds_URL<-"http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST/SST_1km_daily/catalog.xml"
   
   Thredds_catalog <- get_catalog(Thredds_URL)
   sub_catalogs <- Thredds_catalog$get_catalogs()
@@ -85,7 +85,8 @@ write_thredds_catalog_metadata <- function(config, source){
     # opendap_url <-"http://mdst-macroes.ird.fr:8080/thredds/dodsC/BlueBridge/MOI/Chl-a/Chl_4km/All-datasets_L3m_DAY_CHL_chlor_a_4km.ncml"
     # opendap_url <-"http://mdst-macroes.ird.fr:8080/thredds/dodsC/BlueBridge/MOI/SST/SST_1km_daily/Tanzania.ncml"
     # opendap_url <-"http://mdst-macroes.ird.fr:8080/thredds/dodsC/BlueBridge/IOTC/data_ss324_GAJ_1.nc"
-    # opendap_url <-"http://mdst-macroes.ird.fr:8080/thredds/dodsC/BlueBridge/MOI/SST_1km_daily/SST_1km_daily/Tanzania.ncml"
+    # opendap_url <-"http://mdst-macroes.ird.fr:8080/thredds/dodsC/BlueBridge/MOI/SST/SST_1km_daily/Tanzania_SST_1km_daily-MODIS.ncml"
+    
     ncin <- nc_open(opendap_url)
     # PRINT THE HEADER TO SEE THE METADATA
     # print(ncin)
@@ -100,10 +101,11 @@ write_thredds_catalog_metadata <- function(config, source){
 
     metadata <- NULL
     metadata$Identifier  <- names(All_datasets_for_metadata)[i]# if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
+    if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
     metadata$dataset_permanent_identifier <- gsub("\\..*","",metadata$Identifier)
     metadata$Title  <- ncatt_get(ncin,0,"title")$value
     metadata$Description <- ncatt_get(ncin,0,"summary")$value
-    # metadata$Description <- paste(dataset$name,dataset$title,dataset$ID, sep=" ET ")
+    if(is.na(metadata$Description)){metadata$Description <- paste(dataset$name,dataset$title,dataset$ID, sep=" ET ")}
     
     metadata$Date  <- ncatt_get(ncin,0,"date_created")$value
     metadata$Type  <- "NetCDF"
@@ -124,9 +126,7 @@ write_thredds_catalog_metadata <- function(config, source){
     metadata$addHierarchyLevel <- "dataset" # @jbarde should be use to distinguish database / datasets....
     metadata$Dataset_Type  <- "NetCDF" # @jbarde => we should define a proper typology of datasets same as "file type" ?
     metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY
-    static_metadata_dataset_origin_institution <- ncatt_get(ncin,0,"institution")$value # @jbarde => Not needed for the mapping if already in contacts
     # static_metadata_dataset_release_date <- ncatt_get(ncin,0,"date_modified")$value
-    # metadata$Projet  <- Dublin_Core_metadata$Projet[i] # @jbarde => to replace "static_metadata_dataset_origin_institution" ?
     # static_metadata_table_sql_query <- NULL # SHOULD BE GIVEN BY NETCDF METADATA
     # metadata$Credits <- NULL # Credits=NULL # @jbarde should be added ?
     
@@ -175,12 +175,11 @@ write_thredds_catalog_metadata <- function(config, source){
     logger.info("Set Metadata elements to describe the CONTACTS AND ROLES")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
+    all_contacts <- ncatt_get(ncin,0,"all_contacts")$value
     contacts_metadata <-NULL
     contact_email=NULL
     contact_role=NULL
     contacts_roles=NULL
-    all_contacts <- ncatt_get(ncin,0,"all_contacts")$value
-    # all_contacts <- metadata$contacts_and_roles # TO BE REUSED ONCE DONE 
     list_contacts <- strsplit(all_contacts, split = ";") 
     for(contact in list_contacts[[1]]){
       split_contact <- strsplit(contact, split = "=")
@@ -191,7 +190,12 @@ write_thredds_catalog_metadata <- function(config, source){
       split_contact[[1]][1]  
     }
     contacts_roles <- data.frame(contact=contact_email, RoleCode=contact_role, dataset=metadata$Identifier,stringsAsFactors=FALSE)
+    cat("contacts_roles")
+    contacts_roles
+    class(contacts_roles)
+    cat("contacts_roles")
     contacts_metadata$contacts_roles <- contacts_roles
+    class(contacts_roles)
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Metadata elements to describe the CONTROLLED VOCABULARIES: KEYWORDS AND THESAURUS")
@@ -245,9 +249,6 @@ write_thredds_catalog_metadata <- function(config, source){
     wms_layer=wms_variable
     Thumbnail_WMS=paste(wms_url,"service=WMS&version=1.3.0&request=GetMap&LAYERS=",wms_variable,"&TRANSPARENT=true&CRS=EPSG%3A4326&",color_range,"&SERVICE=WMS&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&FORMAT=image%2Fpng&SRS=EPSG%3A4326&BBOX=",ymin,",",xmin,",",ymax,",",xmax,"&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
     
-    
-    # julien => A SUPPRIMER
-    static_metadata_dataset_origin_institution<-tolower(static_metadata_dataset_origin_institution)
 
     #Online Resources
     #----------------
@@ -260,7 +261,6 @@ write_thredds_catalog_metadata <- function(config, source){
     # http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST_1km_daily/SST_1km_daily/catalog.html?dataset=BlueBridgeCatalog/MOI/SST_1km_daily/SST_1km_daily/Tanzania.ncml
     # dataset$url
     
-    if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
     # thumbnail <-"http://mdst-macroes.ird.fr/tmp/logo_IRD.svg"
     thumbnail <-"https://drive.google.com/uc?id=1Uc7tYMXWo3nFMs9xNuY651orAVGaGlJO"
     http_urls[nrow(http_urls)+1,] <- c(thumbnail, "thumbnail","Codelist Icon", "WWW:LINK-1.0-http--link","image/png")
@@ -310,6 +310,7 @@ write_thredds_catalog_metadata <- function(config, source){
       print(dataset)
       print(dataset$url)
       }
+
   }
   
 }
