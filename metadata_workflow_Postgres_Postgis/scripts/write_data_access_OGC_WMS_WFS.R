@@ -85,7 +85,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
   vt$setSql(SQL$query_wfs_wms)
-  vtg <- GSVirtualTableGeometry$new(name = "schoolsighting_location", type = "Geometry", srid = spatial_metadata$SRID)
+  vtg <- GSVirtualTableGeometry$new(name = "geom", type = "Geometry", srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
   logger.info("---------------------------------------------------------------------------------")  
