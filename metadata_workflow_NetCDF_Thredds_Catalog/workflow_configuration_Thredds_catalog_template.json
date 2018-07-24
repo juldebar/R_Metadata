@@ -1,0 +1,63 @@
+{
+  "id": "thredds_catalogs",
+  "dependencies": {
+    "packages": {
+      "cran": ["gsheet", "httr", "XML", "uuid", "raster", "ncdf4"],
+      "cran_force_install" : false,
+      "github": [
+        "openfigis/RFigisGeo",
+        "eblondel/geosapi",
+        "eblondel/geometa",
+        "eblondel/geonapi",
+        "btupper/threddscrawler",
+        "juldebar/R_Metadata"
+
+      ],
+      "github_force_install": false
+    }
+  },
+  "gcube": {
+    "token": "628aec92-55d3-4261-b012-71993cf8c722-843339462",
+    "repositories": {
+      },
+    "scripts_download": false,
+    "scripts": [
+      "write_metadata_OGC_19115_from_Dublin_Core.R",
+      "write_thredds_catalog_metadata_CF_conventions.R"
+          ]
+  },
+  "gsheetUrls": {
+    "contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
+    "all_contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
+    "contacts_MOI": "https://docs.google.com/spreadsheets/d/127n-mFKifPWVyzprpf3dDcWZSYtUZdqxA3RcqdNsg-c/edit?usp=sharing",
+    "dictionnary": "https://docs.google.com/spreadsheets/d/1BUppXu-Z_YX8cJaNISfk9KrKrKJ6y0Dd2XCfIvjBRQc/edit#gid=747135938"
+  },
+  "sdi": {
+    "loggerLevel": "DEBUG",
+    "geoserver": {
+      "url": "http://mygeoserver.org/geoserver",
+      "user": "*****",
+      "pwd": "*****"
+    },
+    "geonetwork": {
+      "url": "http://mygeonetwork.org/geonetwork",
+      "user": "*****",
+      "pwd": "*****",
+      "version": "3.0.4"
+    },
+    "thredds": {
+      "url_MOI_MESA": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/catalog.xml",
+      "url_MOI_MESA_sst": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST/catalog.xml",
+      "url_MOI_MESA_chl":"http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/Chl-a/catalog.xml"
+
+    }
+  },
+  "actions": {
+    "data_wms_wfs": false,
+    "data_csv": false,
+    "data_netcdf": false,
+    "metadata_iso_19115": true,
+    "metadata_iso_19110": false,
+    "main": "browse_sub_catalog"
+  }
+}
