@@ -30,9 +30,9 @@ WITH (
   OIDS=FALSE
 );
 
-ALTER TABLE metadata OWNER TO "invRTTP";
-GRANT SELECT ON TABLE metadata TO "invRTTP";
-GRANT ALL ON TABLE metadata TO "invRTTP";
+-- ALTER TABLE metadata OWNER TO "invRTTP";
+-- GRANT SELECT ON TABLE metadata TO "invRTTP";
+-- GRANT ALL ON TABLE metadata TO "invRTTP";
 
 COMMENT ON TABLE metadata IS 'Table containing the metadata on all the datasets available in the database';
 COMMENT ON COLUMN metadata.id_dataset IS 'internal identifier for the table';
