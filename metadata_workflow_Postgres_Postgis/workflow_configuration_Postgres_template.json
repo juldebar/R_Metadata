@@ -1,0 +1,71 @@
+{
+  "id": "tunaatlas",
+  "dependencies": {
+    "packages": {
+      "cran": ["RPostgreSQL", "gsheet", "httr", "XML", "uuid", "raster", "ncdf4", "EML"],
+      "cran_force_install" : true,
+      "github": [
+        "openfigis/RFigisGeo",
+        "eblondel/geosapi",
+        "eblondel/geometa",
+        "eblondel/geonapi"
+      ],
+      "github_force_install": true
+    },
+    "scripts": [
+    ]  
+  },
+  "db": {
+    "host": "server_name.fr",
+    "drv": "PostgreSQL",
+    "name": "database_name",
+    "user": "********",
+    "pwd": "********"
+  },
+
+  "gcube": {
+    "token": "8b534fc5-1815-4356-94a9-259355ac3ab4-843339462",
+    "repositories": {
+      "scripts": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/scripts",
+      "metadata": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/metadata",
+      "etl": "VRE Folders/FAO_TunaAtlas/Workflow/datasets_creation",
+      "netcdf": "VRE Folders/FAO_TunaAtlas/NetCDF_datasets",
+      "csv": "VRE Folders/FAO_TunaAtlas/csv_datasets"
+    },
+    "scripts_download": false,
+    "scripts": [
+      "write_metadata_OGC_19115_from_Dublin_Core.R",
+      "dynamic_metadata_queries.R",
+      "write_Dublin_Core_metadata.R",
+      "write_data_access_OGC_WMS_WFS.R",
+      "write_metadata_EML.R"
+          ]
+  },
+  "gsheetUrls": {
+    "contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
+    "dictionnary_19110": "https://docs.google.com/spreadsheets/d/1BUppXu-Z_YX8cJaNISfk9KrKrKJ6y0Dd2XCfIvjBRQc/edit#gid=747135938",
+    "dublin_core_gsheet":"https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit#gid=0"
+  },
+  "sdi": {
+    "loggerLevel": "DEBUG",
+    "geoserver": {
+      "url": "http://geoserver-sdi-lab.d4science.org/geoserver",
+      "user": "********",
+      "pwd": "********"
+    },
+    "geonetwork": {
+      "url": "http://geonetwork-sdi-lab.d4science.org/geonetwork",
+      "user": "********",
+      "pwd": "********",
+      "version": "3.0.4"
+    }
+  },
+  "actions": {
+    "data_wms_wfs": false,
+    "data_csv": false,
+    "data_netcdf": false,
+    "metadata_iso_19115": true,
+    "metadata_iso_19110": false,
+    "main": "write_Dublin_Core_metadata"
+  }
+}
