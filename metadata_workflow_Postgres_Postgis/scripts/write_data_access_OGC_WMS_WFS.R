@@ -4,7 +4,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
                                           spatial_metadata,
                                           keywords_metadata
                                           ){
-  
+  # config=CFG
   logger.info <- config$logger.info
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set configuration variables")  
