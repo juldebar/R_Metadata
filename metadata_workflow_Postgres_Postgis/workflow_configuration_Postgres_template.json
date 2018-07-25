@@ -1,8 +1,8 @@
 {
-  "id": "tunaatlas",
+  "id": "Postgres_database",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "gsheet", "httr", "XML", "uuid", "raster", "ncdf4", "EML"],
+      "cran": ["RPostgreSQL", "gsheet", "data.table", "dplyr","httr", "XML", "uuid", "EML"],
       "cran_force_install" : true,
       "github": [
         "openfigis/RFigisGeo",
@@ -24,7 +24,7 @@
   },
 
   "gcube": {
-    "token": "8b534fc5-1815-4356-94a9-259355ac3ab4-843339462",
+    "token": "your_token",
     "repositories": {
       "scripts": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/scripts",
       "metadata": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/metadata",
@@ -34,6 +34,7 @@
     },
     "scripts_download": false,
     "scripts": [
+      "load_metadata_table_from_spreadsheat.R",
       "write_metadata_OGC_19115_from_Dublin_Core.R",
       "dynamic_metadata_queries.R",
       "write_Dublin_Core_metadata.R",
@@ -42,28 +43,27 @@
           ]
   },
   "gsheetUrls": {
-    "contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
-    "dictionnary_19110": "https://docs.google.com/spreadsheets/d/1BUppXu-Z_YX8cJaNISfk9KrKrKJ6y0Dd2XCfIvjBRQc/edit#gid=747135938",
-    "dublin_core_gsheet":"https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit#gid=0"
+    "contacts": "https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing",
+    "dublin_core_gsheet":"https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing"
   },
   "sdi": {
     "loggerLevel": "DEBUG",
     "geoserver": {
-      "url": "http://geoserver-sdi-lab.d4science.org/geoserver",
+      "url": "http://mygeoserver.org/geoserver",
       "user": "********",
       "pwd": "********"
     },
     "geonetwork": {
-      "url": "http://geonetwork-sdi-lab.d4science.org/geonetwork",
+      "url": "http://mygeonetwork.org/geonetwork",
       "user": "********",
       "pwd": "********",
       "version": "3.0.4"
     }
   },
   "actions": {
+    "create_metadata_table": false,
     "data_wms_wfs": false,
     "data_csv": false,
-    "data_netcdf": false,
     "metadata_iso_19115": true,
     "metadata_iso_19110": false,
     "main": "write_Dublin_Core_metadata"
