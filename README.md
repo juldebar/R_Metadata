@@ -26,7 +26,7 @@ The scripts use following R packages:
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please log in (and explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
 
 
-#  Postgres use case
+#  Pre-requisites
 
 Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages, check following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) when starting from scratch
@@ -37,7 +37,7 @@ Make sure that following pre-requisites are ok:
 
 
 
-Once done, adapt accordingly the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+Once done, adapt accordingly the content of the configuration files (one json file per type of data source, eg [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json)) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
 
 
 #  Examples
