@@ -30,7 +30,7 @@ All codes can be executed online in RStudio server provided by D4science infrast
 #  Postgres use case
 
 Make sure that following pre-requisites are ok:
-- you have set up all packages (R and OS packages):
+- you have set up all packages (R and OS packages, check following [list of potential issues] (https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) when starting from scratch
 - you have created **your own google spreadsheats** to describe:
   - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
   - the metadata of your datasets (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
