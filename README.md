@@ -41,9 +41,9 @@ Adapt the [json configuration file](https://github.com/juldebar/R_Metadata/blob/
 Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages):
 - you have created **your own google spreadsheats** to describe:
-  - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0"))
-  - the metadata of your datasets (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit#gid=0))
-- Postgres server is accessible from R
+  - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
+  - the metadata of your datasets (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
+- Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
 
 
 
