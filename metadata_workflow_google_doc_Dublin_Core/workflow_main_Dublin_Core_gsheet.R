@@ -8,7 +8,7 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 #working directory
-setwd("~/metadata_workflow_google_doc_Dublin_Core/")
+setwd("~/Bureau/CODES/R_Metadata/metadata_workflow_google_doc_Dublin_Core/")
 
 #Resources
 source("workflow_utils.R")

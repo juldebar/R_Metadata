@@ -1,15 +1,14 @@
 {
-  "id": "tunaatlas",
+  "id": "spreadsheet_data_source",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "gsheet", "httr", "XML", "uuid", "raster", "ncdf4"],
+      "cran": ["gsheet", "httr", "XML", "uuid"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
         "eblondel/geosapi",
         "eblondel/geometa",
-        "eblondel/geonapi",
-        "juldebar/R_Metadata"
+        "eblondel/geonapi"
       ],
       "github_force_install": false
     },
@@ -18,7 +17,7 @@
     ]  
   },
   "gcube": {
-    "token": "628aec92-55d3-4261-b012-71993cf8c722-843339462",
+    "token": "your_token",
     "repositories": {
       "scripts": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/scripts",
       "metadata": "VRE Folders/FAO_TunaAtlas/Workflow/metadata_and_data_access_workflow_v2/metadata",
