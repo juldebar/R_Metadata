@@ -7,11 +7,11 @@ Some samples to generate metadata from various sources
   - simple CSV / local access
   - example in a google spreadsheet to get a collaborative edition tool
 - Relationnal database
- - Postgres and Postgis,
- - no other RDMBS for now,
+  - Postgres and Postgis,
+  - no other RDMBS for now,
 - NetCDF files
- - local access
- - `accessible` with OPeNDAP on a Thredds server
+  - local access
+  - `accessible` with OPeNDAP on a Thredds server
 
 ##  Underlying R packages
 
@@ -40,7 +40,7 @@ Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages):
 - you have created **your own google spreadsheats** to describe:
   - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
-  - the metadata of your datasets (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
+  - the metadata of your datasets (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
 
 
