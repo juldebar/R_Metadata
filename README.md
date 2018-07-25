@@ -36,8 +36,6 @@ All codes can be executed online in RStudio server provided by D4science infrast
 
 #  Postgres use case
 
-Adapt the [json configuration file](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) template of the  to the component of your spatial data infrastructure
-
 Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages):
 - you have created **your own google spreadsheats** to describe:
@@ -47,4 +45,4 @@ Make sure that following pre-requisites are ok:
 
 
 
-
+Once done, adapt accordingly the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
