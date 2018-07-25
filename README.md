@@ -1,21 +1,20 @@
-Examples of Metadata generated from R packages. Each folder is a worfklow dedicated to a specific data source (CSV/Google Spreadsheet | RDBMS SQL Postgres & Postgis server| NetCDF/OPeNDAP Thredds sever)
+# Implementation of FAIR data management plans with R programming language and usual data sources in scientific context
 
-##  In this repository
+This repository provides examples of metadata (compliant with [OGC](http://www.opengeospatial.org/) standards) generated with R scripts from different data sources. Metadata can be pushed directly from R to CSW server (eg geonetwork) and data can be published in Geoserver (WMS/WFS).
 
-Some samples to generate metadata from various sources
-- flat files / spreadsheets
+Each sub-folder contains an example of worfklow dedicated to a specific kind of data source:
+- [Flat files: CSV/Google Spreadsheet](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core)
   - simple CSV / local access
   - example in a google spreadsheet to get a collaborative edition tool
-- Relationnal database
+- [SQL / Relationnal database / RDBMS](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_Postgres_Postgis)
   - Postgres and Postgis,
   - no other RDMBS for now,
-- NetCDF files
+- [NetCDF files / OPeNDAP accesible on Thredds sever](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_NetCDF_Thredds_Catalog)
   - local access
   - `accessible` with OPeNDAP on a Thredds server
 
-##  Underlying R packages
+The scripts use following R packages:
 
-Some samples to generate metadata from various sources
 - OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi) 
 - Postgres related: [RPostgreSQL](RPostgreSQL)
 - NetCDF related: [ncdf4](ncdf4)
