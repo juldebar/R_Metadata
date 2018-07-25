@@ -8,11 +8,13 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 #working directory
-setwd("~/metadata_workflow_Postgres_RTTP/")
+wd <- "~/Bureau/CODES/R_Metadata/metadata_workflow_Postgres_Postgis/"
+setwd(wd)
+# source("/home/julien/Bureau/CODES/Deep_mapping/R/credentials_postgres.R")
 
 #Resources
 source("workflow_utils.R")
-config_file <- "workflow_configuration_Postgres.json"
+config_file <- paste("workflow_configuration_Postgres.json",sep="")
 
 #1. Init the workflow based on configuration file
 ########################################################################################################################
@@ -28,5 +30,5 @@ executeWorkflowJob(CFG)
 
 #4. close workflow
 ########################################################################################################################
-closeWorkflow(CFG)
 
+closeWorkflow(CFG)
