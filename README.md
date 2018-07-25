@@ -4,11 +4,13 @@ Examples of Metadata generated from R packages. Each folder is a worfklow dedica
 
 Some samples to generate metadata from various sources
 - flat files / spreadsheets
-  - simple CSV
+  - simple CSV / local access
   - example in a google spreadsheet to get a collaborative edition tool
 - Relationnal database
  - Postgres and Postgis,
+ - no other RDMBS for now,
 - NetCDF files
+ - local access
  - `accessible` with OPeNDAP on a Thredds server
 
 ##  Underlying R packages
@@ -20,4 +22,29 @@ Some samples to generate metadata from various sources
 - GBIF related: [eml](eml)
 - Dataverse related: [dataverse]()
 
+##  Execution
+
+All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please log in (and explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
+
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="50">
+
+#  Examples
+
+```{r setup, include=FALSE}
+
+```
+
+#  Postgres use case
+
+Adapt the [json configuration file](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) template of the  to the component of your spatial data infrastructure
+
+Make sure that following pre-requisites are ok:
+- you have set up all packages (R and OS packages):
+- you have created **your own google spreadsheats** to describe:
+  - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0"))
+  - the metadata of your datasets (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit#gid=0))
+- Postgres server is accessible from R
+
+
+
+
