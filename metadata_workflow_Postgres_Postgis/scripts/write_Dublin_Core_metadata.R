@@ -1,20 +1,35 @@
 write_Dublin_Core_metadata <- function(config, source){
   
   #config shortcuts
+  # config=CFG
   con <- config$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
-  config=CFG
   
   google_sheet_contacts <- config$gsheetUrls$contacts
   contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
+  Postgres_metadata_table <- config$gsheetUrls$dublin_core_gsheet
+  Datasets <- as.data.frame(gsheet::gsheet2tbl(Postgres_metadata_table))
+  
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("Workflow Postgres:  SQL QUERY: CREATE 'metadata' TABLE and fill it by loading the content from a google spreadsheet")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  if (config$actions$create_metadata_table){
+  query_create_table <- readLines(paste(config$wd,"/scripts/SQL/create_table_metadata.sql",sep=""))
+  create_Table <- dbGetQuery(con,query_create_table)
+  metadata <- metadata_dataframe(Dublin_Core_metadata=Datasets)
+  dbWriteTable(con, "metadata", metadata, row.names=FALSE, append=TRUE)
+  } else {
+    logger.info("Table 'metadata' not created")
+    }
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("Workflow Postgres: READ CONTENT OF 'metadata' table")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
   
   SQL_query_metadata <- "SELECT * FROM metadata ;"
   Dublin_Core_metadata <- dbGetQuery(con, SQL_query_metadata)
-  
-  
   number_row<-nrow(Dublin_Core_metadata)
   
   logger.info("-------------------------------------------------------------------------------------------------------------------")
@@ -22,16 +37,16 @@ write_Dublin_Core_metadata <- function(config, source){
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   
   for (i in 1:number_row) {
-    # i=1
     metadata <- NULL
     metadata <- Dublin_Core_metadata[i,]
     
     logger.info("===================================================================================================================")
-    logger.info(sprintf("NEW DATASET"))
+    logger.info(sprintf("New dataset found in the metadata table of the database"))
     logger.info("===================================================================================================================")
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Dublin Core Metadata elements")
+    logger.info("Loading static metadata elements from metadata table")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
     metadata$Identifier  <- Dublin_Core_metadata$identifier[i]# if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
@@ -41,62 +56,59 @@ write_Dublin_Core_metadata <- function(config, source){
     metadata$Type  <- Dublin_Core_metadata$dataset_type[i]#  julien => changer en "type"
     metadata$Format  <- Dublin_Core_metadata$format[i]
     metadata$Language  <- Dublin_Core_metadata$language[i] #  resource_language <- "eng"
-    metadata$Lineage  <- Dublin_Core_metadata$provenance[i]
     metadata$Rights  <- Dublin_Core_metadata$rights[i] #UseLimitation <- "intellectualPropertyRights"
-    #complex metadata elements
-    
-    
-    logger.info("-------------------------------------------------------------------------------------------------------------------")
-    logger.info("Loading static metadata elements from metadata table")
-    logger.info("-------------------------------------------------------------------------------------------------------------------")
-    contact_email=NULL
-    contact_role=NULL
-    contacts_roles=NULL
-    all_keywords=NULL
-    
+    metadata$Source  <- Dublin_Core_metadata$source[i] #UseLimitation <- "intellectualPropertyRights"
+    metadata$Lineage  <- Dublin_Core_metadata$provenance[i]
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Additionnal Metadata elements")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
     metadata$Permanent_Identifier  <- Dublin_Core_metadata$identifier[i]
-    metadata$Parent_Metadata_Identifier  <- NULL # @jbarde => indicates the database the dataset comes from
+    metadata$Parent_Metadata_Identifier  <- config$db$name # @jbarde => indicates the database the dataset comes from
     metadata$addHierarchyLevel <- "dataset" 
-    metadata$Dataset_Type  <- "google_doc" # @jbarde => we should define a proper typology of datasets same as "file type" ?
+    metadata$Dataset_Type  <- "dataset stored in a database" # @jbarde => we should define a proper typology of datasets same as "file type" ?
     metadata$Purpose <- "describe Purpose"
     metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY
-    metadata$dataset_access_query <- metadata$related_sql_query # @jbarde => Needed to load and browse the data itself (can be SQL query / http or OPeNDAP ACCESS)
-    metadata$view_name <- metadata$related_view_name
-    metadata$Credits <- NULL # Credits=NULL # @jbarde should be added ?
+    metadata$dataset_access_query <- Dublin_Core_metadata$related_sql_query[i] # @jbarde => Needed to load and browse the data itself (can be SQL query / http or OPeNDAP ACCESS)
+    metadata$view_name <- Dublin_Core_metadata$related_view_name[i]
+    metadata$Credits <- "TO BE ADDED AS A NEW COLUMN OF THE METADATA TABLE IN THE DATABASE ?" # Credits=NULL # @jbarde should be added ?
     
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("Loading dynamic metadata elements from metadata table")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    contact_email=NULL
+    contact_role=NULL
+    contacts_roles=NULL
+    all_keywords=NULL
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Get SQL Sardara queries for current dataset...")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     SQL <- getSQLQueries(config, metadata)
-    
-    
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Additionnal Metadata elements to describe the SPATIAL COVERAGE AND RELATED GEOGRAPHIC OBJECTS")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
-    
     spatial_metadata <-NULL
+    
     spatial_metadata$SRID<-SQL$SRID
+    
     spatial_extent=readWKT(SQL$dynamic_metadata_spatial_Extent)
     xmin <- spatial_extent@bbox[1,1]
     xmax <- spatial_extent@bbox[1,2]
     ymin <- spatial_extent@bbox[2,1]
     ymax <- spatial_extent@bbox[2,2]
     spatial_metadata$dynamic_metadata_spatial_Extent <- data.frame(xmin, ymin, xmax, ymax, stringsAsFactors=FALSE)
+    
     spatial_metadata$dynamic_metadata_count_features <-SQL$dynamic_metadata_count_features
+    
     spatial_metadata$geographic_identifier="Mauritius" # => @julien à changer
+    
     spatial_metadata$Spatial_resolution<-NULL
     spatial_metadata$SpatialRepresentationType <- "vector"
     spatial_metadata$GeometricObjectType="surface"
-    
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Additionnal Metadata elements to describe the SPATIAL COVERAGE AND RELATED GEOGRAPHIC OBJECTS")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
-    
     temporal_metadata <-NULL
     Temporal_Coverage  <- as.character(SQL$dynamic_metadata_temporal_Extent)
     Temporal_Coverage
@@ -243,6 +255,25 @@ write_Dublin_Core_metadata <- function(config, source){
       
     } else {
       logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
+    }
+    
+    
+    #OGC WMS / WFS
+    if (config$actions$data_wms_wfs){
+      logger.info("DATA publication to OGC WMS/WFS services (Geoserver)...")
+      published<-write_data_access_OGC_WMS_WFS(config=config,
+                                               metadata=metadata,
+                                               SQL=SQL,
+                                               spatial_metadata=spatial_metadata,
+                                               keywords_metadata=keywords_metadata)
+      if(published){
+        logger.info("DATA WMS/WFS successfull publication!")
+      }else{ 
+        logger.error("Error during DATA WMS/WFS publication")
+      }
+      
+    }else{
+      logger.warn("DATA publication to OGC WMS/WFS service (GeoServer) DISABLED")
     }
     
   }

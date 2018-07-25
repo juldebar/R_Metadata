@@ -1,13 +1,12 @@
-###################################### LOAD SESSION METADATA ############################################################
-
+#metadata_dataframe prepares a dataframe from a google spreadsheet to load the metadata table of the postgres database
+#@param Dublin_Core_metadata
+#@returns an object of class dataframe
 metadata_dataframe <- function(Dublin_Core_metadata){
   all_metadata <- NULL
-  
   number_row<-nrow(Dublin_Core_metadata)
+  
   for (i in 1:number_row) {
-    # metadata <- Dublin_Core_metadata[i,]
     metadata <- NULL
-    
     metadata$id_dataset  <- i # if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
     metadata$persistent_identifier <- Dublin_Core_metadata$Identifier[i]
     metadata$related_sql_query <- Dublin_Core_metadata$related_sql_query[i]
@@ -31,35 +30,6 @@ metadata_dataframe <- function(Dublin_Core_metadata){
     metadata$database_table_name  <- "TABLE NAME"
     
     all_metadata <- bind_rows(all_metadata, metadata)
-    
   }
     return(all_metadata)
   }
-
-
-library(RPostgreSQL)
-library(data.table)
-library(dplyr)
-# source("/home/julien/Bureau/CODES/Deep_mapping/R/credentials_postgres.R")
-source("/home/julien/Bureau/CODES/credentials_databases.R")
-
-con_RTTP <- dbConnect(DRV, user=User, password=Password, dbname=Dbname, host=Host)
-query_create_table <- paste(readLines("/home/julien/Bureau/CODES/R_Metadata/metadata_workflow_Postgres_Postgis/scripts/SQL/create_table_metadata.sql"), collapse=" ")
-create_Table <- dbGetQuery(con_RTTP,query_create_table)
-
-Metadata_RTTP_datasets <- "https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit?usp=sharing"
-RTTP_datasets <- as.data.frame(gsheet::gsheet2tbl(Metadata_RTTP_datasets))
-names(RTTP_datasets)
-
-
-metadata <- metadata_dataframe(Dublin_Core_metadata=RTTP_datasets)
-names(metadata)
-head(metadata)
-
-
-dbWriteTable(con_RTTP, "metadata", metadata, row.names=FALSE, append=TRUE)
-dbDisconnect(con_RTTP)
-on.exit(dbUnloadDriver(DRV), add = TRUE)
-
-
-

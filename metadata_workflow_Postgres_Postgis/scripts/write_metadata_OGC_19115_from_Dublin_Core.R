@@ -502,7 +502,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   
   #Data Quality Genealogy
   #----------------------
-  if(metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
+  if(metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"& metadata$Dataset_Type!="dataset stored in a database"){
     
   genealogy <- getRawGenealogy.SARDARA(config, dataset)
   DQ2 <- prepareDataQualityWithGenealogy(config, genealogy)
