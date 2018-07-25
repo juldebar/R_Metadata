@@ -26,11 +26,6 @@ Some samples to generate metadata from various sources
 
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please log in (and explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
 
-#  Examples
-
-```{r setup, include=FALSE}
-
-```
 
 #  Postgres use case
 
@@ -45,6 +40,12 @@ Make sure that following pre-requisites are ok:
 
 Once done, adapt accordingly the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
 
+
+#  Examples
+
+```{r setup, include=FALSE}
+
+```
 
 
 
