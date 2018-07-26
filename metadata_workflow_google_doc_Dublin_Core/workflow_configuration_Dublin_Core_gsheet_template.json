@@ -2,7 +2,7 @@
   "id": "spreadsheet_data_source",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid"],
+      "cran": ["gsheet", "httr", "XML", "uuid","GoogleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
@@ -31,8 +31,8 @@
           ]
   },
   "gsheetUrls": {
-    "Template_contacts": "https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing",
-    "Template_Metadata_Dublin_Core":"https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing"
+    "contacts": "https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing",
+    "dublin_core_gsheet":"https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing"
   },
   "sdi": {
     "loggerLevel": "DEBUG",
@@ -49,9 +49,7 @@
     }
   },
   "actions": {
-    "data_wms_wfs": false,
     "data_csv": false,
-    "data_netcdf": false,
     "metadata_iso_19115": true,
     "metadata_iso_19110": false,
     "main": "write_Dublin_Core_metadata"
