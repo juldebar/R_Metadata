@@ -10,7 +10,6 @@ options(stringsAsFactors = FALSE)
 #working directory
 wd <- "~/Bureau/CODES/R_Metadata/metadata_workflow_Postgres_Postgis/"
 setwd(wd)
-# source("/home/julien/Bureau/CODES/Deep_mapping/R/credentials_postgres.R")
 
 #Resources
 source("workflow_utils.R")
