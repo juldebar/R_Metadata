@@ -545,7 +545,7 @@ push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   if(is(md, "ISOMetadata")){
     privileges <- c(privileges, "featured")
   }
-  metaId <- GN$get(md$fileIdentifier, by = "uuid", output = "id")
+  metaId <- GN$get(metadata_permanent_id, by = "uuid", output = "id")
   if(is.null(metaId)){
     #insert metadata (once inserted only visible to the publisher)
     created = GN$insertMetadata(xml = md$encode(), group = "1", category = "datasets")
