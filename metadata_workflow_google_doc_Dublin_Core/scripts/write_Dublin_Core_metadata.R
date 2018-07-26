@@ -27,7 +27,6 @@ for (i in 1:number_row) {
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   
   metadata$Identifier  <- Dublin_Core_metadata$Identifier[i]# if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
-  metadata$Permanent_Identifier <- metadata$Identifier
   metadata$Title  <- Dublin_Core_metadata$Title[i]
   metadata$Description <- Dublin_Core_metadata$Description[i]
   metadata$Date  <- Dublin_Core_metadata$Date[i]
