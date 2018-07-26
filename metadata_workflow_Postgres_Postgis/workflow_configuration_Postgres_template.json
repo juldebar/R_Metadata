@@ -71,6 +71,7 @@
     "data_csv": false,
     "metadata_iso_19115": true,
     "metadata_iso_19110": false,
+    "write_metadata_EML": false,
     "main": "write_Dublin_Core_metadata"
   }
 }
