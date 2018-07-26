@@ -23,7 +23,7 @@ The scripts use following R packages:
 
 ##  Execution of R codes can be done online
 
-All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please log in (and explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
+All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please ask a login (and briefly explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
 
 
 #  Pre-requisites
@@ -34,10 +34,32 @@ Make sure that following pre-requisites are ok:
   - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
   - the metadata of your datasets (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
+- if you want to use the components (eg geoserver / geonetwork) you shouuld use your personal token from D4science infrastructure (register first)
+- change working directory in the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R)) to fit the path on your PC
 
 
+<!-- - virer package raster-->
 
 Once done, adapt accordingly the content of the configuration files (one json file per type of data source, eg [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json)) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+
+
+##  Postgres data source use case
+
+In this case, it is required:
+- to prepare the list of queries with which datasets can be physically extracted (and stored as CSV files)
+- to specify a user who can create tables :
+  - the metadata table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
+  - one view
+
+# Usual Errors
+
+- Contacts are not properly described in the google spreadsheet (or not even in the spreadsheet)
+- Syntactic aspects 
+- uuid VS identifier a mano 
+- "Mauritius"
+- "Provenance"
+- enlever le template
+dateStamp Emilie
 
 
 #  Examples
@@ -45,7 +67,5 @@ Once done, adapt accordingly the content of the configuration files (one json fi
 ```{r setup, include=FALSE}
 
 ```
-
-
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
