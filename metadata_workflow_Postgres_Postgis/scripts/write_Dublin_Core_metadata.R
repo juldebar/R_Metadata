@@ -228,22 +228,7 @@ write_Dublin_Core_metadata <- function(config, source){
       
       
       logger.info("Generating/Publishing ISO 19115 metadata...")
-      # EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
-      #                                                           metadata=metadata,
-      #                                                           contacts_metadata=contacts_metadata,
-      #                                                           spatial_metadata=spatial_metadata,
-      #                                                           temporal_metadata=temporal_metadata,
-      #                                                           keywords_metadata=keywords_metadata,
-      #                                                           urls_metadata=urls_metadata
-      # )
-      # logger.info(sprintf("EML metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
-      # filename <-paste("metadata_eml_", metadata$Permanent_Identifier,"_eml.xml", sep="")
-      # 
-      # 
-      # setwd(file.path(getwd(), "metadata"))
-      # saveXML(metatada_sheet_xml, file = xml_file_name)
-      # write_eml(EML_metatada_sheet, filename)
-      # eml_validate(filename)
+
       logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been created!", xml_file_name))
       setwd("..")
       
@@ -258,6 +243,28 @@ write_Dublin_Core_metadata <- function(config, source){
     }
     
     
+    if(config$actions$write_metadata_EML){
+      EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
+                                                                metadata=metadata,
+                                                                contacts_metadata=contacts_metadata,
+                                                                spatial_metadata=spatial_metadata,
+                                                                temporal_metadata=temporal_metadata,
+                                                                keywords_metadata=keywords_metadata,
+                                                                urls_metadata=urls_metadata
+      )
+      logger.info(sprintf("EML metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
+      filename <-paste("metadata_eml_", metadata$Permanent_Identifier,"_eml.xml", sep="")
+      
+      
+      setwd(file.path(getwd(), "metadata"))
+      write_eml(EML_metatada_sheet, filename)
+      eml_validate(filename)
+      setwd("..")
+      logger.info(sprintf("EML metadata '%s' has been created!", xml_file_name))
+      
+      
+    }
+      
     #OGC WMS / WFS
     if (config$actions$data_wms_wfs){
       logger.info("DATA publication to OGC WMS/WFS services (Geoserver)...")
