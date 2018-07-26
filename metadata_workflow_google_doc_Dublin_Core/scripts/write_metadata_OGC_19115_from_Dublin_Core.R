@@ -484,3 +484,17 @@ push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   return(md_url)
   
 }
+
+
+push_metadata_in_csw_server <- function(config,  md){
+  
+  #shortcut for gn config
+  CSW_URL <- config$sdi$csw_server$url
+  CSW_admin <- config$sdi$csw_server$user
+  CSW_password <- config$sdi$csw_server$pwd
+  csw <- CSWClient$new(CSW_URL, "2.0.2",  user = CSW_admin, CSW_password,logger="INFO")
+  insert <- csw$insertRecord(record = md)
+  
+  return(insert)
+  
+}
