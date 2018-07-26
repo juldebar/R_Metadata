@@ -48,7 +48,8 @@ add_contacts_and_roles_OGC_19115 <- function(config, metadata_identifier, contac
           res$setName(the_contact$setNameISOOnlineResource)
           contact$setOnlineResource(res)
           rp$setContactInfo(contact)
-          listContacts= append(listContacts, rp)
+          listContacts[[length(listContacts)+1]] <- rp
+          
         }
       }
     }
@@ -140,8 +141,8 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
                                                       temporal_metadata = NULL,
                                                       keywords_metadata = NULL, # DATAFRAME WITH ALL (STATIC & DYNAMIC)  KEYWORDS
                                                       urls_metadata= NULL # LIST OF DYNAMIC / COMMON URLs
-                                                      )
-  {
+)
+{
   
   #config shortcuts
   con <- config$db$con
@@ -185,7 +186,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
   #VectorSpatialRepresentation
-
+  
   if (!is.null(spatial_metadata$SpatialRepresentationType)){
     if (spatial_metadata$SpatialRepresentationType == "vector" ){
       VSR <- ISOVectorSpatialRepresentation$new()
@@ -253,7 +254,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   ct$setEditionDate(as.Date(mdDate)) #EditionDate should be of Date type
   ct$setIdentifier(ISOMetaIdentifier$new(code = metadata$Permanent_Identifier)) #Julien code à vérifier
   ct$setPresentationForm("tableDigital")# @julien => mapping to be done with DCMI type ?
-
+  
   # TODO @julien CHECK IF ADDED CONTACT IS CORRECT IN THIS CONTEXT (SHOULD NOT => LAST FROM LIST ABOVE)
   ct$setCitedResponsibleParty(listContact)
   IDENT$setCitation(ct)
@@ -310,7 +311,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
                                                 miny=(spatial_metadata$dynamic_metadata_spatial_Extent$ymin-0.001),
                                                 maxx=(spatial_metadata$dynamic_metadata_spatial_Extent$xmax+0.001),
                                                 maxy=(spatial_metadata$dynamic_metadata_spatial_Extent$ymax+0.001)
-                                                      ) #or use bbox parameter instead for specifying output of bbox(sp)
+  ) #or use bbox parameter instead for specifying output of bbox(sp)
   extent$addGeographicElement(spatialExtent)
   logger.info("Bounding Box added!")  
   
@@ -381,7 +382,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("OGC 19115 SECTION => Distribution") 
   logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
-
+  
   distrib <- ISODistribution$new()
   dto <- ISODigitalTransferOptions$new()  
   
@@ -431,7 +432,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   }
   
   logger.info("Data Quality Genealogy not managed for now !")
-
+  
   logger.info("Data Quality Info section added")
   
   
@@ -439,7 +440,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription => not managed for now")
   logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
-
+  
   return(md)
 }
 
