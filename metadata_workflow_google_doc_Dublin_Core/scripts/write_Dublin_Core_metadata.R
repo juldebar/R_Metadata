@@ -1,7 +1,6 @@
 write_Dublin_Core_metadata <- function(config, source){
 
 #config shortcuts
-  config=CFG
 con <- config$db$con
 logger <- config$logger
 logger.info <- config$logger.info
@@ -19,7 +18,6 @@ logger.info("-------------------------------------------------------------------
 
 
 number_row<-nrow(Dublin_Core_metadata)
-# number_row=20
 for (i in 1:number_row) {
   metadata <- NULL
   metadata <- Dublin_Core_metadata[i,]
@@ -35,9 +33,9 @@ for (i in 1:number_row) {
   metadata$Date  <- Dublin_Core_metadata$Date[i]
   metadata$Type  <- Dublin_Core_metadata$Type[i]
   metadata$Format  <- Dublin_Core_metadata$Format[i]
-  metadata$Language  <- Dublin_Core_metadata$Language[i] #  resource_language <- "eng"
-  metadata$Lineage  <- Dublin_Core_metadata$Lineage[i]
-  metadata$Rights  <- Dublin_Core_metadata$Rights[i] #UseLimitation <- "intellectualPropertyRights"
+  metadata$Language  <- Dublin_Core_metadata$Language[i]
+  metadata$Lineage  <- Dublin_Core_metadata$Provenance[i]
+  metadata$Rights  <- Dublin_Core_metadata$Rights[i]
   #complex metadata elements
   
   logger.info("-------------------------------------------------------------------------------------------------------------------")
@@ -45,14 +43,13 @@ for (i in 1:number_row) {
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   
   metadata$Permanent_Identifier  <- Dublin_Core_metadata$Identifier[i]
-  metadata$Parent_Metadata_Identifier  <- NULL
   metadata$addHierarchyLevel <- "dataset" # @jbarde should be use to distinguish database / datasets....
   metadata$Dataset_Type  <- "google_doc" # @jbarde => we should define a proper typology of datasets same as "file type" ?
   metadata$Purpose <- "describe Purpose"
   metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY
-  metadata$Projet  <- Dublin_Core_metadata$Projet[i] # @jbarde => to replace "static_metadata_dataset_origin_institution" ?
   metadata$dataset_access_query <- NULL # @jbarde => Needed to load and browse the data itself (can be SQL query / http or OPeNDAP ACCESS)
   metadata$Credits <- NULL # Credits=NULL # @jbarde should be added ?
+  metadata$Parent_Metadata_Identifier  <- NULL
   
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("Set Additionnal Metadata elements to describe the SPATIAL COVERAGE AND RELATED GEOGRAPHIC OBJECTS")
@@ -72,8 +69,6 @@ for (i in 1:number_row) {
   spatial_metadata$SpatialRepresentationType <- "vector"
   spatial_metadata$GeometricObjectType="surface"
   # Thumbnail_WMS=paste("http://129.206.228.72/cached/osm?LAYERS=osm_auto:all&STYLES=&SRS=EPSG%3A4326&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&BBOX=",xmin,",",ymin,",",xmax,",",ymax,"&WIDTH=256&HEIGHT=256")
-  cat("Thumbnail_WMS")                                               
-  
   Thumbnail_WMS=paste("https://geoserver-tunaatlas.d4science.org/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&layers=tunaatlas:bathymetry,tunaatlas:continent&styles=&BBOX=",ymin-0.2,",",xmin-0.2,",",ymax+0.2,",",xmax+0.2,"&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
   
   
@@ -214,8 +209,6 @@ for (i in 1:number_row) {
 } else {
   logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
 }
-  
-  
   
   
   }
