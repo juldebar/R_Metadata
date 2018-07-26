@@ -58,6 +58,11 @@
       "user": "********",
       "pwd": "********",
       "version": "3.0.4"
+    },
+      "csw_server": {
+      "url": "http://mygeonetwork.org/geonetwork/srv/eng/csw",
+      "user": "********",
+      "pwd": "********"
     }
   },
   "actions": {
