@@ -6,7 +6,6 @@ getSQLQueries <- function(config, metadata){
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
-
   logger.info("######################################################################################################")
   logger.info("Initialize SQL queries variables")
   logger.info("######################################################################################################")
