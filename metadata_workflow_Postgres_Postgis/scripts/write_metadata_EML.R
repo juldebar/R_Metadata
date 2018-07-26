@@ -1,7 +1,6 @@
 # DONE BY FOLLOWING ONLINE TUTORIAL https://github.com/ropensci/EML/blob/master/vignettes/creating-EML.Rmd
 # https://github.com/ropensci/EML
 # GOAL IS TO GENERATE EML FOR GBIF IPT : eg http://vmirdgbif-proto.mpl.ird.fr:8080/ipt/eml.do?r=ecoscope_observation_database&v=6.0
-library("EML")
 
 # download.file(url="http://vmirdgbif-proto.mpl.ird.fr:8080/ipt/eml.do?r=ecoscope_observation_database&v=6.0", destfile = "test_eml.xml", method="curl")
 # f <- system.file("test_eml.xml", package = "EML")
@@ -25,15 +24,17 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
-  #################################################################################
-  # MAIN METADATA ELEMENTS
-  #################################################################################
+  logger.info("----------------------------------------------------")  
+  logger.info("EML: MAIN METADATA ELEMENTS")  
+  logger.info("----------------------------------------------------")  
   pubDate <-   as.character(as.Date(metadata$Date))
   title <- metadata$Title
   abstract <- metadata$Description
   intellectualRights <- metadata$Rights 
-  #################################################################################
-  # DATA DICTIONNARY => TO BE DONE => MANAGE COMMON CODE TO GET DATA DICTIONNARY FROM FEATURE CATALOG
+  logger.info("----------------------------------------------------")  
+  logger.info("DATA DICTIONNARY => TO BE DONE => MANAGE COMMON CODE TO GET DATA DICTIONNARY FROM FEATURE CATALOG")  
+  logger.info("----------------------------------------------------")  
+  # 
   # entityName => entityDescription / physical / attributeList
   #################################################################################  
   # entityName=paste("../",local_subDirCSV,"/",static_metadata_dataset_name,".csv",sep="")
@@ -50,47 +51,45 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
   #                  physical = physical,
   #                  attributeList = attributeList)
   
-  attributes <- data.frame(
-    attributeName = c(
-        "date",
-        "geom",
-        "species",
-        "length"), 
-    attributeDefinition = c(
-        "This column contient la date",
-        "la position",
-        "l'espèce",
-        "la taille"),
-    formatString = c(
-        "YYYY-DDD-hhmm",     
-        "DD-MM-SS",     
-        NA,     
-        NA),
-    definition = c(        
-        "which run number",
-        NA,
-        NA,
-        NA),
-    unit = c(
-        NA,
-        NA,
-        NA,
-        "meter"),
-    numberType = c(
-        NA,
-        NA,
-        NA,
-        "real"),
-    stringsAsFactors = FALSE
-    )
+#   attributes <- data.frame(
+#     attributeName = c(
+#         "date",
+#         "geom",
+#         "species",
+#         "length"), 
+#     attributeDefinition = c(
+#         "This column contient la date",
+#         "la position",
+#         "l'espèce",
+#         "la taille"),
+#     formatString = c(
+#         "YYYY-DDD-hhmm",     
+#         "DD-MM-SS",     
+#         NA,     
+#         NA),
+#     definition = c(        
+#         "which run number",
+#         NA,
+#         NA,
+#         NA),
+#     unit = c(
+#         NA,
+#         NA,
+#         NA,
+#         "meter"),
+#     numberType = c(
+#         NA,
+#         NA,
+#         NA,
+#         "real"),
+#     stringsAsFactors = FALSE
+#     )
+#   
+#   attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
   
-  
-  
-  attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
-  
-  #######################################################################################################
+  logger.info("----------------------------------------------------")  
   logger.info("Coverage metadata => TO BE DONE => geographicCoverage / temporalCoverage / taxonomicCoverage.")  
-  #######################################################################################################  
+  logger.info("----------------------------------------------------")  
   # TO BE DONE => CHECK IF ONE COVERAGE PER SPECIES
   if(is.null(temporal_metadata$dynamic_metadata_temporal_Extent)==FALSE){
     start_date <- temporal_metadata$dynamic_metadata_temporal_Extent$start_date
@@ -110,10 +109,9 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
                            altitudeUnits = "meter")
   logger.info("Spatial and Temporal extent added!")  
   
-  
-  #################################################################################
+  logger.info("----------------------------------------------------")  
   logger.info("Creating parties => TO BE DONE => MANAGE ALL CONTACTS IN A LOOP.")  
-  #################################################################################
+  logger.info("----------------------------------------------------")  
   contacts <- config$gsheets$contacts
   
   if(is.null(contacts_metadata$contacts_roles)==FALSE && nrow(contacts_metadata$contacts_roles) > 0){
@@ -172,10 +170,11 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
     }
   }
   
+  logger.info("----------------------------------------------------")  
+  logger.info("ADDING KEYWORDS")  
+  logger.info("----------------------------------------------------")  
+  # TO BE DONE => MANAGE PROPERLY KEYWORDS FOR SPECIES AS TAXONOMIC COVERAGE...")  
   
-  #################################################################################
-  # TO BE DONE => MANAGE PROPERLY KEYWORDS, SPECIES...
-  #################################################################################
   if(is.null(keywords_metadata)==FALSE){
     different_thesaurus <- unique(keywords_metadata$thesaurus)
     number_thesaurus<-length(unique(different_thesaurus))
@@ -199,14 +198,12 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
                            keyword = vector)
       keywordSet[[t]]  <-  all_thesaurus
       class(all_thesaurus)
-      
+    }
     }
   
-    }
-  
-  #################################################################################
-  # WRITE EML METADATA
-  #################################################################################
+  logger.info("----------------------------------------------------")  
+  logger.info("WRITE EML METADATA")  
+  logger.info("----------------------------------------------------")  
   dataset <- new("dataset",
                  title = title,
                  creator = publisher,
@@ -220,15 +217,14 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
                  # methods = methods,
                  dataTable = NULL)
   
-  # TO BE DONE => MANAGE PROPERLY KEYWORDS, SPECIES...
   eml <- new("eml",
              packageId = "toto-2619-425e-b8be-8deb6bc6094d",  # from uuid::UUIDgenerate(),
              system = "uuid", # type of identifier
              dataset = dataset)
   
-  
+  logger.info("----------------------------------------------------")  
   logger.info("EML metadata has been generated.")  
-  
+  logger.info("----------------------------------------------------")  
   return(eml)
   
 }
