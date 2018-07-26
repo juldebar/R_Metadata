@@ -54,12 +54,28 @@ In this case, it is required:
 # Usual Errors
 
 - Contacts are not properly described in the google spreadsheet (or not even in the spreadsheet)
+- Your token is not set if you use Geonetwork / Geoserver in the BlueBridge infrasrtructure
 - Syntactic aspects 
+  - contacts
+  - provenance
+
+
+<!-- 
+
 - uuid VS identifier a mano 
 - "Mauritius"
 - "Provenance"
 - enlever le template
 dateStamp Emilie
+-->
+
+
+# Main scripts
+
+Once you have been able to executer the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
+The most important scripts are the following 
+- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to create metadata sheets (OGC in particular)
+- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
 
 
 #  Examples
@@ -69,3 +85,15 @@ dateStamp Emilie
 ```
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
+
+[![ForTheBadge powered-by-electricity](http://ForTheBadge.com/images/badges/powered-by-electricity.svg)](http://ForTheBadge.com)
+
+<!-- 
+
+https://github.com/Naereen/badges
+
+[![DOI:10.1007/978-3-319-76207-4_15](https://zenodo.org/badge/DOI/10.1007/978-3-319-76207-4_15.svg)](https://doi.org/10.1007/978-3-319-76207-4_15)
+-->
+
+
+
