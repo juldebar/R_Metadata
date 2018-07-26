@@ -54,7 +54,6 @@ add_contacts_and_roles_OGC_19115 <- function(config, metadata_identifier, contac
     }
   }
   return(listContacts)
-  #Function over
 }
 
 
@@ -96,9 +95,9 @@ prepareDataQualityWithLineage <- function(config, lineage_statement, lineage_ste
     stepNb <- stepNb+1
   }
   
-  #process step N: Data Publication in Tuna Atlas Catalogue
+  #process step N: Data Publication in metadata Catalogue
   psN <- ISOProcessStep$new()
-  psN$setDescription(sprintf("Step %s - Data Publication in Tuna Atlas catalogue", stepNb))
+  psN$setDescription(sprintf("Step %s - Data Publication in metadata catalogue", stepNb))
   psN$setDateTime(Sys.time())
   #ONLY ONE PROCESSOR IN THIS CASE
   expected_role=c("data_structure_definition")
@@ -111,56 +110,13 @@ prepareDataQualityWithLineage <- function(config, lineage_statement, lineage_ste
   return(dq)
 }
 
-#prepareDataQualityWithGenealogy
-#@param config
-#@param genealogy a data.frame given the genealogy from SARDARA
-#@returns an object of class ISODataQuality
-prepareDataQualityWithGenealogy <- function(config, genealogy){
-  
-  if(nrow(genealogy)==0) return(NULL)
-  
-  lineage_statement <- ""
-  tableTypes <- c("raw_dataset", "mapping", "codelist")
-  for(tableType in tableTypes){
-    
-    mappings <- genealogy[genealogy$table_type == tableType,]
-    if(nrow(mappings)>0){
-      section_title <- switch(tableType,
-                              "raw_dataset" = "Source dataset(s)",
-                              "mapping" = "Codelist mapping(s)",
-                              "codelist" = "Codelists"
-      )
-      lineage_statement <- paste0(lineage_statement, "* ", section_title, ":\n")
-      for(i in 1:nrow(mappings)){
-        mapping <- mappings[i,]
-        link <- sprintf("%s/srv/eng/catalog.search#/metadata/%s", config$sdi$geonetwork$url, mapping$dataset_permanent_identifier)
-        #TODO voir pour plus tard, comment ajouter une description
-        lineage_statement <- paste0(lineage_statement, "- ", link, " (",mapping$metadata_mapping_relation_type,")\n")
-      }
-      lineage_statement <- paste0(lineage_statement,"\n")
-    }
-  }
-  
-  #add lineage
-  dq <- NULL
-  if(lineage_statement != ""){
-    dq <- ISODataQuality$new()
-    scope <- ISOScope$new()
-    scope$setLevel("dataset")
-    dq$setScope(scope)
-    lineage <- ISOLineage$new()
-    lineage$setStatement(lineage_statement)
-    dq$setLineage(lineage)
-  }
-  return(dq)
-}
 
 #-----------------------------------------------------------------------------------------------------
-#extractLineage.SARDARA
-#@param lineage Lineage information as string extracted from Sardara metadata table
+#extractLineage
+#@param lineage Lineage information as string extracted from spreadsheet / metadata table in "Provenance" column
 #       ("step: text1. step: text2. .... step: textN.")
 #@returns an object of class "list" with the step contents
-extractLineage.SARDARA <- function(lineage){
+extractLineage <- function(lineage){
   lineage_steps <- as.list(unlist(strsplit(lineage, "step[0-9]:"))) #@eblondel 12/08/2017 apply regular expression to detect step nb
   lineage_steps <- lineage_steps[sapply(lineage_steps, function(x){return(nchar(x)>0)})]
   lineage_steps <- lapply(lineage_steps, function(x){
@@ -175,6 +131,8 @@ extractLineage.SARDARA <- function(lineage){
 
 
 #write_metadata_OGC_19115
+#@returns an object metadata (OGC 19115 from geometa package)
+
 write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
                                                       metadata = NULL,
                                                       contacts_metadata = NULL,
@@ -203,35 +161,31 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   md$setLanguage(metadata$Language)# if metadata and resource have the same language
   md$setCharacterSet("utf8")
   # md <- ISOBaseCharacterString$new(value = "utf8") ???
-  md$addHierarchyLevel(metadata$addHierarchyLevel)# => not working  ask Emmanuel Blondel
-  # md$setHierarchyLevelName("This datasets is the result of a query in a SQL DataWarehouse")
-  #  TODO MANAGE "hierarchyLevelName" metadata element @julien
+  md$addHierarchyLevel(metadata$addHierarchyLevel)
+  # md$setHierarchyLevelName("This datasets is the result of a query in a SQL DataWarehouse")  #  TODO MANAGE "hierarchyLevelName" metadata element @julien
   logger.info("Add the contacts and roles for this METADATA sheet")  
   expected_role=c("pointOfContact","metadata")
   listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
   for(listContact in listContacts){
     md$addContact(listContact)
   }
-  # TODO endless discussion to define what date should be used with @paul & @emmanuel & @julien
-  #mdDate <- metadata$Date                   
-  # md$setDateStamp(ISOdate(2015, 1, 1, 1))
-  mdDate <- Sys.time()
+  if(is.null(metadata$Date)==FALSE){
+    mdDate <- metadata$Date                   
+  } else {mdDate <- Sys.time()}
   md$setDateStamp(mdDate)
   md$setMetadataStandardName("ISO 19115:2003/19139")
   md$setMetadataStandardVersion("1.0")
-  # TODO decide if we should set up a URI @paul & @emmanuel & @julien
-  # md$setDataSetURI(paste(metadata$Identifier,"use a DOI instead ?",sep=" / "))
-  # md$setDataSetURI(metadata$Identifier)
+  # md$setDataSetURI(metadata$Identifier)# @julien => use a DOI instead ?
   
   logger.info("MD_Metadata section is set")  
   
   # OGC 19115 SECTION => Metadata entity set information 
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   logger.info("OGC 19115 SECTION => Spatial Representation")
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
-  ###########################################################################################
   #VectorSpatialRepresentation
-  # ----------------
+
   if (!is.null(spatial_metadata$SpatialRepresentationType)){
     if (spatial_metadata$SpatialRepresentationType == "vector" ){
       VSR <- ISOVectorSpatialRepresentation$new()
@@ -239,21 +193,19 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
       geomObject <- ISOGeometricObjects$new()
       geomObject$setGeometricObjectType(spatial_metadata$GeometricObjectType)
       if(is.null(spatial_metadata$dynamic_metadata_count_features)==FALSE){
-        # geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features$count) # SARDARA!!!!!!!!!!!!!!!!
         geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features) #number of features
       }
       # VSR$setGeometricObjects(geomObject)
       VSR$addGeometricObjects(geomObject)
       # md$setSpatialRepresentationInfo(VSR)
       md$addSpatialRepresentationInfo(VSR)
-      
     }
   }
   logger.info("SpatialRepresentation section is set !")  
   
-  # OGC 19115 SECTION => Reference System 
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   logger.info("OGC 19115 SECTION => Reference System ")
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
   # TO BE DONE MANAGE VECTOR AND RASTER
   if(is.null(spatial_metadata$SRID)==FALSE){
@@ -264,9 +216,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   }
   logger.info("ReferenceSystem section is set !")  
   
-  # OGC 19115 SECTION => Identification Section (MD_Identification)
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   logger.info("OGC 19115 SECTION => Identification Section (MD_Identification) ")  
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
   IDENT <- ISODataIdentification$new()
   IDENT$setAbstract(metadata$Description)
@@ -299,13 +251,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   ct$addDate(d)
   ct$setEdition("1.0")
   ct$setEditionDate(as.Date(mdDate)) #EditionDate should be of Date type
-  # ct$setIdentifier(mdId)
   ct$setIdentifier(ISOMetaIdentifier$new(code = metadata$Permanent_Identifier)) #Julien code à vérifier
-  if (metadata$Dataset_Type=='raw_dataset'){
-    ct$setPresentationForm("mapDigital")
-  } else if(metadata$Dataset_Type=='mapping' | metadata$Dataset_Type=='codelist'){
-    ct$setPresentationForm("tableDigital")
-  }
+  ct$setPresentationForm("tableDigital")# @julien => mapping to be done with DCMI type ?
+
   # TODO @julien CHECK IF ADDED CONTACT IS CORRECT IN THIS CONTEXT (SHOULD NOT => LAST FROM LIST ABOVE)
   ct$setCitedResponsibleParty(listContact)
   IDENT$setCitation(ct)
@@ -333,7 +281,6 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   IDENT$setResourceMaintenance(mi)
   
   #adding legal constraint(s)
-  # Julien => devrait être dans Sardara
   lc <- ISOLegalConstraints$new()
   lc$addUseLimitation(metadata$Rights)
   # lc$addUseLimitation("Use limitation 2 e.g. Citation guidelines")
@@ -355,18 +302,17 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   
   # MD_Constraints
   
-  
-  #adding extent: https://github.com/eblondel/geometa/blob/master/tests/testthat/test_ISOExtent.R
-  #adding SPATIAL extent: WHERE ?
+  logger.info("Adding SPATIAL and TEMPORAL extent")  
   extent <- ISOExtent$new()
-  # extent <- ISOSpatialTemporalExtent$new() #=> TO BE DONE REPLACE PREVIOUS VERSION ? https://github.com/eblondel/geometa/blob/master/tests/testthat/test_ISOSpatialTemporalExtent.R
+  
+  logger.info("Adding SPATIAL extent: WHERE ?")  
   spatialExtent <- ISOGeographicBoundingBox$new(minx=(spatial_metadata$dynamic_metadata_spatial_Extent$xmin-0.001),
                                                 miny=(spatial_metadata$dynamic_metadata_spatial_Extent$ymin-0.001),
                                                 maxx=(spatial_metadata$dynamic_metadata_spatial_Extent$xmax+0.001),
                                                 maxy=(spatial_metadata$dynamic_metadata_spatial_Extent$ymax+0.001)
                                                       ) #or use bbox parameter instead for specifying output of bbox(sp)
   extent$addGeographicElement(spatialExtent)
-  logger.info("Spatial extent added!")  
+  logger.info("Bounding Box added!")  
   
   if(is.null(spatial_metadata$geographic_identifier)==FALSE){
     for (i in 1:length(unique(spatial_metadata$geographic_identifier))) { # to be done with emmanuel => parentidentifier instead !!!
@@ -375,7 +321,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
       extent$addGeographicElement(geographicIdentifier)
     }
   }
-  #adding TEMPORAL extent: WHEN ? https://github.com/eblondel/geometa/blob/master/tests/testthat/test_ISOTemporalExtent.R
+  logger.info("Geographic Identifier added!")  
+  
+  logger.info("Adding temporal extent: WHEN ?")  
   if(is.null(temporal_metadata$dynamic_metadata_temporal_Extent)==FALSE){
     time <- ISOTemporalExtent$new()
     start_date <- temporal_metadata$dynamic_metadata_temporal_Extent$start_date
@@ -387,12 +335,10 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   IDENT$setExtent(extent)
   logger.info("Temporal extent added!")  
   
-  #add keywords: WHAT ?
-  #you can associate many "ISOKeywords" which is a group of keyword
-  #giving to each group a specific thematic thesaurus (e.g. gears, species, etc)
+  logger.info("Adding keywords: WHAT ?")  
   
-  #add general static keywords for this dataset
-  #--------------------------------------------
+  logger.info("Adding general static keywords for this dataset")  
+  #ISOKeywords" is a group of keyword, each group can get a specific thematic thesaurus (e.g. AGROVOC, GEMET, ASFIS, GEONAMES, etc)
   different_thesaurus <- unique(keywords_metadata$all_keywords$thesaurus)
   number_thesaurus<-length(unique(different_thesaurus))
   for(t in 1:number_thesaurus){
@@ -413,7 +359,6 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
     }
   }
   
-  
   #supplementalInformation
   IDENT$setSupplementalInformation("to add in case additional information")
   #spatial representation type
@@ -430,31 +375,17 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("Identification information (MD_Identification) section is set!") 
   
   
-  # OGC 19115 SECTION => Identification with ISO 19119 Service Identification
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("OGC 19115 SECTION => Identification with ISO 19119 Service Identification not managed in this case") 
   
-  # TODO @julien => MANAGE THE CONDITION FOR GN2 
-  if(metadata$Dataset_Type=='raw_dataset'){
-    
-    logger.info("Add contacts and roles for SERVICE")  
-    expected_role=c("publisher","principalInvestigator")
-    listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
-    
-    dataset_columns <- getDatasetColumns.SARDARA(config, metadata$Permanent_Identifier)
-    DICTIONNARY_FIELDS <- config$gsheets$dictionnary
-    dsd <- createDSD(config = config, fields = dataset_columns, dictionnary = DICTIONNARY_FIELDS)
-    dataset_last_year = 2015
-    SERVICE <-createTimeseriesServiceIdentification(config, dataset,dataset_last_year,listContacts,dsd)
-    md$addIdentificationInfo(SERVICE)
-  }
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
+  logger.info("OGC 19115 SECTION => Distribution") 
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
-  # OGC 19115 SECTION => Distribution
-  #-------------------------------------------------------------------------------------------------------------------
-  
+
   distrib <- ISODistribution$new()
   dto <- ISODigitalTransferOptions$new()  
   
-  logger.info("Select the set of URLs to be displayed as OnlineResource")  
+  logger.info("Select the set of URLs to be displayed as OnlineResource: add as many online resources you need (WMS, WFS, website link, etc)")  
   if(is.null(urls_metadata$http_urls)==FALSE){
     number_row<-nrow(urls_metadata$http_urls)
     for (i in 1:number_row) {
@@ -473,21 +404,20 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   
   format <- ISOFormat$new()
   format$setName(metadata$Format)
-  format$setVersion("Postgres 9 and Postgis 2") # to be done => stored in the spreadsheet
+  # format$setVersion("Postgres 9 and Postgis 2") # to be done => stored in the spreadsheet ?
   # format$setAmendmentNumber("2")
   # format$setSpecification("specification")
   distrib$addFormat(format)
   
   logger.info("Write DistributionInfo section")
-  #add as many online resources you need (WMS, WFS, website link, etc)
   md$setDistributionInfo(distrib)
   
-  # OGC 19115 SECTION => Data Quality
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
+  logger.info("OGC 19115 SECTION => Data Quality") 
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
+  
   
   #add Data  / lineage for steps
-  
-  # TODO @julien @paul @emmanuel => REPLACE THIS TEXT BY REAL DESCRIPTION WHEN READY
   #example of lineage
   lineage_statement <- "Data management workflow description"
   lineage_steps <- list()
@@ -495,36 +425,21 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   if(!is.na(lineage) & metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
     logger.info("Add Lineage process steps")  
     #create lineage
-    lineage_steps <- extractLineage.SARDARA(lineage)
+    lineage_steps <- extractLineage(lineage)
     DQ1 <- prepareDataQualityWithLineage(config, lineage_statement, lineage_steps, mdDate, metadata$Identifier, contacts_metadata$contacts_roles)
     md$addDataQualityInfo(DQ1)
   }
   
-  #Data Quality Genealogy
-  #----------------------
-  if(metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
-    
-  genealogy <- getRawGenealogy.SARDARA(config, dataset)
-  DQ2 <- prepareDataQualityWithGenealogy(config, genealogy)
-  # TODO @julien @paul @emmanuel => check why ths condition is needed 
-  if(is.null(DQ2)){logger.info("No lineage")}else{md$addDataQualityInfo(DQ2)}
-  }
+  logger.info("Data Quality Genealogy not managed for now !")
+
   logger.info("Data Quality Info section added")
   
   
-  # OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
+  logger.info("OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription => not managed for now")
+  logger.info("-------------------------------------------------------------------------------------------------------------------") 
   
-  # CF EXAMPLE HERE => https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19110_(Feature_Catalog)
-  if (metadata$Dataset_Type=='raw_dataset'){
-    logger.info("Adding Feature catalogue description to METADATA")
-    dsd_pid <- paste(metadata$Permanent_Identifier,"_data_structure_definition",sep="")
-    fcd <- createFeatureCatalogueDescription(config, dsd_pid)
-    md$addContentInfo(fcd)
-  }else{
-    logger.info("No Feature Catalogue description for codelists/mappings")
-  }
-  
+
   return(md)
 }
 
