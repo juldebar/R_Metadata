@@ -200,15 +200,16 @@ for (i in 1:number_row) {
   setwd("..")
   
   #Publication to Geonetwork
-  logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
-  metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
-  logger.info(sprintf("URL ?", metadata_URL))
+#   logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
+#   metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
+#   logger.info(sprintf("URL ?", metadata_URL))
+  
+  push_metadata_in_csw_server(config, ogc_metatada_sheet)
   logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
   
 } else {
   logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
 }
-  
   
   }
 logger.warn("ALL METADATA ISO/OGC 19115 have been created for the google doc")
