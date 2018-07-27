@@ -37,7 +37,7 @@ Configuration of R on Linux requires the installation of following packages (tes
 
 ##  Execution of R codes can be done online
 
-All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please ask a login (and briefly explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
+All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
 
 
 #  Pre-requisites / How to start
@@ -50,7 +50,7 @@ Make sure that following pre-requisites are ok:
 - you have created **your own google spreadsheets** to describe:
   - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
   - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
-- if you want to use the components (eg geoserver / geonetwork) you shouuld use your personal token from D4science infrastructure (register first)
+- if you want to use the D4science infrastructure components (eg geoserver / geonetwork) you should use your personal token from D4science infrastructure (and [register first](https://bluebridge.d4science.org/web/sdi_lab/))
 
 
 
