@@ -263,7 +263,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
     logger.info("Add list of graphic overview")
     number_row<-nrow(urls_metadata$http_urls)
     for (i in 1:number_row){
-      if (startsWith(urls_metadata$http_urls$http_URLs_names[i],"thumbnail")){
+      # if (startsWith(urls_metadata$http_urls$http_URLs_names[i],"thumbnail")){
+      if (grepl("thumbnail",urls_metadata$http_urls$http_URLs_names[i])){
+        
         go <- ISOBrowseGraphic$new(
           fileName = urls_metadata$http_urls$http_URLs_links[i],
           fileDescription = urls_metadata$http_urls$http_URLs_descriptions[i],
@@ -390,7 +392,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   if(is.null(urls_metadata$http_urls)==FALSE){
     number_row<-nrow(urls_metadata$http_urls)
     for (i in 1:number_row) {
-      if (startsWith(urls_metadata$http_urls$http_URLs_names[i],"thumbnail")==FALSE){
+      # if (startsWith(urls_metadata$http_urls$http_URLs_names[i],"thumbnail")==FALSE){
+        if (grepl("thumbnail",urls_metadata$http_urls$http_URLs_names[i])==FALSE){
+          
         newURL <- ISOOnlineResource$new()
         newURL$setLinkage(urls_metadata$http_urls$http_URLs_links[i])
         newURL$setName(urls_metadata$http_urls$http_URLs_names[i])
