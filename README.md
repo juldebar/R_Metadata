@@ -25,8 +25,10 @@ Other R packages (in the R console):
  
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(uuid,raster,ncdf4,gsheet,XML,RFigisGeo,devtools,RPostgreSQL,jsonlite,googleVis)
+pacman::p_load(uuid,raster,ncdf4,gsheet,XML,devtools,RPostgreSQL,jsonlite,googleVis,rgeos,rgdal)
+install_github("RFigisGeo", "openfigis")
 ```
+If rgdal is not available for your version of R install it from source or update your R version.
 
 Configuration of R on Linux requires the installation of following packages (tested on Debian / Ubuntu):
 ```{r setup, include=FALSE}
