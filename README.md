@@ -21,10 +21,11 @@ The scripts use following R packages:
 - GBIF related: [eml](eml)
 - Dataverse related: [dataverse]()
 
-Other R packages:
+Other R packages (in the R console):
  
 ```{r setup, include=FALSE}
-install.packages("uuid","raster","ncdf4",”gsheet”,”XML”,"RFigisGeo",”devtools”,”RPostgreSQL”,”jsonlite”,”googleVis”)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(uuid,raster,ncdf4,gsheet,XML,RFigisGeo,devtools,RPostgreSQL,jsonlite,googleVis)
 ```
 
 Configuration of R on Linux requires the installation of following packages (tested on Debian / Ubuntu):
@@ -101,7 +102,9 @@ In this case, it is required:
 - to prepare the list of queries with which datasets can be physically extracted (and stored as CSV files)
 - to specify a user who can create tables :
   - the metadata table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
-  - one view
+  - one view per dataset where columns are renamed as following:
+   - the name of date colum "AS dat"e
+   - the name of geometry colum "AS geom"
   
   
   
