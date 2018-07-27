@@ -42,7 +42,7 @@ All codes can be executed online in RStudio server provided by D4science infrast
 
 #  Pre-requisites / How to start
 
-As a start, it is recommended to execute the [workflow using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core)
+As a start, ** it is recommended to execute the [workflow using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) ** since it is the easiest.
 
 Make sure that following pre-requisites are ok:
 - change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) to fit the  actual path on your PC,
