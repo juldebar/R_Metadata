@@ -120,7 +120,7 @@ https://github.com/Naereen/badges
 [![DOI:10.1007/978-3-319-76207-4_15](https://zenodo.org/badge/DOI/10.1007/978-3-319-76207-4_15.svg)](https://doi.org/10.1007/978-3-319-76207-4_15)
 -->
 
-<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=1xyaPHGU9m7-zP3iymwD1lGVWU3D0yUGf" width="100">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=1xyaPHGU9m7-zP3iymwD1lGVWU3D0yUGf" width="800">
 
 
 
