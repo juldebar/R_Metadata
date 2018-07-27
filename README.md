@@ -15,41 +15,53 @@ Each sub-folder contains an example of worfklow dedicated to a specific kind of 
 
 The scripts use following R packages:
 
-- OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi) 
+- OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi), [ows4R](https://github.com/eblondel/ows4R) 
 - Postgres related: [RPostgreSQL](RPostgreSQL)
 - NetCDF related: [ncdf4](ncdf4)
 - GBIF related: [eml](eml)
 - Dataverse related: [dataverse]()
+
+Other R packages:
+ 
+```{r setup, include=FALSE}
+install.packages("uuid","raster","ncdf4",”gsheet”,”XML”,"RFigisGeo",”devtools”,”RPostgreSQL”,”Jsonlite”,”googleVis”)
+```
+
+Configuration of R on Linux requires the installation of following packages (tested on Debian / Ubuntu):
+```{r setup, include=FALSE}
+(sudo) apt-get install libcurl4-openssl-dev  libssl-dev r-cran-ncdf4 libxml2-dev libgdal-dev gdal-bin libgeos-dev udunits-bin libudunits2-dev
+```
+
+
+
 
 ##  Execution of R codes can be done online
 
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please ask a login (and briefly explain why): https://bluebridge.d4science.org/web/sdi_lab/ 
 
 
-#  Pre-requisites
+#  Pre-requisites / How to start
 
 Make sure that following pre-requisites are ok:
-- you have set up all packages (R and OS packages, check following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) when starting from scratch
+- change the working directory in the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R) to fit the  actual path on your PC,
+- you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 - you have created **your own google spreadsheats** to describe:
-  - your contacts (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
-  - the metadata of your datasets (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
+  - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
+  - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
 - if you want to use the components (eg geoserver / geonetwork) you shouuld use your personal token from D4science infrastructure (register first)
-- change working directory in the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R)) to fit the path on your PC
+
 
 
 <!-- - virer package raster-->
 
-Once done, adapt accordingly the content of the configuration files (one json file per type of data source, eg [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json)) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+Once done: 
+- edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json)) (there is one specific json file per type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+- rename this file as following :" **workflow_configuration_Postgres.json** "
+- Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R)Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
 
 
-##  Postgres data source use case
 
-In this case, it is required:
-- to prepare the list of queries with which datasets can be physically extracted (and stored as CSV files)
-- to specify a user who can create tables :
-  - the metadata table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
-  - one view
 
 # Usual Errors
 
@@ -58,7 +70,6 @@ In this case, it is required:
 - Syntactic aspects 
   - contacts
   - provenance
-
 
 <!-- 
 
@@ -78,11 +89,16 @@ The most important scripts are the following
 - [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
 
 
-#  Examples
+##  Postgres data source use case
 
-```{r setup, include=FALSE}
-
-```
+In this case, it is required:
+- to prepare the list of queries with which datasets can be physically extracted (and stored as CSV files)
+- to specify a user who can create tables :
+  - the metadata table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
+  - one view
+  
+  
+  
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
 
