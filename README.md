@@ -25,7 +25,7 @@ Other R packages (in the R console):
  
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(uuid,raster,ncdf4,gsheet,XML,devtools,RPostgreSQL,jsonlite,googleVis,rgeos,rgdal)
+pacman::p_load(uuid,raster,ncdf4,gsheet,XML,devtools,RPostgreSQL,jsonlite,googleVis,rgeos,rgdal,sf)
 install_github("RFigisGeo", "openfigis")
 ```
 If rgdal is not available for your version of R install it from source or update your R version.
@@ -62,7 +62,7 @@ Make sure that following pre-requisites are ok:
 Once done: 
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - set the token of you personal account for BlueBridge infrastructure
-  - set the credentials of your URLs of your google spreadsheet
+  - set the URLs of your google spreadsheet
   - set the credentials of your Postgres server
   - set the credentials of your Geonetwork or CSW server
   - set the credentials of your Geoserver
