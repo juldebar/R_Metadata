@@ -99,12 +99,12 @@ The most important scripts are the following
 ##  Postgres data source use case
 
 In this case, it is required:
-- to prepare the list of queries with which datasets can be physically extracted (and stored as CSV files)
+- to prepare the list of SQL queries with which your datasets can be physically extracted from the Postgres database (and stored as CSV files)
 - to specify a user who can create tables :
-  - the metadata table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
+  - the **metadata** table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
   - one view per dataset where columns are renamed as following:
-   - the name of date colum "AS dat"e
-   - the name of geometry colum "AS geom"
+    - the name of date colum "AS date"
+    - the name of geometry colum "AS geom"
   
   
   
@@ -119,6 +119,10 @@ https://github.com/Naereen/badges
 
 [![DOI:10.1007/978-3-319-76207-4_15](https://zenodo.org/badge/DOI/10.1007/978-3-319-76207-4_15.svg)](https://doi.org/10.1007/978-3-319-76207-4_15)
 -->
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=1xyaPHGU9m7-zP3iymwD1lGVWU3D0yUGf" width="100">
+
+
 
 
 
