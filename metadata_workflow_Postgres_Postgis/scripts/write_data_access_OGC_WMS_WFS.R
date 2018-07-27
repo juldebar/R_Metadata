@@ -94,9 +94,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
   layer$setDefaultStyle("point")
-  created <- gsman$createLayer(layer)  
   published <- gsman$publishLayer(workspace, datastore, featureType, layer)
-  
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("WMS/WFS published !")  
   logger.info("---------------------------------------------------------------------------------")
