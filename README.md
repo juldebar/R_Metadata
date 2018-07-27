@@ -24,7 +24,7 @@ The scripts use following R packages:
 Other R packages:
  
 ```{r setup, include=FALSE}
-install.packages("uuid","raster","ncdf4",”gsheet”,”XML”,"RFigisGeo",”devtools”,”RPostgreSQL”,”Jsonlite”,”googleVis”)
+install.packages("uuid","raster","ncdf4",”gsheet”,”XML”,"RFigisGeo",”devtools”,”RPostgreSQL”,”jsonlite”,”googleVis”)
 ```
 
 Configuration of R on Linux requires the installation of following packages (tested on Debian / Ubuntu):
@@ -42,13 +42,15 @@ All codes can be executed online in RStudio server provided by D4science infrast
 
 #  Pre-requisites / How to start
 
+As a start, it is recommended to execute the [workflow using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core)
+
 Make sure that following pre-requisites are ok:
-- change the working directory in the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R) to fit the  actual path on your PC,
+- change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) to fit the  actual path on your PC,
 - you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
-- you have created **your own google spreadsheats** to describe:
+- you have created **your own google spreadsheets** to describe:
   - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
   - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
-- Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
+- Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R))
 - if you want to use the components (eg geoserver / geonetwork) you shouuld use your personal token from D4science infrastructure (register first)
 
 
@@ -60,7 +62,7 @@ Once done:
 - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R)Postgres server is accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
 
-
+When it works, you can try other workflows for other data sources (Postgres and Thredds / NetCDF files).
 
 
 # Usual Errors
