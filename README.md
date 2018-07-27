@@ -64,7 +64,7 @@ Once done:
   - set the credentials of your Geonetwork or CSW server
   - set the credentials of your Geoserver
 - rename this file as following :" **workflow_configuration_Postgres.json** "
-- Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) and check that third applicatoins (eg Postgres, Geonetwork, Geoserver) are accessible from R (check logs when executing the [main script](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R))
+- Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) and check that third applicatoins (eg Postgres, Geonetwork, Geoserver) are accessible from R (check logs when executing the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R))
 
 When it works, you can try other workflows for other data sources (Postgres and Thredds / NetCDF files).
 
