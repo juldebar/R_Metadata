@@ -22,7 +22,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   # store<-paste0("RTTP_store",tolower(metadata$source))
   wsnames <- gsman$getWorkspaceNames()
   workspace<-"RTTP_workspace"
-  datastore<-"	RTTP_datastore"
+  datastore<-"RTTP_datastore"
   # ns<-NULL
 #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
 #     created <- gsman$createWorkspace(workspace, "http://julien")
@@ -85,7 +85,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
   vt$setSql(SQL$query_wfs_wms)
-  vtg <- GSVirtualTableGeometry$new(name = "geom", type = "Geometry", srid = spatial_metadata$SRID)
+  vtg <- GSVirtualTableGeometry$new(name = "geom", type = "POINT", srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
   logger.info("---------------------------------------------------------------------------------")  
@@ -93,10 +93,8 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
-#   if (grepl("value",SQL$query_wfs_wms)){ ## if the layer has a value that will be used to map the data
-#       layer$setDefaultStyle("polygon_red_0-50-100-250-500-Inf-desag")
-#     layer$addStyle("polygon")
-#   }
+  layer$setDefaultStyle("point")
+  created <- gsman$createLayer(layer)  
   published <- gsman$publishLayer(workspace, datastore, featureType, layer)
   
   logger.info("---------------------------------------------------------------------------------")  
