@@ -1,18 +1,18 @@
 write_Dublin_Core_metadata <- function(config, source){
   
   #config shortcuts
-  # config=CFG
   con <- config$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
-  
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("Load contacts and metadata from google spreadsheet")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")  
   google_sheet_contacts <- config$gsheetUrls$contacts
   contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
   Postgres_metadata_table <- config$gsheetUrls$dublin_core_gsheet
   Datasets <- as.data.frame(gsheet::gsheet2tbl(Postgres_metadata_table))
-  
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("Workflow Postgres:  SQL QUERY: CREATE 'metadata' TABLE and fill it by loading the content from a google spreadsheet")
   logger.info("-------------------------------------------------------------------------------------------------------------------")
@@ -53,11 +53,11 @@ write_Dublin_Core_metadata <- function(config, source){
     metadata$Title  <- Dublin_Core_metadata$title[i]
     metadata$Description <- Dublin_Core_metadata$description[i]
     metadata$Date  <- Dublin_Core_metadata$date[i]
-    metadata$Type  <- Dublin_Core_metadata$dataset_type[i]#  julien => changer en "type"
+    metadata$Type  <- Dublin_Core_metadata$type[i]
     metadata$Format  <- Dublin_Core_metadata$format[i]
     metadata$Language  <- Dublin_Core_metadata$language[i] #  resource_language <- "eng"
     metadata$Rights  <- Dublin_Core_metadata$rights[i] #UseLimitation <- "intellectualPropertyRights"
-    metadata$Source  <- Dublin_Core_metadata$source[i] #UseLimitation <- "intellectualPropertyRights"
+    metadata$Source  <- Dublin_Core_metadata$source[i] 
     metadata$Lineage  <- Dublin_Core_metadata$provenance[i]
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
