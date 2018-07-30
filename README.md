@@ -57,7 +57,7 @@ Once done:
   - set **token** of your personal account if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - let the URLs of the google spreadsheet set by default (you will change them once you checked that the workflow can be executed as it is by default),
   - set the credentials of your Geonetwork or CSW server
-  ```json
+```json
     "geonetwork": {
       "url": "http://mygeonetwork.org/geonetwork",
       "user": "********",
