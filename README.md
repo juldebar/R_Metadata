@@ -38,21 +38,18 @@ Configuration of R on Linux requires the installation of following packages (tes
 
 
 
-##  Execution of R codes can be done online
+##  These R codes can be executed online
 
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
 
 
 #  Pre-requisites / How to start
 
-As a start, ** it is recommended to execute the [workflow using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) ** since it is the easiest.
+As a start, ** it is recommended to execute the first worklow ** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help to understand the logics of all workflows.
 
 Make sure that following pre-requisites are ok:
-- change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) to fit the  actual path on your PC,
 - you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
-- you have created **your own google spreadsheets** to describe:
-  - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
-  - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
+- change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
 - if you want to use the D4science infrastructure components (eg geoserver / geonetwork) you should use your **personal token** from D4science infrastructure (you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/))
 
 
@@ -60,6 +57,9 @@ Make sure that following pre-requisites are ok:
 <!-- - virer package raster-->
 
 Once done: 
+- you have created **your own google spreadsheets** to describe:
+  - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
+  - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - set the token of you personal account for BlueBridge infrastructure
   - set the URLs of your google spreadsheet
