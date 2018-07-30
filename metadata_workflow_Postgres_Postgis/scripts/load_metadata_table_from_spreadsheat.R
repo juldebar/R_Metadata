@@ -8,7 +8,7 @@ metadata_dataframe <- function(Dublin_Core_metadata){
   for (i in 1:number_row) {
     metadata <- NULL
     metadata$id_dataset  <- i
-    metadata$persistent_identifier <- Dublin_Core_metadata$Identifier[i]
+    if(is.null(Dublin_Core_metadata$persistent_identifier[i])){metadata$persistent_identifier <- Dublin_Core_metadata$Identifier[i]} else {metadata$persistent_identifier <- Dublin_Core_metadata$persistent_identifier[i]}
     metadata$related_sql_query <- Dublin_Core_metadata$related_sql_query[i]
     metadata$related_view_name <- Dublin_Core_metadata$related_view_name[i]
     # @jbarde => if no view create one with name paste("view_", Dublin_Core_metadata$Identifier[i], sep="") ?
