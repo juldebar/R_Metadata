@@ -1,6 +1,6 @@
 # Implementation of FAIR data management plans with R programming language and usual data sources in scientific context
 
-This repository provides examples of metadata (compliant with [OGC](http://www.opengeospatial.org/) standards) generated with R scripts from different data sources. Metadata can be pushed directly from R to CSW server (eg geonetwork) and data can be published in Geoserver (WMS/WFS).
+This repository provides 3 examples of workflows to generate metadata (compliant with [OGC](http://www.opengeospatial.org/) standards) from different data sources by using R scripts. Metadata can be pushed directly from R to a CSW server (eg geonetwork) and data managed in a Postgres database can be also published in Geoserver (WMS/WFS) from R.
 
 Each sub-folder contains an example of worfklow dedicated to a specific kind of data source:
 - [Flat files: CSV/Google Spreadsheet](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core)
@@ -12,6 +12,18 @@ Each sub-folder contains an example of worfklow dedicated to a specific kind of 
 - [NetCDF files / OPeNDAP accesible on Thredds sever](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_NetCDF_Thredds_Catalog)
   - local access
   - `accessible` with OPeNDAP on a Thredds server
+
+##  These R codes can be executed online
+
+All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
+
+
+#  How to start
+
+
+##  Pre-requisites
+
+Make sure that following pre-requisites are ok:
 
 The scripts use following R packages:
 
@@ -34,28 +46,15 @@ Configuration of R on Linux requires the installation of following packages (tes
 ```{r setup, include=FALSE}
 (sudo) apt-get install libcurl4-openssl-dev  libssl-dev r-cran-ncdf4 libxml2-dev libgdal-dev gdal-bin libgeos-dev udunits-bin libudunits2-dev
 ```
+ <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
 
+Once you have set up all packages, ** change the working directory ** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
 
 
-##  These R codes can be executed online
-
-All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
-
-
-#  How to start
-
-
-##  Pre-requisites
-
-Make sure that following pre-requisites are ok:
-- you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
-- change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
+## Step 1: Execute the default workflow: spreadsheet use case
 
 As a first start, ** it is recommended to execute the worklow ** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to use the configuration file as well as to understand the logics of all workflows.
-
-## Execute the default workflow: spreadsheet use case
-
 
 Once done with pre-requisites : 
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
@@ -73,9 +72,11 @@ Once done with pre-requisites :
 - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
+If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit?usp=sharing) published in the geonetwork / CSW server.
+
+
   
-  
-# Tune the workflow to fit your needs
+# Step 2 : Tune the workflow to fit your needs
 
 ## Plug your data sources (spreadsheets, Postgres database, Thredds server) and your applications
 
