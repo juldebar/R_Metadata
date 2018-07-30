@@ -71,6 +71,22 @@ Once done:
 
 When it works, you can try other workflows for other data sources (Postgres and Thredds / NetCDF files).
 
+The different steps of the workflow can be (des)activated independantly according to the values of following actions in the json configuration file: 
+
+```json
+  "actions": {
+    "create_metadata_table": false,
+    "create_sql_view_for_each_dataset": true,
+    "data_wms_wfs": true,
+    "data_csv": false,
+    "metadata_iso_19115": false,
+    "metadata_iso_19110": false,
+    "write_metadata_EML": false,
+    "main": "write_Dublin_Core_metadata"
+  }
+  ```
+
+
 
 # Usual Errors
 
@@ -92,7 +108,7 @@ dateStamp Emilie
 
 # Main scripts
 
-Once you have been able to executer the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
+Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
 The most important scripts are the following 
 - [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to create metadata sheets (OGC in particular)
 - [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
@@ -107,8 +123,18 @@ In this case, it is required:
   - one view per dataset where columns are renamed as following:
     - the name of date colum "AS date"
     - the name of geometry colum "AS geom"
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
