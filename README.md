@@ -50,26 +50,32 @@ As a start, ** it is recommended to execute the first worklow ** [using a google
 Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 - change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
-- if you want to use the D4science infrastructure components (eg geoserver / geonetwork) you should use your **personal token** from D4science infrastructure (you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/))
 
-
-
-<!-- - virer package raster-->
 
 Once done: 
-- you have created **your own google spreadsheets** to describe:
-  - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
-  - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
-  - set the token of you personal account for BlueBridge infrastructure
-  - set the URLs of your google spreadsheet
-  - set the credentials of your Postgres server
+  - set **token** of your personal account if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
+  - let the URLs of the google spreadsheet set by default (you will change them once you checked that the workflow can be executed as it is by default),
   - set the credentials of your Geonetwork or CSW server
-  - set the credentials of your Geoserver
 - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) and check that third applicatoins (eg Postgres, Geonetwork, Geoserver) are accessible from R (check logs when executing the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R))
 
+  
+  
+# Tune the workflow to fit your needs
+
+## Plug your data sources (spreadsheets, Postgres database, Thredds server) and your applications
+
 When it works, you can try other workflows for other data sources (Postgres and Thredds / NetCDF files).
+- you have created **your own google spreadsheets** to describe:
+  - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
+  - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
+- For Postgres workflow, you have to specify how to use the additional applications:
+  - set the credentials of your Postgres server,
+  - set the credentials of your Geoserver which will be used to publish make datasets available with WMS / WMFS access protocols.
+  
+## (Des)activatation of the different steps
+
 
 The different steps of the workflow can be (des)activated independantly according to the values of following actions in the json configuration file: 
 
@@ -84,7 +90,7 @@ The different steps of the workflow can be (des)activated independantly accordin
     "write_metadata_EML": false,
     "main": "write_Dublin_Core_metadata"
   }
-  ```
+```
 
 
 
@@ -128,13 +134,6 @@ In this case, it is required:
 
 
 
-
-
-
-
-
-
-
   
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
@@ -151,6 +150,8 @@ https://github.com/Naereen/badges
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=1xyaPHGU9m7-zP3iymwD1lGVWU3D0yUGf" width="800">
 
 
+
+<!-- - virer package raster-->
 
 
 
