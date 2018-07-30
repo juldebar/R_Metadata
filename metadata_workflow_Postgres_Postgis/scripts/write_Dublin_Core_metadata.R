@@ -49,14 +49,15 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("Loading static metadata elements from metadata table")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
-    metadata$Identifier  <- Dublin_Core_metadata$identifier[i]# if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
+    # if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"} => @julien => est-ce qu'on ajoute des contrôles et des erreurs si non remplis ?
+    metadata$Identifier  <- Dublin_Core_metadata$identifier[i]
     metadata$Title  <- Dublin_Core_metadata$title[i]
     metadata$Description <- Dublin_Core_metadata$description[i]
     metadata$Date  <- Dublin_Core_metadata$date[i]
     metadata$Type  <- Dublin_Core_metadata$type[i]
     metadata$Format  <- Dublin_Core_metadata$format[i]
-    metadata$Language  <- Dublin_Core_metadata$language[i] #  resource_language <- "eng"
-    metadata$Rights  <- Dublin_Core_metadata$rights[i] #UseLimitation <- "intellectualPropertyRights"
+    metadata$Language  <- Dublin_Core_metadata$language[i]
+    metadata$Rights  <- Dublin_Core_metadata$rights[i]
     metadata$Source  <- Dublin_Core_metadata$source[i] 
     metadata$Lineage  <- Dublin_Core_metadata$provenance[i]
     
@@ -64,12 +65,12 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("Set Additionnal Metadata elements")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
-    metadata$Permanent_Identifier  <- Dublin_Core_metadata$identifier[i]
+    metadata$Permanent_Identifier  <- Dublin_Core_metadata$persistent_identifier[i]
     metadata$Parent_Metadata_Identifier  <- config$db$name # @jbarde => indicates the database the dataset comes from
+    # metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY => same for the whole database ?
     metadata$addHierarchyLevel <- "dataset" 
     metadata$Dataset_Type  <- "dataset stored in a database" # @jbarde => we should define a proper typology of datasets same as "file type" ?
     metadata$Purpose <- "describe Purpose"
-    metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY
     metadata$dataset_access_query <- Dublin_Core_metadata$related_sql_query[i] # @jbarde => Needed to load and browse the data itself (can be SQL query / http or OPeNDAP ACCESS)
     metadata$view_name <- Dublin_Core_metadata$related_view_name[i]
     metadata$Credits <- "TO BE ADDED AS A NEW COLUMN OF THE METADATA TABLE IN THE DATABASE ?" # Credits=NULL # @jbarde should be added ?
