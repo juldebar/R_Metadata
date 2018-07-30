@@ -54,7 +54,7 @@ Once you have set up all packages, ** change the working directory ** in the [ma
 
 ## Step 1: Execute the default workflow: spreadsheet use case
 
-As a first start, ** it is recommended to execute the worklow ** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to use the configuration file as well as to understand the logics of all workflows.
+As a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to use the configuration file as well as to understand the logics of all workflows.
 
 Once done with pre-requisites : 
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
@@ -74,7 +74,7 @@ Once done with pre-requisites :
 
 If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit?usp=sharing) published in the geonetwork / CSW server.
 
-
+Once done, you can start tuning the workflow to plug your data sources and (meta)data servers.
   
 # Step 2 : Tune the workflow to fit your needs
 
