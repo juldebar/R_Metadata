@@ -66,7 +66,7 @@ Once done:
     },
 ```
 - rename this file as following :" **workflow_configuration_Postgres.json** "
-- Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R) and check that third applicatoins (eg Postgres, Geonetwork, Geoserver) are accessible from R (check logs when executing the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R))
+- Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
   
   
@@ -81,6 +81,7 @@ When it works, you can try other workflows for other data sources (Postgres and 
 - For Postgres workflow, you have to specify how to use the additional applications:
   - set the credentials of your Postgres server,
   - set the credentials of your Geoserver which will be used to publish make datasets available with WMS / WMFS access protocols.
+  - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R) and read logs to check that third applications (eg Postgres, Geonetwork, Geoserver) are accessible from R.
   
 ## (Des)activatation of the different steps
 
