@@ -23,7 +23,16 @@ write_Dublin_Core_metadata <- function(config, source){
   dbWriteTable(con, "metadata", metadata, row.names=FALSE, append=TRUE)
   } else {
     logger.info("Table 'metadata' not created")
-    }
+  }
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("Create one SQL VIEW per dataset")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  if (config$actions$create_sql_view_for_each_dataset){
+    create_one_view_per_dataset(config, metadata)
+    logger.info("A SQL view has been created for each dataset")
+  } else {
+    logger.info("No SQL view has been created")
+  }
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("Workflow Postgres: READ CONTENT OF 'metadata' table")
   logger.info("-------------------------------------------------------------------------------------------------------------------")
