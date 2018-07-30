@@ -2,13 +2,14 @@
   "id": "spreadsheet_data_source",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid","GoogleVis"],
+      "cran": ["gsheet", "httr", "XML", "uuid","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
         "eblondel/geosapi",
         "eblondel/geometa",
-        "eblondel/geonapi"
+        "eblondel/geonapi",
+        "eblondel/ows4R"
       ],
       "github_force_install": false
     },
@@ -36,11 +37,6 @@
   },
   "sdi": {
     "loggerLevel": "DEBUG",
-    "geoserver": {
-      "url": "https://mygeoserver.org/geonetwork",
-      "user": "*****",
-      "pwd": "*****"
-    },
     "geonetwork": {
       "url": "https://mygeonetwork.org/geonetwork",
       "user": "*****",
@@ -54,9 +50,7 @@
     }
   },
   "actions": {
-    "data_csv": false,
     "metadata_iso_19115": true,
-    "metadata_iso_19110": false,
     "main": "write_Dublin_Core_metadata"
   }
 }
