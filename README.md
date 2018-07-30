@@ -43,16 +43,21 @@ Configuration of R on Linux requires the installation of following packages (tes
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
 
 
-#  Pre-requisites / How to start
+#  How to start
 
-As a start, ** it is recommended to execute the first worklow ** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help to understand the logics of all workflows.
+
+##  Pre-requisites
 
 Make sure that following pre-requisites are ok:
 - you have set up all packages (R and OS packages, check list above  when starting from scratch) <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 - change the working directory in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
 
+As a first start, ** it is recommended to execute the worklow ** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to use the configuration file as well as to understand the logics of all workflows.
 
-Once done: 
+## Execute the default workflow: spreadsheet use case
+
+
+Once done with pre-requisites : 
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - set **token** of your personal account if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - let the URLs of the google spreadsheet set by default (you will change them once you checked that the workflow can be executed as it is by default),
