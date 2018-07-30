@@ -7,19 +7,20 @@ metadata_dataframe <- function(Dublin_Core_metadata){
   
   for (i in 1:number_row) {
     metadata <- NULL
-    metadata$id_dataset  <- i # if(is.na(metadata$Identifier)){metadata$Identifier="TITLE AND DATASET NAME TO BE FILLED !!"}
+    metadata$id_dataset  <- i
     metadata$persistent_identifier <- Dublin_Core_metadata$Identifier[i]
     metadata$related_sql_query <- Dublin_Core_metadata$related_sql_query[i]
-    metadata$related_view_name <- Dublin_Core_metadata$related_view_name[i] # @jbarde => if no view create one with name paste("view_", Dublin_Core_metadata$Identifier[i], sep="") ?
+    metadata$related_view_name <- Dublin_Core_metadata$related_view_name[i]
+    # @jbarde => if no view create one with name paste("view_", Dublin_Core_metadata$Identifier[i], sep="") ?
     metadata$identifier <- Dublin_Core_metadata$Identifier[i]
     metadata$title  <- Dublin_Core_metadata$Title[i]
     metadata$contacts_and_roles  <- Dublin_Core_metadata$Creator[i]
     metadata$subject  <- Dublin_Core_metadata$Subject[i]
     metadata$description <- Dublin_Core_metadata$Description[i]
     metadata$date  <- Dublin_Core_metadata$Date[i]
-    metadata$dataset_type  <- Dublin_Core_metadata$Type[i]
+    metadata$type  <- Dublin_Core_metadata$Type[i]
     metadata$format  <- Dublin_Core_metadata$Format[i]
-    metadata$language  <- Dublin_Core_metadata$Language[i] #resource_language <- "eng"
+    metadata$language  <- Dublin_Core_metadata$Language[i]
     metadata$relation  <- Dublin_Core_metadata$Relation[i]
     metadata$spatial_coverage  <-  Dublin_Core_metadata$Spatial_Coverage[i]
     metadata$temporal_coverage  <-  Dublin_Core_metadata$Temporal_Coverage[i]
