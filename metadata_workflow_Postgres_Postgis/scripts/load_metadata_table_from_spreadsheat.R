@@ -23,11 +23,9 @@ metadata_dataframe <- function(Dublin_Core_metadata){
     metadata$relation  <- Dublin_Core_metadata$Relation[i]
     metadata$spatial_coverage  <-  Dublin_Core_metadata$Spatial_Coverage[i]
     metadata$temporal_coverage  <-  Dublin_Core_metadata$Temporal_Coverage[i]
-    metadata$rights  <- Dublin_Core_metadata$Rights[i] #UseLimitation <- "intellectualPropertyRights"
+    metadata$rights  <- Dublin_Core_metadata$Rights[i]
     metadata$source  <- Dublin_Core_metadata$Source[i]
     metadata$provenance  <- Dublin_Core_metadata$Provenance[i]
-    metadata$supplemental_information  <- "TO BE DONE"
-    metadata$database_table_name  <- "TABLE NAME"
     
     all_metadata <- bind_rows(all_metadata, metadata)
   }
