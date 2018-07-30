@@ -12,7 +12,7 @@ CREATE TABLE metadata
   subject text,
   description text,
   date text,
-  dataset_type text,
+  type text,
   format text,
   language text,
   relation text,
@@ -21,18 +21,10 @@ CREATE TABLE metadata
   rights text,
   source text,
   provenance text,
-  supplemental_information text,
-  database_table_name text,
   CONSTRAINT metadata_pkey PRIMARY KEY (id_dataset),
   CONSTRAINT unique_identifier UNIQUE (identifier)
 )
-WITH (
-  OIDS=FALSE
-);
 
--- ALTER TABLE metadata OWNER TO "invRTTP";
--- GRANT SELECT ON TABLE metadata TO "invRTTP";
--- GRANT ALL ON TABLE metadata TO "invRTTP";
 
 COMMENT ON TABLE metadata IS 'Table containing the metadata on all the datasets available in the database';
 COMMENT ON COLUMN metadata.id_dataset IS 'internal identifier for the table';
@@ -45,7 +37,7 @@ COMMENT ON COLUMN metadata.contacts_and_roles IS 'customized field includes all 
 COMMENT ON COLUMN metadata.subject IS '"subject" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.description IS '"description" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.date IS '"date" metadata element as defined by Dublin Core Metadata Initiative';
-COMMENT ON COLUMN metadata.dataset_type IS '"type" metadata element as defined by Dublin Core Metadata Initiative';
+COMMENT ON COLUMN metadata.type IS '"type" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.format IS '"format" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.language IS '"language" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.relation IS '"relation" metadata element as defined by Dublin Core Metadata Initiative';
@@ -54,8 +46,11 @@ COMMENT ON COLUMN metadata.temporal_coverage IS '"temporal" metadata element as 
 COMMENT ON COLUMN metadata.rights IS '"rights" metadata element as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.source IS '"source" metadata element  as defined by Dublin Core Metadata Initiative';
 COMMENT ON COLUMN metadata.provenance IS '"provenance" metadata element as defined by Dublin Core Metadata Initiative';
-COMMENT ON COLUMN metadata.supplemental_information IS 'additional comments ?';
-COMMENT ON COLUMN metadata.database_table_name IS 'inutile ? => ici à cause du modèle de Sardara  ?';
 
 -- COLUMNS TO BE ADDED  ? => Permanent_Identifier, Parent_Metadata_Identifier, Purpose, Update_frequency, Credits, 
 
+-- WITH (OIDS=FALSE);
+
+-- ALTER TABLE metadata OWNER TO "invRTTP";
+-- GRANT SELECT ON TABLE metadata TO "invRTTP";
+-- GRANT ALL ON TABLE metadata TO "invRTTP";
