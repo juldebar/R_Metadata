@@ -89,7 +89,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   vt$setName(metadata$Permanent_Identifier)
   vt$setSql(gsub(";","",SQL$query_wfs_wms))
   # vt$setSql("SELECT * FROM released_tagged_tuna")
-  vtg <- GSVirtualTableGeometry$new(name = "geom", type = SQL$geometry_type, srid = spatial_metadata$SRID)
+  vtg <- GSVirtualTableGeometry$new(name = SQL$geometry_name, type = SQL$geometry_type, srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
   logger.info("---------------------------------------------------------------------------------")  
