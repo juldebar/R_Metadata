@@ -23,7 +23,9 @@ getSQLQueries <- function(config, metadata){
   # metadata$view_name <-metadata$Identifier
   SQL$query_dynamic_metadata_spatial_Extent <- paste("SELECT ST_AsText(ST_Envelope(ST_ConvexHull(ST_Collect(geom)))) As geom FROM",metadata$view_name,";",sep=" ")
   SQL$query_dynamic_metadata_count_features <-  paste("SELECT count(*) FROM",metadata$view_name,";",sep=" ")
-  SQL$query_dynamic_metadata_get_SRID <-  paste("SELECT DISTINCT(ST_SRID(geom)) AS SRID FROM",metadata$view_name,";",sep=" ")
+  # SQL$query_dynamic_metadata_get_SRID <-  paste("SELECT DISTINCT(ST_SRID(geom)) AS SRID FROM",metadata$view_name,";",sep=" ")
+  SQL$query_dynamic_metadata_get_SRID <-  paste("SELECT SRID FROM geometry_columns WHERE f_table_name='",metadata$view_name,"';",sep="")
+  SQL$query_dynamic_metadata_get_geometry_type <-  paste("SELECT type FROM geometry_columns WHERE f_table_name='",metadata$view_name,"';",sep="")
   # SQL$query_dynamic_metadata_temporal_Extent <- paste("SELECT MIN(date) AS start_date, MAX(date) AS end_date FROM",metadata$view_name,";",sep=" ")
   SQL$query_dynamic_metadata_temporal_Extent <- paste("SELECT 'start='::text || MIN(date)::text || ';end='::text ||MAX(date)::text AS temporal_extent FROM",metadata$view_name,";",sep=" ")
   # SQL$query_dynamic_list_keywords <- paste("SELECT DISTINCT (tag) FROM",metadata$view_name,";",sep=" ")
@@ -35,6 +37,7 @@ getSQLQueries <- function(config, metadata){
   SQL$dynamic_metadata_spatial_Extent <- dbGetQuery(con, SQL$query_dynamic_metadata_spatial_Extent)
   SQL$dynamic_metadata_count_features <- dbGetQuery(con, SQL$query_dynamic_metadata_count_features)
   SQL$SRID <- dbGetQuery(con, SQL$query_dynamic_metadata_get_SRID )
+  SQL$geometry_type <- dbGetQuery(con, SQL$query_dynamic_metadata_get_geometry_type )
   SQL$dynamic_metadata_temporal_Extent <- dbGetQuery(con, SQL$query_dynamic_metadata_temporal_Extent)
   # SQL$dynamic_list_keywords <- dbGetQuery(con, SQL$query_dynamic_list_keywords)
   logger.info("######################################################################################################")
