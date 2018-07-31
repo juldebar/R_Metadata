@@ -195,7 +195,7 @@ write_Dublin_Core_metadata <- function(config, source){
     http_urls[nrow(http_urls)+1,] <- c(md_html_GN, "OGC metadata: HTML view in Geonetwork","Visualize metadata HTML view in Geonetwork", "WWW:LINK-1.0-http--link","search")
     http_urls[nrow(http_urls)+1,] <- c(md_xml_csw, "OGC metadata: XML view from CSW server","OGC metadata: XML view from CSW server", "WWW:LINK-1.0-http--link","search")
     
-    #Add as many links as stored in the google doc "Relation" column
+    #Add as many links as stored in "Relation" column
     list_Relation <- strsplit(as.character(Relation), split = "\n")
     for(relation in list_Relation[[1]]){
       split_Relation <- strsplit(relation, split = "@")
