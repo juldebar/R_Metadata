@@ -25,8 +25,6 @@ write_data_access_OGC_WMS_WFS <- function(config,
   # deleted <- gsman$deleteWorkspace(workspace, recurse = TRUE)
   # workspace <- gsman$createWorkspace("RTTP_workspace", "http://juldebar")
 #   unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
-#   unpublished <- gsman$unpublishLayer(workspace, datastore, "rttp_released_tagged_tuna")
-#   unpublished <- gsman$deleteFeatureType(workspace, datastore, "rttp_released_tagged_tuna")
   # ns<-NULL
 #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
 #     created <- gsman$createWorkspace(workspace, "http://julien")
@@ -88,7 +86,6 @@ write_data_access_OGC_WMS_WFS <- function(config,
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
   vt$setSql(gsub(";","",SQL$query_wfs_wms))
-  # vt$setSql("SELECT * FROM released_tagged_tuna")
   vtg <- GSVirtualTableGeometry$new(name = SQL$geometry_name, type = SQL$geometry_type, srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
