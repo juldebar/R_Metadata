@@ -24,16 +24,13 @@ All codes can be executed online in RStudio server provided by D4science infrast
 
 Make sure that following pre-requisites are ok:
 
-The scripts use following R packages:
-
-- OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi), [ows4R](https://github.com/eblondel/ows4R) 
-- Postgres related: [RPostgreSQL](RPostgreSQL)
-- NetCDF related: [ncdf4](ncdf4)
-- GBIF related: [eml](eml)
-- Dataverse related: [dataverse]()
-
-Other R packages (in the R console):
- 
+- The scripts use following R packages:
+  - OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi), [ows4R](https://github.com/eblondel/ows4R) 
+  - Postgres related: [RPostgreSQL](RPostgreSQL)
+  - NetCDF related: [ncdf4](ncdf4)
+  - GBIF related: [eml](eml)
+  - Dataverse related: [dataverse]()
+- Other R packages (in the R console):
 ```{r setup, include=FALSE}
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(uuid,raster,ncdf4,gsheet,XML,devtools,RPostgreSQL,jsonlite,googleVis,rgeos,rgdal,sf)
@@ -48,7 +45,7 @@ Configuration of R on Linux requires the installation of following packages (tes
  <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
 
-Once you have set up all packages, ** change the working directory ** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
+Once you have set up all packages, **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
 
 
 ## Step 1: Execute the default workflow: spreadsheet use case
