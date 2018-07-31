@@ -13,6 +13,11 @@ Each sub-folder contains an example of worfklow dedicated to a specific kind of 
   - local access
   - `accessible` with OPeNDAP on a Thredds server
 
+
+
+
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=12o3kEeYbqgJumpouwB6dtlSptN24qVhp" width="800">
+
 ##  These R codes can be executed online
 
 All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
@@ -78,21 +83,30 @@ Once done, you can start tuning the workflow to plug your data sources and (meta
   
 # Step 2 : Tune the workflow to fit your needs
 
+
+# Main scripts
+
+Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
+The most important scripts are the following 
+- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to create metadata sheets (OGC in particular)
+- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
+
+
 ## Plug your data sources (spreadsheets, Postgres database, Thredds server) and your applications
 
-When it works, you can try other workflows for other data sources (Postgres and Thredds / NetCDF files).
+When it works, you can try to execute the same worflow with your spreadsheets and other workflows with additional data sources (Postgres and Thredds / NetCDF files).
 - you have created **your own google spreadsheets** to describe:
   - your **contacts** (by **making a copy** of the [template for contacts](https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing))
   - the main metadata elements (Dublin Core) of **your datasets** (by **making a copy** of the [template for metadata](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing))
 - For Postgres workflow, you have to specify how to use the additional applications:
   - set the credentials of your Postgres server,
-  - set the credentials of your Geoserver which will be used to publish make datasets available with WMS / WMFS access protocols.
+  - set the credentials of your Geoserver which will be used to make datasets available with WMS / WMFS access protocols.
   - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R) and read logs to check that third applications (eg Postgres, Geonetwork, Geoserver) are accessible from R.
   
 ## (Des)activatation of the different steps
 
 
-The different steps of the workflow can be (des)activated independantly according to the values of following actions in the json configuration file: 
+The different steps of the workflow can be (des)activated independantly according to the values "actions" listed" in the json configuration file: 
 
 ```json
   "actions": {
@@ -125,14 +139,6 @@ The different steps of the workflow can be (des)activated independantly accordin
 - enlever le template
 dateStamp Emilie
 -->
-
-
-# Main scripts
-
-Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
-The most important scripts are the following 
-- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to create metadata sheets (OGC in particular)
-- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
 
 
 ##  Postgres data source use case
