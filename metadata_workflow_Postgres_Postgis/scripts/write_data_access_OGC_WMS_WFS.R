@@ -1,3 +1,4 @@
+# https://github.com/eblondel/geosapi/wiki#publishFeatureLayer-publish
 write_data_access_OGC_WMS_WFS <- function(config,
                                           metadata,
                                           SQL,   
@@ -17,18 +18,20 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set Geoserver workspace and store")  
   logger.info("---------------------------------------------------------------------------------") 
-  #unpublish before republishing (if the layer was already existing.)
-  # workspace<-paste0("RTTP_workspace",tolower(metadata$source))
-  # store<-paste0("RTTP_store",tolower(metadata$source))
+  # unpublish before republishing (if the layer was already existing.)
   wsnames <- gsman$getWorkspaceNames()
   workspace<-"RTTP_workspace"
   datastore<-"RTTP_datastore"
+  # deleted <- gsman$deleteWorkspace(workspace, recurse = TRUE)
+  # workspace <- gsman$createWorkspace("RTTP_workspace", "http://juldebar")
+#   unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
+#   unpublished <- gsman$unpublishLayer(workspace, datastore, "rttp_released_tagged_tuna")
+#   unpublished <- gsman$deleteFeatureType(workspace, datastore, "rttp_released_tagged_tuna")
   # ns<-NULL
 #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
 #     created <- gsman$createWorkspace(workspace, "http://julien")
     # created <- gsman$createDataStore(workspace, datastore)
 #   }
-  # unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set general metadata elements")  
   logger.info("---------------------------------------------------------------------------------") 
@@ -84,8 +87,9 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
-  vt$setSql(SQL$query_wfs_wms)
-  vtg <- GSVirtualTableGeometry$new(name = "geom", type = "POINT", srid = spatial_metadata$SRID)
+  vt$setSql(gsub(";","",SQL$query_wfs_wms))
+  # vt$setSql("SELECT * FROM released_tagged_tuna")
+  vtg <- GSVirtualTableGeometry$new(name = "geom", type = SQL$geometry_type, srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
   logger.info("---------------------------------------------------------------------------------")  
