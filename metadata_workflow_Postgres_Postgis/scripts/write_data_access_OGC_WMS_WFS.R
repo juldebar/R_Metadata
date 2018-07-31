@@ -26,7 +26,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   # ns<-NULL
 #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
 #     created <- gsman$createWorkspace(workspace, "http://julien")
-#     created <- gsman$createDataStore(workspace, datastore)
+    # created <- gsman$createDataStore(workspace, datastore)
 #   }
   # unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
   logger.info("---------------------------------------------------------------------------------")  
@@ -95,8 +95,5 @@ write_data_access_OGC_WMS_WFS <- function(config,
   layer$setName(metadata$Permanent_Identifier)
   layer$setDefaultStyle("point")
   published <- gsman$publishLayer(workspace, datastore, featureType, layer)
-  logger.info("---------------------------------------------------------------------------------")  
-  logger.info("WMS/WFS published !")  
-  logger.info("---------------------------------------------------------------------------------")
   return(published)
 }
