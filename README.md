@@ -3,20 +3,14 @@
 This repository provides 3 examples of workflows to generate metadata (compliant with [OGC](http://www.opengeospatial.org/) standards) from different data sources by using R scripts. Metadata can be pushed directly from R to a CSW server (eg geonetwork) and data managed in a Postgres database can be also published in Geoserver (WMS/WFS) from R.
 
 Each sub-folder contains an example of worfklow dedicated to a specific kind of data source:
-- [Flat files: CSV/Google Spreadsheet](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core)
-  - simple CSV / local access
-  - example in a google spreadsheet to get a collaborative edition tool
-- [SQL / Relationnal database / RDBMS](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_Postgres_Postgis)
-  - Postgres and Postgis,
-  - no other RDMBS for now,
-- [NetCDF files / OPeNDAP accesible on Thredds sever](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_NetCDF_Thredds_Catalog)
-  - local access
-  - `accessible` with OPeNDAP on a Thredds server
+- [Flat files: CSV/Google Spreadsheet](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) which is used to edit metadata for different datasets, the data structure of the spreadsheet relies on DCMI main metadata elements (one column per type of element), This workflow can either work with a simple CSV file (local access) or with the same file stored in a collaborative environment to facilitate online edition by multiple users without versionning issues (we give an example in a google spreadsheet),
+- [SQL / Relationnal database / RDBMS](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_Postgres_Postgis): this workflow uses a "metadata" table (with a similar structure as the spreadsheet used in the previous workflow) and is only implemented with Postgres and Postgis RDBMS (other RDBMS could be easily added, eg MySQL).
+- [NetCDF files / OPeNDAP accesible on Thredds sever](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_NetCDF_Thredds_Catalog): this worklow can either extract metadata from NetCDF files stored locally or remotely `accessible` through OPeNDAP protocol (eg frome a Thredds server).
 
 
 
 
-<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=12o3kEeYbqgJumpouwB6dtlSptN24qVhp" width="800">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://drive.google.com/uc?id=12o3kEeYbqgJumpouwB6dtlSptN24qVhp" width="1000">
 
 ##  These R codes can be executed online
 
