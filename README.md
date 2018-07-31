@@ -50,10 +50,10 @@ Installation of R packages on Linux might require the installation of following 
 Once you have set up all packages, as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
 
 Once done with pre-requisites : 
-- **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
+- **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path of this github repository on your PC,
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
-  - set **token** of your personal account if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
-  - let the URLs of the google spreadsheet set by default (you will change them once you checked that the workflow can be executed as it is by default),
+  - if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) you have to set the **token** of your personal account : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
+  - at this stage, it is recommanded to let the default URLs of the google spreadsheets (you will update them with yours once you checked that the workflow can be executed as it is set by default),
   - set the credentials of your Geonetwork or CSW server
 ```json
     "geonetwork": {
@@ -63,7 +63,7 @@ Once done with pre-requisites :
       "version": "3.0.4"
     },
 ```
-- rename this file as following :" **workflow_configuration_Postgres.json** "
+  - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
 If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit?usp=sharing) published in the geonetwork / CSW server.
@@ -77,8 +77,8 @@ Once done, you can start tuning the workflow to plug your data sources and (meta
 
 Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
 The most important scripts are the following 
-- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to create metadata sheets (OGC in particular)
-- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]()
+- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
+- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]() to turn the R metadata object into OGC metadata and push it into geonetwork or any CSW server.
 
 
 ## Plug your data sources (spreadsheets, Postgres database, Thredds server) and your applications
