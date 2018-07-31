@@ -38,21 +38,19 @@ install_github("RFigisGeo", "openfigis")
 ```
 If rgdal is not available for your version of R install it from source or update your R version.
 
-Configuration of R on Linux requires the installation of following packages (tested on Debian / Ubuntu):
+Installation of R packages on Linux might require the installation of following OS underlying packages (tested on Debian / Ubuntu):
 ```{r setup, include=FALSE}
 (sudo) apt-get install libcurl4-openssl-dev  libssl-dev r-cran-ncdf4 libxml2-dev libgdal-dev gdal-bin libgeos-dev udunits-bin libudunits2-dev
 ```
  <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
 
-Once you have set up all packages, **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
-
-
 ## Step 1: Execute the default workflow: spreadsheet use case
 
-As a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to use the configuration file as well as to understand the logics of all workflows.
+Once you have set up all packages, as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
 
 Once done with pre-requisites : 
+- **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path on your PC,
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - set **token** of your personal account if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - let the URLs of the google spreadsheet set by default (you will change them once you checked that the workflow can be executed as it is by default),
