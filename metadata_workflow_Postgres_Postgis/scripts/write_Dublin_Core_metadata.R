@@ -194,7 +194,7 @@ write_Dublin_Core_metadata <- function(config, source){
     # http://geoserver-sdi-lab.d4science.org/geoserver/RTTP_workspace/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=RTTP_workspace%3Arttp_released_tagged_tuna&STYLES&LAYERS=RTTP_workspace%3Arttp_released_tagged_tuna&INFO_FORMAT=text%2Fhtml&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A4326&WIDTH=101&HEIGHT=101&BBOX=42.95654296875%2C-17.02880859375%2C47.39501953125%2C-12.59033203125
     wms_url <-paste(config$sdi$geoserver$url, config$sdi$geoserver$workspace, "wms?", sep="/")
     wms_layer<-paste0(config$sdi$geoserver$workspace,":",metadata$Identifier)
-    thumbnail <-paste(wms_url,"/wms?service=WMS&version=1.3.0&request=GetMap&layers=",wms_layer,",tunaatlas:continent&styles=&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,"&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
+    thumbnail <-paste(wms_url,"/wms?service=WMS&version=1.3.0&request=GetMap&layers=",wms_layer,"&styles=point&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,"&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
     http_urls[nrow(http_urls)+1,] <- c(thumbnail, "thumbnail","Thumbnail from WMS / Geoserver", "WWW:LINK-1.0-http--link","image/png")
     http_urls[nrow(http_urls)+1,] <- c(wms_url,wms_layer,"Visualize maps from WMS (Web Map Service) - see service/operation metadata for guidance to use query parameters","OGC:WMS-1.3.0-http-get-map","download")
     
@@ -254,18 +254,15 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.info("Saving ISO/OGC XML metadata (ISO 19115) file to R job working directory")
       metatada_sheet_xml <- ogc_metatada_sheet$encode()
       xml_file_name <- paste(metadata$Identifier,".xml",sep="")
-      
-      
-      logger.info("Generating/Publishing ISO 19115 metadata...")
-      
+      metadata_wd <- paste(config$wd,"/jobs/", jobDir, "/metadata/",xml_file_name, sep="")
+      setwd(metadata_wd)
+      saveXML(metatada_sheet_xml, file = xml_file_name)
       logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been created!", xml_file_name))
       setwd("..")
       
-      #Publication to Geonetwork
-      logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
+      logger.info("Generating/Publishing ISO/OGC 19115 XML metadata file in Geonetwork")
       metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
       logger.info(sprintf("URL ?", metadata_URL))
-      
       # if(config$actions$write_metadata_EML){push_metadata_in_csw_server(config, ogc_metatada_sheet)}
       logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
       
