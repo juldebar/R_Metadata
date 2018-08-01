@@ -20,10 +20,10 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------") 
   # unpublish before republishing (if the layer was already existing.)
   wsnames <- gsman$getWorkspaceNames()
-  workspace<-"RTTP_workspace"
-  datastore<-"RTTP_datastore"
+  workspace<-config$sdi$geoserver$workspace
+  datastore<-config$sdi$geoserver$datastore
   # deleted <- gsman$deleteWorkspace(workspace, recurse = TRUE)
-  # workspace <- gsman$createWorkspace("RTTP_workspace", "http://juldebar")
+  # workspace <- gsman$createWorkspace("RTTP_workspace", "http://bluebridge.d4science.org/RTTP")
 #   unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
   # ns<-NULL
 #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
@@ -85,7 +85,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
-  vt$setSql(gsub(";","",SQL$query_wfs_wms))
+  vt$setSql(gsub(";"," LIMIT 500",SQL$query_wfs_wms))
   vtg <- GSVirtualTableGeometry$new(name = SQL$geometry_name, type = SQL$geometry_type, srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
