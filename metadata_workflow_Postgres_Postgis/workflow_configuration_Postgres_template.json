@@ -39,7 +39,8 @@
       "dynamic_metadata_queries.R",
       "write_Dublin_Core_metadata.R",
       "write_data_access_OGC_WMS_WFS.R",
-      "write_metadata_EML.R"
+      "write_metadata_EML.R",
+      "write_datasets_in_CSV_files.R"
           ]
   },
   "gsheetUrls": {
@@ -67,6 +68,7 @@
   },
   "actions": {
     "create_metadata_table": true,
+    "create_sql_view_for_each_dataset": false,
     "data_wms_wfs": false,
     "data_csv": false,
     "metadata_iso_19115": false,
