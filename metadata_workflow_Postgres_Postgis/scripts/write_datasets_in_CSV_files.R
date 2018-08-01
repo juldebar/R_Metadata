@@ -39,12 +39,12 @@ write_datasets_in_CSV_files <- function(config,metadata,SQL){
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Upload the CSV (in ZIP archive) in the workspace")  
   logger.info("---------------------------------------------------------------------------------")   
-  # uploadWS(config$gcube$repositories$csv,ZipFileName,overwrite=T)
-  # csvFileURL <- getPublicFileLinkWS(paste(config$gcube$repositories$csv,ZipFileName,sep="/"))
+  uploadWS(config$gcube$repositories$csv,ZipFileName,overwrite=T)
+  csvFileURL <- getPublicFileLinkWS(paste(config$gcube$repositories$csv,ZipFileName,sep="/"))
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Restore previous directory")  
   logger.info("---------------------------------------------------------------------------------")   
-  # setwd(config$wd)
+
   setwd(from_wd)
-  # return(csvFileURL)
+  return(csvFileURL)
 }
