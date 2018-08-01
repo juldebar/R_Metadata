@@ -195,7 +195,7 @@ write_Dublin_Core_metadata <- function(config, source){
     http_urls[nrow(http_urls)+1,] <- c(md_html_GN, "OGC metadata: HTML view in Geonetwork","Visualize metadata HTML view in Geonetwork", "WWW:LINK-1.0-http--link","search")
     http_urls[nrow(http_urls)+1,] <- c(md_xml_csw, "OGC metadata: XML view from CSW server","OGC metadata: XML view from CSW server", "WWW:LINK-1.0-http--link","search")
     
-    #Add as many links as stored in "Relation" column
+    logger.info("Add the URLs listed in 'Relation' column")
     list_Relation <- strsplit(as.character(Relation), split = "\n")
     for(relation in list_Relation[[1]]){
       split_Relation <- strsplit(relation, split = "@")
@@ -210,6 +210,18 @@ write_Dublin_Core_metadata <- function(config, source){
         http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, http_URLs_names,http_URLs_descriptions,http_URLs_protocols, http_URLs_functions)
       }
     }
+    
+    logger.info("Look if the CSV file is available in the Worspace and get the URL")
+    CsvFileName<-paste(metadata$Identifier,".zip",sep="")
+    virtual_repository_with_csv_files <- config$gcube$repositories$csv
+    remoteCsvFile<-paste(virtual_repository_with_csv_files, CsvFileName, sep="/")
+    csvFileURL<-getPublicFileLinkWS(remoteCsvFile)
+    
+    logger.info("Add the URL of the CSV file if available with http")
+    if(startsWith(csvFileURL,"http://") | startsWith(csvFileURL,"https://")){
+      http_urls[nrow(http_urls)+1,] <- c(csvFileURL, "Dataset as CSV","Download the dataset and metadata in CSV format","WWW:LINK-1.0-http--link","download")
+    }
+    
     urls_metadata$http_urls <- http_urls
     
     
@@ -233,7 +245,6 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.info("Saving ISO/OGC XML metadata (ISO 19115) file to R job working directory")
       metatada_sheet_xml <- ogc_metatada_sheet$encode()
       xml_file_name <- paste(metadata$Identifier,".xml",sep="")
-      
       
       
       logger.info("Generating/Publishing ISO 19115 metadata...")
