@@ -226,8 +226,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   logger.info("MD_Metadata section is set")  
   
   # OGC 19115 SECTION => Metadata entity set information 
-  #-------------------------------------------------------------------------------------------------------------------
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("OGC 19115 SECTION => Spatial Representation")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
   
   ###########################################################################################
   #VectorSpatialRepresentation
@@ -535,7 +536,10 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
 #@param md
 push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   
-  #shortcut for gn config
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  logger.info("set shortcuts for Geonetwork config")
+  logger.info("-------------------------------------------------------------------------------------------------------------------")
+  # config=CFG
   GN <- config$sdi$geonetwork$api
   
   #to insert or update a metadata into a geonetwork.
@@ -547,28 +551,30 @@ push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   }
   metaId <- GN$get(metadata_permanent_id, by = "uuid", output = "id")
   if(is.null(metaId)){
-    #insert metadata (once inserted only visible to the publisher)
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("insert metadata (once inserted only visible to the publisher)")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
     created = GN$insertMetadata(xml = md$encode(), group = "1", category = "datasets")
-    
-    #config privileges
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("config privileges")
     config <- GNPrivConfiguration$new()
     config$setPrivileges("all", privileges)
     GN$setPrivConfiguration(id = created, config = config)
   }else{
-    #update a metadata
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("update the metadata")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
     updated = GN$updateMetadata(id = metaId, xml = md$encode())
-    
-    #config privileges
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("config privileges")
     config <- GNPrivConfiguration$new()
     config$setPrivileges("all", privileges)
     GN$setPrivConfiguration(id = metaId, config = config)
   }
-  
   md_url <- paste(config$sdi$geonetwork$url, "/srv/eng/catalog.search#/metadata/",metadata_permanent_id,sep="")
-  return(md_url)
   
+  return(md_url)
 }
-
 
 push_metadata_in_csw_server <- function(config,md){
   
