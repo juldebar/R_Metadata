@@ -17,10 +17,10 @@ write_Dublin_Core_metadata <- function(config, source){
   logger.info("Workflow Postgres:  SQL QUERY: CREATE 'metadata' TABLE and fill it by loading the content from a google spreadsheet")
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   if (config$actions$create_metadata_table){
-  query_create_table <- readLines(paste(config$wd,"/scripts/SQL/create_table_metadata.sql",sep=""))
-  create_Table <- dbGetQuery(con,query_create_table)
-  metadata <- metadata_dataframe(Dublin_Core_metadata=Datasets)
-  dbWriteTable(con, "metadata", metadata, row.names=FALSE, append=TRUE)
+    query_create_table <- readLines(paste(config$wd,"/scripts/SQL/create_table_metadata.sql",sep=""))
+    create_Table <- dbGetQuery(con,query_create_table)
+    metadata <- metadata_dataframe(Dublin_Core_metadata=Datasets)
+    dbWriteTable(con, "metadata", metadata, row.names=FALSE, append=TRUE)
   } else {
     logger.info("Table 'metadata' not created")
   }
@@ -132,7 +132,7 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Metadata elements to describe the CONTACTS AND ROLES")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
-
+    
     all_contacts <- Dublin_Core_metadata$contacts_and_roles[i]
     contacts_metadata <-NULL
     contact_email=NULL
@@ -217,7 +217,6 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("Workflow step 4: ISO Metadata (19115 & 19119 TOGETHER, 19110 SEPARATELY) generation & publication")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
-    #ISO 19115
     if(config$actions$metadata_iso_19115){
       
       logger.info("Generating/Publishing ISO 19115 metadata...")
@@ -238,7 +237,7 @@ write_Dublin_Core_metadata <- function(config, source){
       
       
       logger.info("Generating/Publishing ISO 19115 metadata...")
-
+      
       logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been created!", xml_file_name))
       setwd("..")
       
@@ -254,6 +253,9 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
     }
     
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("Workflow step 4 BIS : EML Metadata")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
     
     if(config$actions$write_metadata_EML){
       EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
@@ -276,8 +278,11 @@ write_Dublin_Core_metadata <- function(config, source){
       
       
     }
-      
-    #OGC WMS / WFS
+    
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("Workflow step 4 BIS : OGC WMS / WFS")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    
     if (config$actions$data_wms_wfs){
       logger.info("DATA publication to OGC WMS/WFS services (Geoserver)...")
       published<-write_data_access_OGC_WMS_WFS(config=config,
@@ -295,7 +300,29 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.warn("DATA publication to OGC WMS/WFS service (GeoServer) DISABLED")
     }
     
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("Workflow step 4 BIS : WRITE CSV FILES")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    
+    if (config$actions$data_csv){
+      logger.info("Writing CSV dataset in the WS...")
+      csvFileURL<-write_datasets_in_CSV_files(config=config,metadata=metadata,SQL=SQL)
+      logger.info(sprintf("CSV for file '%s' has been created and uploaded!", csvFileURL))
+      ## Add the URL in the online ressouces
+      # if (!(csvFileURL %in% urls_metadata$http_urls$http_URLs_links)){
+      #   http_urls[nrow(http_urls)+1,] <- c(csvFileURL, "Dataset as CSV","Download the dataset and metadata in CSV format","WWW:LINK-1.0-http--link","download")
+      #   # make this ressource (the last) the first so that it appears as first on the catalogue
+      #   http_urls<-rbind(http_urls[nrow(http_urls),],http_urls[1:nrow(http_urls)-1,])
+      #   urls_metadata$http_urls <- http_urls
+      # }
+    } else {
+      logger.warn("CSV Dataset generation/publication DISABLED")
+    }
+    
+    
+    
+    
+    
   }
   logger.warn("ALL METADATA ISO/OGC 19115 have been created for the Postgres database and related metadata table")
 }
-
