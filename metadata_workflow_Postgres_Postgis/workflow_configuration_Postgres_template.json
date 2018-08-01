@@ -2,7 +2,7 @@
   "id": "Postgres_database",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "gsheet", "data.table", "dplyr","httr", "XML", "uuid", "EML"],
+      "cran": ["RPostgreSQL", "gsheet", "data.table", "dplyr","httr", "XML", "uuid", "EML","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
@@ -13,7 +13,8 @@
       "github_force_install": false
     },
     "scripts": [
-    ]  
+      "http://svn.research-infrastructures.eu/public/d4science/gcube/trunk/data-analysis/RConfiguration/RD4SFunctions/workspace_interaction.r"
+    ]
   },
   "db": {
     "host": "server_name.fr",
