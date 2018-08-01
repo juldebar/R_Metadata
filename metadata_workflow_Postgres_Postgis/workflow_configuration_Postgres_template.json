@@ -52,6 +52,8 @@
     "loggerLevel": "DEBUG",
     "geoserver": {
       "url": "http://mygeoserver.org/geoserver",
+      "workspace": "********",
+      "datastore": "********",
       "user": "********",
       "pwd": "********"
     },
