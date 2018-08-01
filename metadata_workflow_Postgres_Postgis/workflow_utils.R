@@ -123,14 +123,14 @@ initWorkflow <- function(file){
   config$logger.info("Connect to GeoServer API...")
   gs <- config$sdi$geoserver
   config$sdi$geoserver[["api"]] <- GSManager$new(url = gs$url, user = gs$user, pwd = gs$pwd,
-                                                         config$sdi$loggerLevel)
+                                                 config$sdi$loggerLevel)
   
   #Geonetwork API manager
   #--------------------
   config$logger.info("Connect to GeoNetwork API...")
   gn <- config$sdi$geonetwork
   config$sdi$geonetwork[["api"]] <- GNManager$new(url = gn$url, user = gn$user, pwd = gn$pwd, version = gn$version,
-                                                          config$sdi$loggerLevel)
+                                                  config$sdi$loggerLevel)
   return(config)
 }
 
@@ -191,6 +191,7 @@ initWorkflowJob <- function(config){
   dir.create(file.path(getwd(), "data", "csv"))
   dir.create(file.path(getwd(), "data", "netcdf"))
   
+  return(jobDir)
 }
 
 #-----------------------------------------------------------------------------------------------------------------
