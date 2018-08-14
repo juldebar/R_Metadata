@@ -66,7 +66,7 @@ Once done with pre-requisites :
   - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
-If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1FJjab8TncNlksZmlr9Uq0V6e8jzxmqUJTNJlEEStAic/edit?usp=sharing) published in the geonetwork / CSW server.
+If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) published in the geonetwork / CSW server.
 
 Once done, you can start tuning the workflow to plug your data sources and (meta)data servers.
   
@@ -77,7 +77,7 @@ Once done, you can start tuning the workflow to plug your data sources and (meta
 
 Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
 The most important scripts are the following 
-- see previous section: edit the content of the **json configuration file template** (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created,
+- see previous section: edit the content of **json configuration files templates** (one specific json file per workflow / type of data source) to indicate how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created,
 - [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
 - [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]() to turn the R metadata object into OGC metadata and push it into geonetwork or any CSW server.
 
