@@ -61,7 +61,7 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
   } else{cat("The dataverse is already empty !")}
 }
 
-
+# update_dataset(ds, body = meta2)
 
 #################################### COMMON FUNCTIONS FOR SPREADSHEETS (CSV, GOOGLE DOC...) #############################################
 # contacts<-Dublin_Core_metadata$Creator[1]
@@ -155,9 +155,9 @@ return_urls_as_data_frame <- function(all_relations){
         split_http_URLs_names <- strsplit(http_URLs_names, split = "\\[")
         http_URLs_names <- split_http_URLs_names[[1]][1]
         http_URLs_descriptions <- gsub("\\]","",split_http_URLs_names[[1]][2] )
-        }else{
-          http_URLs_descriptions <- "Click the link"  
-        }
+      }else{
+        http_URLs_descriptions <- "Click the link"  
+      }
       http_URLs_protocols  <- "WWW:LINK-1.0-http--link"
       http_URLs_functions <- "donwload"
       http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, http_URLs_names,http_URLs_descriptions,http_URLs_protocols, http_URLs_functions)
@@ -165,4 +165,30 @@ return_urls_as_data_frame <- function(all_relations){
   }
   # urls_metadata$http_urls <- http_urls
   return(http_urls)
+}
+
+#################################### PROCESS RELATIONS #############################################
+#################################### EXAMPLE 1: PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
+Dublin_Core_spreadsheat <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
+Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheat))
+# contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
+Titles<-Dublin_Core_metadata$Title[22]
+Titles
+multilingual_data_frame <- return_multilingual_data_frame(Titles)
+multilingual_data_frame
+
+return_multilingual_data_frame <- function(Titles){
+  language <- NULL
+  text <- NULL
+  list_titles <- strsplit(as.character(Titles), split = "\n")
+  data_frame_multilingual <-data.frame(language = character(), text = character(),stringsAsFactors=FALSE)
+  
+  for(title in list_titles[[1]]){
+    split_Relation <- strsplit(title, split = "@")
+    language <- split_Relation[[1]][1]
+    text <- split_Relation[[1]][2]
+    data_frame_multilingual[nrow(data_frame_multilingual)+1,] <- c(language, text)
+  }
+  # urls_metadata$http_urls <- http_urls
+  return(data_frame_multilingual)
 }
