@@ -17,7 +17,7 @@
     }
   },
   "gcube": {
-    "token": "628aec92-55d3-4261-b012-71993cf8c722-843339462",
+    "token": "xxxxxxxxxx",
     "repositories": {
       },
     "scripts_download": false,
@@ -34,11 +34,6 @@
   },
   "sdi": {
     "loggerLevel": "DEBUG",
-    "geoserver": {
-      "url": "http://mygeoserver.org/geoserver",
-      "user": "*****",
-      "pwd": "*****"
-    },
     "geonetwork": {
       "url": "http://mygeonetwork.org/geonetwork",
       "user": "*****",
@@ -46,18 +41,12 @@
       "version": "3.0.4"
     },
     "thredds": {
-      "url_MOI_MESA": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/catalog.xml",
-      "url_MOI_MESA_sst": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST/catalog.xml",
-      "url_MOI_MESA_chl":"http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/Chl-a/catalog.xml"
+      "url_thredds_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST/catalog.xml"
 
     }
   },
   "actions": {
-    "data_wms_wfs": false,
-    "data_csv": false,
-    "data_netcdf": false,
     "metadata_iso_19115": true,
-    "metadata_iso_19110": false,
     "main": "browse_sub_catalog"
   }
 }

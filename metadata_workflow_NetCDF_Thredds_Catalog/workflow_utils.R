@@ -112,14 +112,7 @@ initWorkflow <- function(file){
   })
   names(config$gsheets) <- names(config$gsheetUrls)
   
-  
-  #Geoserver API manager
-  #--------------------
-  config$logger.info("Connect to GeoServer API...")
-  gs <- config$sdi$geoserver
-  config$sdi$geoserver[["api"]] <- GSManager$new(url = gs$url, user = gs$user, pwd = gs$pwd,
-                                                         config$sdi$loggerLevel)
-  
+
   #Geonetwork API manager
   #--------------------
   config$logger.info("Connect to GeoNetwork API...")
