@@ -243,6 +243,7 @@ write_thredds_catalog_metadata <- function(config, source){
            "w"="&ELEVATION=10&STYLES=boxfill%2Fsst_36&CRS=EPSG%3A4326&COLORSCALERANGE=1%2C20&NUMCOLORBANDS=253&LOGSCALE=false",
            "sla"="&ELEVATION=0&STYLES=boxfill%2Fsst_36&CRS=EPSG%3A4326&COLORSCALERANGE=-0.5558%2C0.5545&NUMCOLORBANDS=253&LOGSCALE=false",
            "par"="ELEVATION=0&STYLES=boxfill%2Fsst_36&CRS=EPSG%3A4326&COLORSCALERANGE=0.028%2C61.76&NUMCOLORBANDS=253&LOGSCALE=false",
+           "Pp"="ELEVATION=0&&STYLES=boxfill%2Fsst_36&CRS=EPSG%3A4326&COLORSCALERANGE=0.001%2C2341&NUMCOLORBANDS=253&LOGSCALE=false",
            "Kd_490"="ELEVATION=0&STYLES=boxfill%2Fsst_36&CRS=EPSG%3A4326&COLORSCALERANGE=0.0182%2C2.259&NUMCOLORBANDS=253&LOGSCALE=true"
                       )
     wms_url <-paste(gsub("/catalog/","/wms/",gsub("catalog.xml",dataset$name,Thredds_catalog$url)),"?",sep="")
