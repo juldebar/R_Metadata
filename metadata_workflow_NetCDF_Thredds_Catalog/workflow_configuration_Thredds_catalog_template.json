@@ -27,10 +27,7 @@
           ]
   },
   "gsheetUrls": {
-    "contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
-    "all_contacts": "https://docs.google.com/spreadsheets/d/1f2BtxxxjwzHTJOcpmcae-Xv33RQL_B6e8jBVx-UDrTY/edit#gid=0",
-    "contacts_MOI": "https://docs.google.com/spreadsheets/d/127n-mFKifPWVyzprpf3dDcWZSYtUZdqxA3RcqdNsg-c/edit?usp=sharing",
-    "dictionnary": "https://docs.google.com/spreadsheets/d/1BUppXu-Z_YX8cJaNISfk9KrKrKJ6y0Dd2XCfIvjBRQc/edit#gid=747135938"
+    "contacts": "https://docs.google.com/spreadsheets/d/1dzxposSSN5nZ0NCdmomxa7KTLHWc4gR3geAoSq1Hku8/edit?usp=sharing"
   },
   "sdi": {
     "loggerLevel": "DEBUG",
@@ -41,7 +38,7 @@
       "version": "3.0.4"
     },
     "thredds": {
-      "url_thredds_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/BlueBridge/MOI/SST/catalog.xml"
+      "url_thredds_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/R_metadata/catalog.xml"
 
     }
   },
