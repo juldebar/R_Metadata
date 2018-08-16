@@ -9,8 +9,7 @@
         "eblondel/geosapi",
         "eblondel/geometa",
         "eblondel/geonapi",
-        "btupper/threddscrawler",
-        "juldebar/R_Metadata"
+        "btupper/threddscrawler"
 
       ],
       "github_force_install": false
