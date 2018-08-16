@@ -128,8 +128,6 @@ initWorkflow <- function(file){
 #-----------------------------------------------------------------------------------------------------------------
 closeWorkflow <- function(config){
 
-  #Geoserver API manager
-  config$logger.info("Reset Geoserver API manager")
   #Geonetwork API manager
   config$logger.info("Reset Geonetwork API manager")
   config$sdi$geonetwork$api <- NULL
