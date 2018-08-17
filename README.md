@@ -1,3 +1,8 @@
+Main releases of the codes are availale on Zenodo with this DOI:
+
+[![DOI](https://zenodo.org/badge/138283915.svg)](https://zenodo.org/badge/latestdoi/138283915)
+
+
 # Implementation of FAIR data management plans with R programming language and usual data sources in scientific context
 
 This repository provides 3 examples of workflows to generate metadata (compliant with [OGC](http://www.opengeospatial.org/) standards) from different data sources by using R scripts. Metadata can be pushed directly from R to a CSW server (eg geonetwork) and data managed in a Postgres database can be also published in Geoserver (WMS/WFS) from R.
