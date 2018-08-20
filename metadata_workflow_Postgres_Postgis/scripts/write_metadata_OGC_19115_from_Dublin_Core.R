@@ -536,12 +536,17 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
 #@param md
 push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   
+  #config shortcuts
+  logger <- config$logger
+  logger.info <- config$logger.info
+  logger.warn <- config$logger.warn
+  logger.error <- config$logger.error
+  GN <- config$sdi$geonetwork$api
+  
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("set shortcuts for Geonetwork config")
   logger.info("-------------------------------------------------------------------------------------------------------------------")
-  # config=CFG
-  GN <- config$sdi$geonetwork$api
-  
+
   #to insert or update a metadata into a geonetwork.
   #An insert has to be done in 2 operations (the insert itself, and the privilege setting to "publish" it either to a restrained group or to public)
   #An update has to be done based on the internal Geonetwork id (that can be queried as well
