@@ -59,7 +59,7 @@ Once done with pre-requisites (see previous section):
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) you have to set the **token** of your personal account : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - at this stage, it is recommanded to let the default URLs of the google spreadsheets (you will update them with yours once you checked that the workflow can be executed as it is set by default),
-  - set the credentials of your Geonetwork or CSW server
+  - set the credentials of your Geonetwork or CSW server (see [here] (https://github.com/juldebar/R_Metadata/blob/5d64ba6896651f412ac34f05c98775262458b72d/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L40) )
 ```json
     "geonetwork": {
       "url": "http://mygeonetwork.org/geonetwork",
