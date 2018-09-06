@@ -29,7 +29,7 @@ All codes can be executed online in RStudio server provided by D4science infrast
 
 Make sure that following pre-requisites are ok:
 
-- The scripts use following R packages:
+- The scripts of this repository make use of following R packages:
   - OGC related: [geometa](https://github.com/eblondel/geometa), [geosapi](https://github.com/eblondel/geosapi), [geonapi](https://github.com/eblondel/geonapi), [ows4R](https://github.com/eblondel/ows4R) 
   - Postgres related: [RPostgreSQL](RPostgreSQL)
   - NetCDF related: [ncdf4](ncdf4)
@@ -50,13 +50,13 @@ Installation of R packages on Linux might require the installation of following 
  <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
 
-## Step 1: Execute the default workflow: spreadsheet use case
+## Step 1: Execute the default workflow (spreadsheet use case)
 
-Once you have set up all packages, as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest and it will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
+Once you have set up the execution environment (see list of OS and R packages in the section above), as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a (meta)data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest worklow to start with. This will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
 
-Once done with pre-requisites : 
-- **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual path of this github repository on your PC,
-- edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+Once done with pre-requisites (see previous section): 
+- **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual (local) path of this github repository on your PC,
+- edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
   - if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) you have to set the **token** of your personal account : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - at this stage, it is recommanded to let the default URLs of the google spreadsheets (you will update them with yours once you checked that the workflow can be executed as it is set by default),
   - set the credentials of your Geonetwork or CSW server
