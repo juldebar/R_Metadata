@@ -19,13 +19,11 @@ Each sub-folder contains an example of worfklow dedicated to a specific kind of 
 
 ##  These R codes can be executed online
 
-All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why): 
+All codes can be executed online in RStudio server provided by D4science infrastructure. If you want to try, please [ask for a login](https://bluebridge.d4science.org/web/sdi_lab/) (and briefly explain why).
 
 
-#  How to start
 
-
-##  Pre-requisites
+#  Pre-requisites
 
 Make sure that following pre-requisites are ok:
 
@@ -50,7 +48,7 @@ Installation of R packages on Linux might require the installation of following 
  <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
 
-## Step 1: Execute the default workflow (spreadsheet use case)
+# Step 1: Execute the default workflow (spreadsheet use case)
 
 Once you have set up the execution environment (see list of OS and R packages in the section above), as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a (meta)data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest worklow to start with. This will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
 
