@@ -73,10 +73,9 @@ Once done with pre-requisites (see previous section):
 
 If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) published in the geonetwork / CSW server.
 
-Once done, you can start tuning the workflow to plug your data sources and (meta)data servers.
+Once there, you can start tuning the workflow to plug other data sources and using other contacts.
   
 # Step 2 : Tune the workflow to fit your needs
-
 
 # Main scripts
 
