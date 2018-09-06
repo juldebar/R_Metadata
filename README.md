@@ -58,14 +58,6 @@ Once done with pre-requisites (see previous section):
   - if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) you have to set the [**token**](https://github.com/juldebar/R_Metadata/blob/d4c4941da49aeb945eab0ec10e787fd6bdf5e124/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L21) of your personal account : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - at this stage, it is recommanded to let the [default URLs of the google spreadsheets](https://github.com/juldebar/R_Metadata/blob/d4c4941da49aeb945eab0ec10e787fd6bdf5e124/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L35-L36) (you will update them with yours once you checked that the workflow can be executed as it is set by default),
   - set the credentials of your Geonetwork or CSW server (see [here](https://github.com/juldebar/R_Metadata/blob/5d64ba6896651f412ac34f05c98775262458b72d/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L40-L50) )
-```json
-    "geonetwork": {
-      "url": "http://mygeonetwork.org/geonetwork",
-      "user": "********",
-      "pwd": "********",
-      "version": "3.0.4"
-    },
-```
   - rename this file as following :" **workflow_configuration_Postgres.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
