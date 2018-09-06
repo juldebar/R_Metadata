@@ -54,14 +54,14 @@ Once you have set up the execution environment (see list of OS and R packages in
 
 Once done with pre-requisites (see previous section): 
 - **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual (local) path of this github repository on your PC,
-- edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created (see pre-requisites above).
+- edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the spreadsheets (storing metadata and related contacts).
   - if you want to use the BlueBridge / D4science infrastructure components (eg RStudio server, geoserver / geonetwork) you have to set the [**token**](https://github.com/juldebar/R_Metadata/blob/d4c4941da49aeb945eab0ec10e787fd6bdf5e124/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L21) of your personal account : you need to [register first](https://bluebridge.d4science.org/web/sdi_lab/),
   - at this stage, it is recommanded to let the [default URLs of the google spreadsheets](https://github.com/juldebar/R_Metadata/blob/d4c4941da49aeb945eab0ec10e787fd6bdf5e124/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L35-L36) (you will update them with yours once you checked that the workflow can be executed as it is set by default),
   - set the credentials of your Geonetwork or CSW server (see [here](https://github.com/juldebar/R_Metadata/blob/5d64ba6896651f412ac34f05c98775262458b72d/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json#L40-L50) )
-  - rename this file as following :" **workflow_configuration_Postgres.json** "
+  - rename this file as following :" **workflow_configuration_Dublin_Core_gsheet.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
-If it works properly, you should see the datasets listed in the google spreadsheet [dublin_core_gsheet](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) published in the geonetwork / CSW server.
+If it works properly, you should see the datasets described in the  [spreadsheet containing dublin core metadata elements](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) published in the geonetwork / CSW server.
 
 Once there, you can start tuning the workflow to plug other data sources and using other contacts.
   
