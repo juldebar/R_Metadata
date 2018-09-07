@@ -12,7 +12,7 @@ write_datasets_in_CSV_files <- function(config,metadata,SQL){
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set shortcuts for variables (from json configuration file)")  
   logger.info("---------------------------------------------------------------------------------")  
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
