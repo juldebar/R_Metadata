@@ -8,7 +8,8 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 #working directory
-setwd("~/metadata_workflow_NetCDF_Thredds_Catalog/")
+wd <- "~/R_Metadata-master/metadata_workflow_NetCDF_Thredds_Catalog/"
+setwd(wd)
 
 #Resources
 source("workflow_utils.R")
