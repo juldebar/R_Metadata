@@ -36,9 +36,13 @@
       "pwd": "*****",
       "version": "3.0.4"
     },
+      "csw_server": {
+      "url": "http://geonetwork-sdi-lab.d4science.org/geonetwork/srv/eng/csw",
+      "user": "admin",
+      "pwd": "sdilab4you"
+    },
     "thredds": {
       "url_thredds_catalog_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/R_metadata/catalog.xml"
-
     }
   },
   "actions": {
