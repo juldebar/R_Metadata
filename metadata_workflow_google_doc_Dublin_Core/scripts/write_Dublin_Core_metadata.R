@@ -1,7 +1,6 @@
 write_Dublin_Core_metadata <- function(config, source){
   
   #config shortcuts
-  con <- config$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
