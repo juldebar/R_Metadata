@@ -10,7 +10,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set configuration variables")  
   logger.info("---------------------------------------------------------------------------------")  
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger <- config$logger
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
