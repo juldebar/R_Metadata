@@ -2,7 +2,7 @@
   "id": "Postgres_database",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "gsheet", "data.table", "dplyr","httr", "XML", "uuid", "EML","googleVis"],
+      "cran": ["RPostgreSQL", "gsheet","httr", "XML", "uuid", "EML","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
@@ -71,10 +71,10 @@
   },
   "actions": {
     "create_metadata_table": true,
-    "create_sql_view_for_each_dataset": false,
+    "create_sql_view_for_each_dataset": true,
     "data_wms_wfs": false,
     "data_csv": false,
-    "metadata_iso_19115": false,
+    "metadata_iso_19115": true,
     "metadata_iso_19110": false,
     "write_metadata_EML": false,
     "main": "write_Dublin_Core_metadata"
