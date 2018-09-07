@@ -1,7 +1,7 @@
 getSQLQueries <- function(config, metadata){
   
   #config shortcut
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
