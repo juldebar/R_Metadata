@@ -27,7 +27,7 @@ initWorkflowJob(CFG)
 ########################################################################################################################
 # executeWorkflowJob(CFG)
 Thredds <-NULL
-Thredds$url <-CFG$sdi$thredds$url_thredds_template
+Thredds$url <-CFG$sdi$thredds$url_thredds_catalog_template
 browse_sub_catalog(CFG,Thredds)
   
 #4. close workflow
