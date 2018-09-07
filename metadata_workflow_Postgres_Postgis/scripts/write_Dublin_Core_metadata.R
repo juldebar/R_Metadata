@@ -1,7 +1,7 @@
 write_Dublin_Core_metadata <- function(config, source){
   
   #config shortcuts
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
@@ -75,7 +75,7 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
     metadata$Permanent_Identifier  <- Dublin_Core_metadata$persistent_identifier[i]
-    metadata$Parent_Metadata_Identifier  <- config$db$name # @jbarde => indicates the database the dataset comes from
+    metadata$Parent_Metadata_Identifier  <- config$sdi$db$name # @jbarde => indicates the database the dataset comes from
     # metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY => same for the whole database ?
     metadata$addHierarchyLevel <- "dataset" 
     metadata$Dataset_Type  <- "dataset stored in a database" # @jbarde => we should define a proper typology of datasets same as "file type" ?
