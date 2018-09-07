@@ -2,7 +2,7 @@
   "id": "thredds_catalogs",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid", "raster", "ncdf4"],
+      "cran": ["gsheet", "httr", "XML", "uuid", "raster", "ncdf4","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
@@ -37,7 +37,7 @@
       "version": "3.0.4"
     },
     "thredds": {
-      "url_thredds_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/R_metadata/catalog.xml"
+      "url_thredds_catalog_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/R_metadata/catalog.xml"
 
     }
   },
