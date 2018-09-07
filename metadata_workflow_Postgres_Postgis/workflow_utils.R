@@ -114,9 +114,9 @@ initWorkflow <- function(file){
   
   #connect to database
   #--------------------
-  db <- config$db
+  db <- config$sdi$db
   config$logger.info(sprintf("Connect to database '%s'...", db$name))
-  config$db[["con"]] <- con <- dbConnect(db$drv, dbname=db$name, user=db$user, password=db$pwd, host=db$host)
+  config$sdi$db[["con"]] <- con <- dbConnect(db$drv, dbname=db$name, user=db$user, password=db$pwd, host=db$host)
   
   #Geoserver API manager
   #--------------------
@@ -141,7 +141,7 @@ initWorkflow <- function(file){
 closeWorkflow <- function(config){
   #close DB
   config$logger.info("Closing database connection")
-  dbDisconnect(config$db$con)
+  dbDisconnect(config$sdi$db$con)
   #Geoserver API manager
   config$logger.info("Reset Geoserver API manager")
   config$sdi$geoserver$api <- NULL
