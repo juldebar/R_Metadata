@@ -145,7 +145,6 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
 {
   
   #config shortcuts
-  con <- config$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
@@ -499,6 +498,10 @@ push_metadata_in_csw_server <- function(config,md){
   CSW_password <- config$sdi$csw_server$pwd
   csw <- CSWClient$new(CSW_URL, "2.0.2",  user = CSW_admin, CSW_password,logger="INFO")
   insert <- csw$insertRecord(record = md)
+  
+  md$identificationInfo[[1]]$citation$setTitle("a new title")
+  update <- csw$updateRecord(record = md)
+  update$getResult() #TRUE if updated, FALSE otherwise
   
   return(insert)
 }
