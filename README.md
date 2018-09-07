@@ -52,6 +52,8 @@ Installation of R packages on Linux might require the installation of following 
 
 Once you have set up the execution environment (see list of OS and R packages in the section above), as a first start, **it is recommended to execute the worklow** [using a google spreadsheet as a (meta)data source](https://github.com/juldebar/R_Metadata/tree/master/metadata_workflow_google_doc_Dublin_Core) since it is the easiest worklow to start with. This will help you to understand how to deal with the json configuration file as well as to understand the logics of all workflows.
 
+## Just change few lines in 2 files
+
 Once done with pre-requisites (see previous section): 
 - **change the working directory** in the [main script for the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R#L11) to fit the  actual (local) path of this github repository on your PC,
 - edit the content of the [json configuration file template](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_configuration_Dublin_Core_gsheet_template.json) (there is one specific json file per workflow / type of data source) to specify how to connect the components of your spatial data infrastructure and the URLs of the spreadsheets (storing metadata and related contacts).
@@ -61,20 +63,26 @@ Once done with pre-requisites (see previous section):
   - rename this file as following :" **workflow_configuration_Dublin_Core_gsheet.json** "
 - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/workflow_main_Dublin_Core_gsheet.R), read the logs and check that Geonetwork is accessible from R.
 
-If it works properly, you should see the datasets described in the  [spreadsheet containing dublin core metadata elements](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) published in the geonetwork / CSW server.
+If it works properly, you should see all datasets described in the  [spreadsheet containing dublin core metadata elements](https://docs.google.com/spreadsheets/d/1s8ntQAzgGagixZ-o9TMe6_8I4N0uARJz22Nbw7TLhWU/edit?usp=sharing) displayed as metadata sheets published in the geonetwork / CSW server.
+
+
+## Usual Errors
+
+- Your token is not set if you use Geonetwork / Geoserver in the BlueBridge infrasrtructure
+- You are using emails in the ** metadata spreadsheet ** which are not declared in the ** contacts spreadsheet **
+- You didn't comply with syntactic rules
+  - contacts: see related wiki section
+  - provenance:  see related wiki section
 
 Once there, you can start tuning the workflow to plug other data sources and using other contacts.
   
 # Step 2 : Tune the workflow to fit your needs
 
-# Main scripts
+Once you have been able to execute the workflow with the provided templates and your SDI, you can customize the workflow to fit your specific needs. 
 
-Once you have been able to execute the workflow with the templates and your SDI, you can customize the workflow to fit your specific needs.
-The most important scripts are the following 
-- see previous section: edit the content of **json configuration files templates** (one specific json file per workflow / type of data source) to indicate how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created,
-- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
-- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]() to turn the R metadata object into OGC metadata and push it into geonetwork or any CSW server.
-
+Whatever the data source to be plugged, the most important step remain (see details in previous section) :
+ - the modification of the main script:
+ - the edition of the content of **json configuration files templates** (one specific json file per workflow / type of data source) to indicate how to connect the components of your spatial data infrastructure and the URLs of the google spreadsheets you created,
 
 ## Plug your data sources (spreadsheets, Postgres database, Thredds server) and your applications
 
@@ -87,6 +95,30 @@ When it works, you can try to execute the same worflow with your spreadsheets an
   - set the credentials of your Geoserver which will be used to make datasets available with WMS / WMFS access protocols.
   - Execute the [main script of the workflow](https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_Postgres_Postgis/workflow_main_Postgres.R) and read logs to check that third applications (eg Postgres, Geonetwork, Geoserver) are accessible from R.
   
+
+<!-- 
+
+- uuid VS identifier a mano 
+- "Mauritius"
+- "Provenance"
+- enlever le template
+dateStamp Emilie
+-->
+
+
+##  Postgres data source use case <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Database-postgres.svg" width="20">
+
+
+In this case, it is required:
+- to specify the credentials to access the database in the configuration file **workflow_configuration_Postgres_template.json**: cf [these lines](https://github.com/juldebar/R_Metadata/blob/069143450f077ef42915ca554a395faac2728e75/metadata_workflow_Postgres_Postgis/workflow_configuration_Postgres_template.json#L19-L25),
+- to prepare the list of SQL queries with which your datasets can be physically extracted from the Postgres database (and stored as CSV files)
+- to specify a user who can create tables :
+  - the **metadata** table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
+  - one view per dataset where columns are renamed as following:
+    - the name of date colum "AS date"
+    - the name of geometry colum "AS geom"
+
+
 ## (Des)activatation of the different steps
 
 
@@ -106,35 +138,17 @@ The different steps of the workflow can be (des)activated independantly accordin
 ```
 
 
-
-# Usual Errors
-
-- Contacts are not properly described in the google spreadsheet (or not even in the spreadsheet)
-- Your token is not set if you use Geonetwork / Geoserver in the BlueBridge infrasrtructure
-- Syntactic aspects 
-  - contacts
-  - provenance
-
-<!-- 
-
-- uuid VS identifier a mano 
-- "Mauritius"
-- "Provenance"
-- enlever le template
-dateStamp Emilie
--->
+##  NetCDF / NCML (OPeNDAP / Thredds server) use case
 
 
-##  Postgres data source use case
 
-In this case, it is required:
-- to prepare the list of SQL queries with which your datasets can be physically extracted from the Postgres database (and stored as CSV files)
-- to specify a user who can create tables :
-  - the **metadata** table which describes the list of datasets for which we will create metadata (OGC 19115 in geonetwork) and access protocols (OGC WMS/WFS from geoserver)
-  - one view per dataset where columns are renamed as following:
-    - the name of date colum "AS date"
-    - the name of geometry colum "AS geom"
 
+# Main scripts for metadata creation and publication
+
+
+The most important scripts for metadata creation are the following 
+- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
+- [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]() to turn the R metadata object into OGC metadata and push it into geonetwork or any CSW server.
 
 
 
