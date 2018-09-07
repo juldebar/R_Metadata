@@ -8,7 +8,7 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 #working directory
-wd <- "~/Bureau/CODES/R_Metadata/metadata_workflow_Postgres_Postgis/"
+wd <- "~/R_Metadata-master/metadata_workflow_Postgres_Postgis/"
 setwd(wd)
 
 #Resources
