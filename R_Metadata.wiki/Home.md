@@ -21,27 +21,27 @@ Here is the list of metadata elements (columns) in the metadata spreadsheet (or 
 ```{r setup, include=FALSE}
 owner=ird@ird.fr;publisher=ird@ird.fr;originator=ird@ird.fr;metadata=julien.barde@ird.fr;principalInvestigator=frederique.menard@ird.fr;principalInvestigator=michel.potier@ird.fr
 ```
- -**Subject**: controlled syntax 
+ - **Subject**: controlled syntax 
 ```{r setup, include=FALSE}
 GENERAL=antea,abraliopsis sp,acanthephyra sanguinea,acanthephyra sp,alepisaurus ferox....
 AGROVOC=keyword1,keyword2....
 ```
- -**Date**: controlled syntax 
+ - **Date**: controlled syntax 
 ```{r setup, include=FALSE}
 start=1984-12-31;end=2007-12-30
 ``` 
- -**Type**: free text
- -**Format**: free text
- -**Language**: free text
- -**Relation**: controlled syntax
+ - **Type**: free text
+ - **Format**: free text
+ - **Language**: free text
+ - **Relation**: controlled syntax
 ```{r setup, include=FALSE}
 Previous metadata sheet@http://thredds.oreme.org:8080/geonetwork/srv/eng/catalog.search#/metadata/db_Stomac_19115
 thumbnail@http://mdst-macroes.ird.fr/documentation/databases/dbStomac/thumbnail_stomac.jpeg
 thumbnail@http://mdst-macroes.ird.fr/documentation/databases/dbStomac/dbStomacSpatialExtent_thumbnail.jpg
 IRD@http://www.ird.fr/
 ``` 
- -**Lineage**: controlled syntax
+ - **Lineage**: controlled syntax
 ```{r setup, include=FALSE}
 step1=
 ```
- -**Rights**: free text but might be automated for CC
+ - **Rights**: free text but might be automated for CC
