@@ -19,7 +19,7 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
 )
 {
   #config shortcuts
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger <- config$logger
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
