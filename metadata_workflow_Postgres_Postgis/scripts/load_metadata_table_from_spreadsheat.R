@@ -45,7 +45,7 @@ create_one_view_per_dataset <- function(config, metadata){
   
   number_row<-nrow(metadata)
   for (i in 1:number_row ) {
-    view_name <- metadata$identifier[i]
+    view_name <- metadata$related_view_name[i]
     sql_view <- metadata$related_sql_query[i]
     # sql_view <- paste('SELECT ogc_fid, wkb_geometry AS geom, filename, gpslatitud AS lat,gpslongitu AS lon, gpsdatetim AS date,lightvalue,imagesize,model,path,parent_dir FROM "public"."photos_metadata" WHERE parent_dir = \'',view_name,'\';')
     SQLquery <- paste('DROP VIEW IF EXISTS ',view_name,' CASCADE ; CREATE VIEW ',view_name,' AS ', sql_view, sep="");
