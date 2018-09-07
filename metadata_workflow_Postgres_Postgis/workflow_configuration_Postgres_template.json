@@ -16,14 +16,6 @@
       "http://svn.research-infrastructures.eu/public/d4science/gcube/trunk/data-analysis/RConfiguration/RD4SFunctions/workspace_interaction.r"
     ]
   },
-  "db": {
-    "host": "server_name.fr",
-    "drv": "PostgreSQL",
-    "name": "database_name",
-    "user": "********",
-    "pwd": "********"
-  },
-
   "gcube": {
     "token": "your_token",
     "repositories": {
@@ -50,6 +42,13 @@
   },
   "sdi": {
     "loggerLevel": "DEBUG",
+    "db": {
+      "host": "server_name.fr",
+      "drv": "PostgreSQL",
+      "name": "database_name",
+      "user": "********",
+      "pwd": "********"
+  },
     "geoserver": {
       "url": "http://mygeoserver.org/geoserver",
       "workspace": "********",
