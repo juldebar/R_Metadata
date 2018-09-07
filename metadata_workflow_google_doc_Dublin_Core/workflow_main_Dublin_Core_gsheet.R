@@ -9,6 +9,7 @@ options(stringsAsFactors = FALSE)
 
 #working directory
 wd <- "~/R_Metadata-master/metadata_workflow_google_doc_Dublin_Core/"
+setwd(wd)
 
 #Resources
 source("workflow_utils.R")
