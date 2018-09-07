@@ -3,7 +3,7 @@ Welcome to the R_Metadata wiki!
 
 # Syntactic conventions for spreadsheets
 
-The workflow can be reused with similar data sources (spreadsheets, SQL databases, Thredds servers) as long as inputs comply with naming conventions and syntactic aspects for valuation of metadata. Rules are the same for spreadsheets and databases. NetCDF and NCMLF files comply with CF-conventions and specific valuation rules.
+The workflow can be reused with similar data sources (spreadsheets, SQL databases, Thredds servers) as long as inputs comply with naming conventions and syntactic aspects for valuation of metadata. Rules are the same for spreadsheets and databases. NetCDF and NCML files have to comply with CF-conventions and specific valuation rules.
 
 ## Contacts spreadsheet
 
@@ -11,11 +11,16 @@ Basically, contacts are described with all metadata elements provided by ISO 191
 
 ## Metadata spreadsheet
 
+Metadata elements used in the workflow mainly come from [Dublin Core Metadata Initiative (DCMI)](http://www.dublincore.org/documents/usageguide/elements/
+).
 Here is the list of metadata elements (columns) in the metadata spreadsheet (or dedicated table in a SQL database)
 
- - ** Identifier **: free text (add permanent identifier)
+ - **Identifier**: free text (add permanent identifier)
  - ** Title | Description | Type  ** : free text
  - ** Creator **: controlled syntax 
+```{r setup, include=FALSE}
+owner=ird@ird.fr;publisher=ird@ird.fr;originator=ird@ird.fr;metadata=julien.barde@ird.fr;principalInvestigator=frederique.menard@ird.fr;principalInvestigator=michel.potier@ird.fr
+```
  - ** Subject **: controlled syntax 
  - ** Date **: controlled syntax 
  - ** Type **: free text
