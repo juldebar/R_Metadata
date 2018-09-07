@@ -20,7 +20,6 @@ getSQLQueries <- function(config, metadata){
   logger.info("######################################################################################################")
   logger.info("Setting SQL queries")
   logger.info("######################################################################################################")
-  metadata$related_view_name
   SQL$query_dynamic_metadata_spatial_Extent <- paste("SELECT ST_AsText(ST_Envelope(ST_ConvexHull(ST_Collect(geom)))) As geom FROM",metadata$related_view_name,";",sep=" ")
   SQL$query_dynamic_metadata_count_features <-  paste("SELECT count(*) FROM",metadata$related_view_name,";",sep=" ")
   SQL$query_dynamic_metadata_get_geometry_name <-  paste("SELECT type FROM geometry_columns WHERE f_table_name='",metadata$related_view_name,"';",sep="")
