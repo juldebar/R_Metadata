@@ -2,7 +2,7 @@
   "id": "spreadsheet_data_source",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid","googleVis"],
+      "cran": ["gsheet", "httr", "XML", "uuid","EML","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
