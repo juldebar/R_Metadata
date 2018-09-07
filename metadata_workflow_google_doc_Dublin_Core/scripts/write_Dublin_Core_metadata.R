@@ -160,8 +160,8 @@ write_Dublin_Core_metadata <- function(config, source){
       if(http_URLs_names=="thumbnail"){
         http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, "thumbnail","Aperçu", "WWW:LINK-1.0-http--link","image/png")
       } else{
-        http_URLs_descriptions <- c(http_URLs_descriptions,split_Relation[[1]][1])
-        http_URLs_protocols  <- c(http_URLs_protocols,"WWW:LINK-1.0-http--link")
+        http_URLs_descriptions <- split_Relation[[1]][1]
+        http_URLs_protocols  <- "WWW:LINK-1.0-http--link"
         http_URLs_functions <- "donwload"
         http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, http_URLs_names,http_URLs_descriptions,http_URLs_protocols, http_URLs_functions)
       }
