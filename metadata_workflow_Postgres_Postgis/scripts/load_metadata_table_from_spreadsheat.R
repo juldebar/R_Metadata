@@ -39,7 +39,7 @@ create_one_view_per_dataset <- function(config, metadata){
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set configuration variables")  
   logger.info("---------------------------------------------------------------------------------")  
-  con <- config$db$con
+  con <- config$sdi$db$con
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
   
