@@ -71,8 +71,8 @@
   "actions": {
     "create_metadata_table": true,
     "create_sql_view_for_each_dataset": true,
-    "data_wms_wfs": false,
-    "data_csv": false,
+    "data_wms_wfs": true,
+    "data_csv": true,
     "metadata_iso_19115": true,
     "metadata_iso_19110": false,
     "write_metadata_EML": false,
