@@ -1,3 +1,39 @@
+
+return_keywords_and_thesaurus_as_data_frame <- function(all_subjects){
+  
+  keywords_metadata <-NULL
+  thesaurus <-NULL
+  all_keywords <-NULL
+  all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
+  
+  list_subjects <- strsplit(as.character(all_subjects), split = "\n")
+  
+  for(subjects in list_subjects[[1]]){
+    cat(subjects)
+    # subjects=list_subjects[[1]][1]
+    cat("\n")
+    split_subjects <- strsplit(subjects, split = "=")
+    thesaurus_name <- split_subjects[[1]][1]
+    thesaurus[[length(thesaurus)+1]] <- thesaurus_name
+    
+    all_subjects <- split_subjects[[1]][2]
+    list_keywords <- strsplit(as.character(all_subjects), split = ",")
+    list_keywords <- unlist(list_keywords)
+    for (k in list_keywords){
+      all_keywords[nrow(all_keywords)+1,] <- c(k, thesaurus_name)
+    }
+    keywords_metadata$all_keywords <- all_keywords
+    keywords_metadata$thesaurus <- thesaurus
+    TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
+    keywords_metadata$TopicCategory <- TopicCategory
+  }
+  
+  return(keywords_metadata)
+}
+
+################################################################################
+
+
 add_contacts_and_roles_OGC_19115 <- function(config, metadata_identifier, contacts_roles, expected_role){
   
   contacts <- config$gsheets$contacts
