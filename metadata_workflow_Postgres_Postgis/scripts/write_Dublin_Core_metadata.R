@@ -101,6 +101,7 @@ write_Dublin_Core_metadata <- function(config, source){
     spatial_metadata <-NULL
     
     spatial_metadata$SRID<-SQL$SRID
+    if(spatial_metadata$SRID[,1]==0){spatial_metadata$SRID<-4326}
     
     spatial_extent=readWKT(SQL$dynamic_metadata_spatial_Extent)
     xmin <- spatial_extent@bbox[1,1]
