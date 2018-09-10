@@ -190,7 +190,7 @@ write_Dublin_Core_metadata <- function(config, source){
       #Publication to Geonetwork
       logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
 #       metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
-      metadata_URL <- ppush_metadata_in_csw_server(config, ogc_metatada_sheet)
+      metadata_URL <- push_metadata_in_csw_server(config, ogc_metatada_sheet)
       logger.info(sprintf("URL ?", metadata_URL))
       
       
