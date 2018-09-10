@@ -188,8 +188,7 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
         vector <- character(0)
         for (i in 1:number_row_kw) {
           if(keywords_metadata$all_keywords$thesaurus[i]==different_thesaurus[t] & !is.na(keywords_metadata$all_keywords$keyword[i])){
-            vector <- append(vector,keywords_metadata$all_keywords$keyword[i])
-            vector
+            vector[[length(vector)+1]] <- keywords_metadata$all_keywords$keyword[i]
           }
         }
       }
