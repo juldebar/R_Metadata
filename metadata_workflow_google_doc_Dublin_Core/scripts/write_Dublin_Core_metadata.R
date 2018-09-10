@@ -110,10 +110,8 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("Set Metadata elements to describe the CONTROLLED VOCABULARIES: KEYWORDS AND THESAURUS")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
-    metadata$Subject <- Dublin_Core_metadata$subject[i]
-    keywords_metadata <-NULL
-    all_keywords <-NULL
-    static_keywords<-NULL
+    metadata$Subject <- Dublin_Core_metadata$Subject[i]
+    # static_keywords<-NULL
     keywords_metadata<-return_keywords_and_thesaurus_as_data_frame(metadata$Subject)
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
