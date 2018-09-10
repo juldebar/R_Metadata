@@ -173,13 +173,13 @@ return_urls_as_data_frame <- function(all_relations){
 
 #################################### PROCESS RELATIONS #############################################
 #################################### EXAMPLE 1: PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
-Dublin_Core_spreadsheet <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
-Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheet))
-# contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
-Titles<-Dublin_Core_metadata$Title[22]
-Titles
-multilingual_data_frame <- return_multilingual_data_frame(Titles)
-multilingual_data_frame
+# Dublin_Core_spreadsheet <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
+# Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheet))
+# # contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
+# Titles<-Dublin_Core_metadata$Title[22]
+# Titles
+# multilingual_data_frame <- return_multilingual_data_frame(Titles)
+# multilingual_data_frame
 
 return_multilingual_data_frame <- function(Titles){
   language <- NULL
