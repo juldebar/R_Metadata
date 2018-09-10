@@ -535,9 +535,9 @@ push_metadata_in_csw_server <- function(config,md){
   csw <- CSWClient$new(CSW_URL, "2.0.2",  user = CSW_admin, CSW_password,logger="INFO")
   insert <- csw$insertRecord(record = md)
   
-  md$identificationInfo[[1]]$citation$setTitle("a new title")
-  update <- csw$updateRecord(record = md)
-  update$getResult() #TRUE if updated, FALSE otherwise
+#   md$identificationInfo[[1]]$citation$setTitle("a new title")
+#   update <- csw$updateRecord(record = md)
+#   update$getResult() #TRUE if updated, FALSE otherwise
   
   return(insert)
 }
