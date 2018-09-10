@@ -99,6 +99,7 @@ return_contacts_as_data_frame <- function(all_contacts){
 return_keywords_and_thesaurus_as_data_frame <- function(all_subjects){
  
   keywords_metadata <-NULL
+  thesaurus <-NULL
   all_keywords <-NULL
   all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
   
@@ -110,6 +111,8 @@ return_keywords_and_thesaurus_as_data_frame <- function(all_subjects){
     cat("\n")
     split_subjects <- strsplit(subjects, split = "=")
     thesaurus_name <- split_subjects[[1]][1]
+    thesaurus[[length(thesaurus)+1]] <- thesaurus_name
+    
     all_subjects <- split_subjects[[1]][2]
     list_keywords <- strsplit(as.character(all_subjects), split = ",")
     list_keywords <- unlist(list_keywords)
@@ -117,6 +120,7 @@ return_keywords_and_thesaurus_as_data_frame <- function(all_subjects){
     all_keywords[nrow(all_keywords)+1,] <- c(k, thesaurus_name)
     }
     keywords_metadata$all_keywords <- all_keywords
+    keywords_metadata$thesaurus <- thesaurus
     TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
     keywords_metadata$TopicCategory <- TopicCategory
   }
@@ -169,8 +173,8 @@ return_urls_as_data_frame <- function(all_relations){
 
 #################################### PROCESS RELATIONS #############################################
 #################################### EXAMPLE 1: PUBLISH ALL DATASETS IN A GIVEN DATAVERSE #############################################
-Dublin_Core_spreadsheat <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
-Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheat))
+Dublin_Core_spreadsheet <- "https://docs.google.com/spreadsheets/d/1GAkcifGlZ-TNDP4vArH7SuwhWaDVkIIMdmgLjsGL8MQ/edit?usp=sharing"
+Dublin_Core_metadata <- as.data.frame(gsheet::gsheet2tbl(Dublin_Core_spreadsheet))
 # contacts <- as.data.frame(gsheet::gsheet2tbl(google_sheet_contacts))
 Titles<-Dublin_Core_metadata$Title[22]
 Titles
