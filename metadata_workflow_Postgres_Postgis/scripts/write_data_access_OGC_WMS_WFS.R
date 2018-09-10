@@ -85,7 +85,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")
   vt <- GSVirtualTable$new()
   vt$setName(metadata$Permanent_Identifier)
-  vt$setSql(gsub(";"," LIMIT 500",SQL$query_wfs_wms))
+  vt$setSql(gsub(";"," -- LIMIT 500",SQL$query_wfs_wms))
   vtg <- GSVirtualTableGeometry$new(name = SQL$geometry_name, type = SQL$geometry_type, srid = spatial_metadata$SRID)
   vt$setGeometry(vtg)
   featureType$setVirtualTable(vt)
@@ -94,7 +94,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
-  layer$setDefaultStyle("point")
+  layer$setDefaultStyle("point") # julien => TO BE DONE (should not be hard coded : SLD for geometries)
   published <- gsman$publishLayer(workspace, datastore, featureType, layer)
   return(published)
 }
