@@ -110,20 +110,11 @@ write_Dublin_Core_metadata <- function(config, source){
     logger.info("Set Metadata elements to describe the CONTROLLED VOCABULARIES: KEYWORDS AND THESAURUS")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     
-    metadata$Subject  <- Dublin_Core_metadata$Subject[i]
+    metadata$Subject <- Dublin_Core_metadata$subject[i]
     keywords_metadata <-NULL
     all_keywords <-NULL
     static_keywords<-NULL
-    list_of_keywords <- metadata$Subject
-    list_of_keywords <- gsub("GENERAL=", "", list_of_keywords)
-    thesaurus <- c("AGROVOC")
-    list_keywords <- strsplit(as.character(list_of_keywords), split = ", ")
-    list_keywords <- unlist(list_keywords)
-    all_keywords <-data.frame(keyword=list_keywords, thesaurus=thesaurus, stringsAsFactors=FALSE)
-    keywords_metadata$all_keywords <- all_keywords
-    TopicCategory <- c("biota", "oceans", "environment", "geoscientificInformation","economy")
-    keywords_metadata$TopicCategory <- TopicCategory
-    
+    keywords_metadata<-return_keywords_and_thesaurus_as_data_frame(metadata$Subject)
     
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Metadata elements to describe the DCMI RELATION (OGC ONLINE RESOURCES)")
