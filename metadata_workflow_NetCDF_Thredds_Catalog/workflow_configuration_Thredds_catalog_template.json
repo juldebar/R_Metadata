@@ -32,14 +32,14 @@
     "loggerLevel": "DEBUG",
     "geonetwork": {
       "url": "http://mygeonetwork.org/geonetwork",
-      "user": "*****",
-      "pwd": "*****",
+      "user": "********",
+      "pwd": "********",
       "version": "3.0.4"
     },
       "csw_server": {
-      "url": "http://geonetwork-sdi-lab.d4science.org/geonetwork/srv/eng/csw",
-      "user": "admin",
-      "pwd": "sdilab4you"
+      "url": "http://mygeonetwork.org/geonetwork/srv/eng/csw",
+      "user": "********",
+      "pwd": "********"
     },
     "thredds": {
       "url_thredds_catalog_template": "http://mdst-macroes.ird.fr:8080/thredds/catalog/R_metadata/catalog.xml"
@@ -47,6 +47,8 @@
   },
   "actions": {
     "metadata_iso_19115": true,
+    "geonetwork_publication": false,
+    "CSW-T_publication": true,
     "main": "browse_sub_catalog"
   }
 }
