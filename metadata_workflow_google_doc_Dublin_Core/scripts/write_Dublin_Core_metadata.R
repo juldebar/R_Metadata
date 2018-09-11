@@ -187,17 +187,45 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been created!", xml_file_name))
       setwd("..")
       
-      #Publication to Geonetwork
-      logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
-#       metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
-      metadata_URL <- push_metadata_in_csw_server(config, ogc_metatada_sheet)
-      logger.info(sprintf("URL ?", metadata_URL))
-      
-      
-      logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
+      if(config$actions$geonetwork_publication){
+        logger.info("Publishing ISO/OGC XML metadata file in Geonetwork")
+        metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
+        logger.info(sprintf("URL ?", metadata_URL))
+        logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
+      } else if (config$actions$CSW-T_publication){
+        logger.info("Publishing ISO/OGC XML metadata file in CSW-T server")
+        metadata_URL <- push_metadata_in_csw_server(config, ogc_metatada_sheet)
+        logger.info(sprintf("Publication via CSW-T => ", metadata_URL))
+      }
       
     } else {
       logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
+    }
+    
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("New workflow step: EML Metadata")
+    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    
+    if(config$actions$write_metadata_EML){
+      EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
+                                                                metadata=metadata,
+                                                                contacts_metadata=contacts_metadata,
+                                                                spatial_metadata=spatial_metadata,
+                                                                temporal_metadata=temporal_metadata,
+                                                                keywords_metadata=keywords_metadata,
+                                                                urls_metadata=urls_metadata
+      )
+      logger.info(sprintf("EML metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
+      filename <-paste("metadata_eml_", metadata$Permanent_Identifier,"_eml.xml", sep="")
+      
+      
+      setwd(file.path(getwd(), "metadata"))
+      write_eml(EML_metatada_sheet, filename)
+      eml_validate(filename)
+      setwd("..")
+      logger.info(sprintf("EML metadata '%s' has been created!", xml_file_name))
+      
+      
     }
     
   }
