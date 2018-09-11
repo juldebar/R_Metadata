@@ -293,11 +293,18 @@ write_thredds_catalog_metadata <- function(config, source){
     logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been created!", xml_file_name))
     setwd("..")
     
-    #Publication to Geonetwork
-    logger.info("Publishing ISO/OGC XML metadata file to Geonetwork")
-    metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
-    logger.info(sprintf("URL ?", metadata_URL))
-    logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
+    if(config$actions$geonetwork_publication){
+      logger.info("Publishing ISO/OGC XML metadata file in Geonetwork")
+      metadata_URL <- push_metadata_in_geonetwork(config, metadata$Identifier, ogc_metatada_sheet)
+      logger.info(sprintf("URL ?", metadata_URL))
+      logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
+    } else if (config$actions$`CSW-T_publication`){
+      logger.info("Publishing ISO/OGC XML metadata file in CSW-T server")
+      metadata_URL <- push_metadata_in_csw_server(config, ogc_metatada_sheet)
+      logger.info(sprintf("Publication via CSW-T => ", metadata_URL))
+    }
+    
+    
     
   } else {
     logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
