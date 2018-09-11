@@ -47,10 +47,19 @@
       "url": "http://mygeonetwork.org/geonetwork/srv/eng/csw",
       "user": "*****",
       "pwd": "*****"
+    },
+      "dataverse": {
+      "url": "one-dataverse.org",
+      "user": "Snow, Jon",
+      "pwd": "243df-apikey-41df2-52f-52df42ds23f",
+      "dataverse_name":"dataverse_id_as_it_appears_in_the_url_of_the_dataverse"
     }
   },
   "actions": {
     "metadata_iso_19115": true,
+    "write_metadata_EML": true,
+    "geonetwork_publication": false,
+    "CSW-T_publication": true,
     "main": "write_Dublin_Core_metadata"
   }
 }
