@@ -93,6 +93,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("Set and publish the complete layer (featuretype + layer)")  
   logger.info("---------------------------------------------------------------------------------")  
   # si le layer existe déjà et unpublishLayer, voire deleteFeatureType
+  unpublished <- gsman$unpublishLayer(workspace, datastore, layer)
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
   layer$setDefaultStyle("generic") # julien => TO BE DONE (should not be hard coded : SLD for geometries)
