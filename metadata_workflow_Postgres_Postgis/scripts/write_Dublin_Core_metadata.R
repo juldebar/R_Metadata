@@ -19,7 +19,7 @@ write_Dublin_Core_metadata <- function(config, source){
   if (config$actions$create_metadata_table){
     query_create_table <- readLines(paste(config$wd,"/scripts/SQL/create_table_metadata.sql",sep=""))
     create_Table <- dbGetQuery(con,query_create_table)
-    metadata <- metadata_dataframe(Dublin_Core_metadata=Datasets)
+    metadata <- metadata_dataframe(config, Dublin_Core_metadata=Datasets)
     dbWriteTable(con, "metadata", metadata, row.names=FALSE, append=TRUE)
   } else {
     logger.info("Table 'metadata' not created")
@@ -183,8 +183,11 @@ write_Dublin_Core_metadata <- function(config, source){
     # http://geoserver-sdi-lab.d4science.org/geoserver/RTTP_workspace/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&FORMAT=image%2Fpng&TRANSPARENT=true&QUERY_LAYERS=RTTP_workspace%3Arttp_released_tagged_tuna&STYLES&LAYERS=RTTP_workspace%3Arttp_released_tagged_tuna&INFO_FORMAT=text%2Fhtml&FEATURE_COUNT=50&X=50&Y=50&SRS=EPSG%3A4326&WIDTH=101&HEIGHT=101&BBOX=42.95654296875%2C-17.02880859375%2C47.39501953125%2C-12.59033203125
     wms_url <-paste(config$sdi$geoserver$url, config$sdi$geoserver$workspace, "wms?", sep="/")
     wms_layer<-paste0(config$sdi$geoserver$workspace,":",metadata$Identifier)
-    # thumbnail <-paste(wms_url,"service=WMS&version=1.1.1&request=GetMap&layers=",config$sdi$geoserver$workspace,":world,",wms_layer,"&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,"&TRANSPARENT=true&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
-    thumbnail <-paste(wms_url,"service=WMS&version=1.1.1&request=GetMap&layers=",wms_layer,"&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,"&TRANSPARENT=true&width=768&height=768&srs=EPSG:",spatial_metadata$SRID,"&format=image/png",sep="")
+    if(is.null(config$sdi$geoserver$background_layer)){
+      thumbnail <-paste(wms_url,"service=WMS&version=1.1.1&request=GetMap&layers=",config$sdi$geoserver$background_layer,",",wms_layer,"&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,"&TRANSPARENT=true&width=768&height=768&srs=EPSG:4326&format=image/png",sep="")
+      } else{
+        thumbnail <-paste(wms_url,"service=WMS&version=1.1.1&request=GetMap&layers=",wms_layer,"&bbox=",spatial_metadata$dynamic_metadata_spatial_Extent$xmin,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymin,",",spatial_metadata$dynamic_metadata_spatial_Extent$xmax,",",spatial_metadata$dynamic_metadata_spatial_Extent$ymax,"&TRANSPARENT=true&width=768&height=768&srs=EPSG:",spatial_metadata$SRID,"&format=image/png",sep="")
+      }
     http_urls[nrow(http_urls)+1,] <- c(thumbnail, "thumbnail","Thumbnail from WMS / Geoserver", "WWW:LINK-1.0-http--link","image/png")
     http_urls[nrow(http_urls)+1,] <- c(wms_url,wms_layer,"Visualize maps from WMS (Web Map Service) - see service/operation metadata for guidance to use query parameters","OGC:WMS-1.3.0-http-get-map","download")
     
@@ -259,7 +262,7 @@ write_Dublin_Core_metadata <- function(config, source){
         logger.info(sprintf("ISO/OGC 19139 XML metadata (ISO 19115) file '%s' has been published!", xml_file_name))
       } else if (config$actions$`CSW-T_publication`){
         logger.info("Publishing ISO/OGC XML metadata file in CSW-T server")
-        metadata_URL <- push_metadata_in_csw_server(config, metadata$Identifier, ogc_metatada_sheet)
+        metadata_URL <- push_metadata_in_csw_server(config,metadata_identifier=metadata$Identifier, md=ogc_metatada_sheet)
         logger.info(sprintf("Publication via CSW-T => ", metadata_URL))
       }
       
