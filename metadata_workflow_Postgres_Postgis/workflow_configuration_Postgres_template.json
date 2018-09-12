@@ -53,6 +53,7 @@
       "url": "http://mygeoserver.org/geoserver",
       "workspace": "********",
       "datastore": "********",
+      "background_layer": "this_datastore:this_layer",
       "user": "********",
       "pwd": "********"
     },
