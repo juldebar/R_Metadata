@@ -29,6 +29,7 @@
     "scripts": [
       "write_metadata_OGC_19115_from_Dublin_Core.R",
       "write_metadata_EML.R",
+      "write_metadata_dataverse.R",
       "write_Dublin_Core_metadata.R"
           ]
   },
