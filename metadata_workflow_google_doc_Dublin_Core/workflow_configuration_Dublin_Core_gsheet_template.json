@@ -60,6 +60,7 @@
   "actions": {
     "metadata_iso_19115": true,
     "write_metadata_EML": true,
+    "write_metadata_dataverse": false,
     "geonetwork_publication": false,
     "CSW-T_publication": true,
     "main": "write_Dublin_Core_metadata"
