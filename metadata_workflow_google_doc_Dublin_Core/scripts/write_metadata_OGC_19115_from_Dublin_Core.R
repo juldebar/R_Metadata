@@ -490,6 +490,11 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
 #@param md
 push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
   
+  #config shortcuts
+  logger <- config$logger
+  logger.info <- config$logger.info
+  logger.warn <- config$logger.warn
+  logger.error <- config$logger.error
   #shortcut for gn config
   GN <- config$sdi$geonetwork$api
   
@@ -529,6 +534,11 @@ push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
 
 push_metadata_in_csw_server <- function(config,metadata_identifier,md){
   
+  #config shortcuts
+  logger <- config$logger
+  logger.info <- config$logger.info
+  logger.warn <- config$logger.warn
+  logger.error <- config$logger.error
   #shortcut for CSW-T server config
   CSW_URL <- config$sdi$csw_server$url
   CSW_admin <- config$sdi$csw_server$user
