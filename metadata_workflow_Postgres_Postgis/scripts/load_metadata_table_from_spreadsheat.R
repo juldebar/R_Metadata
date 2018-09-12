@@ -56,11 +56,9 @@ create_one_view_per_dataset <- function(config, metadata){
   for (i in 1:number_row ) {
     view_name <- metadata$related_view_name[i]
     sql_view <- gsub(";","",metadata$related_sql_query[i])
-    # sql_view <- paste('SELECT ogc_fid, wkb_geometry AS geom, filename, gpslatitud AS lat,gpslongitu AS lon, gpsdatetim AS date,lightvalue,imagesize,model,path,parent_dir FROM "public"."photos_metadata" WHERE parent_dir = \'',view_name,'\';')
     SQLquery <- paste('DROP MATERIALIZED VIEW IF EXISTS "',view_name,'" ; CREATE MATERIALIZED VIEW "',view_name,'" AS ', sql_view,' WITH DATA ', sep="");
     # @julien TO BE DONE => ADD SPATIAL INDEX
     resuling_view <- dbGetQuery(con, SQLquery)
   }
   logger.info("MATERIALIZED VIEW has been created")  
-  
 }
