@@ -11,7 +11,7 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
   #config shortcuts
   con <- config$sdi$dataverse
   dataverse_server=con$url
-  dataverse_key=con$user
+  dataverse_key=con$pwd
   dataverse_name=con$dataverse_name
   dataverse_user_name=con$user
   Sys.setenv("DATAVERSE_SERVER" = dataverse_server)
@@ -29,7 +29,8 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
     # metadata$Permanent_Identifier <- metadata$Identifier
     #################################### MAP DATAVERSE AND DCMI METADATA ELEMENTS #############################################
     # CHECK METADATA FOR PROPER MAPPING : https://www.rdocumentation.org/packages/dataverse/versions/0.2.0/topics/initiate_sword_dataset
-    Dataverse_metadata <- list(identifier=metadata$Identifier,
+  Dataverse_metadata <- NULL
+  Dataverse_metadata <- list(identifier=metadata$Identifier,
                                title = metadata$Title,
                                # creator = dataverse_user_name,
                                description = metadata$Description,
@@ -44,17 +45,17 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
                                rights = metadata$Rights
     )
     
-    keywords <-return_keywords_and_thesaurus_as_data_frame(metadata$Subject)
-    for (k in keywords$all_keywords$keyword) {
+    # keywords <-return_keywords_and_thesaurus_as_data_frame(metadata$Subject)
+    for (k in keywords_metadata$keyword) {
       if(substring(k, 1, 1)== " "){k=substring(k, 2, nchar(k))}
       Dataverse_metadata <- c(Dataverse_metadata,subject = k)
     }
-    urls <-return_urls_as_data_frame(metadata$Relation)
-    for (u in urls$http_URLs_links) {
+    # urls <-return_urls_as_data_frame(metadata$Relation)
+    for (u in urls_metadata$http_URLs_links) {
       Dataverse_metadata <- c(Dataverse_metadata,relation = u)
     }
-    contacts <-return_contacts_as_data_frame(metadata$Creator)
-    for (c in contacts$contact) {
+    # contacts <-return_contacts_as_data_frame(metadata$Creator)
+    for (c in contacts_metadata$contacts_roles$contact) {
       Dataverse_metadata <- c(Dataverse_metadata,creator = c)
     }
     
