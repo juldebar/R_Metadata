@@ -526,18 +526,25 @@ push_metadata_in_geonetwork <- function(config, metadata_permanent_id, md){
 }
 
 
-push_metadata_in_csw_server <- function(config,md){
+push_metadata_in_csw_server <- function(config,metadata_identifier,md){
   
-  #shortcut for gn config
+  #shortcut for CSW-T server config
   CSW_URL <- config$sdi$csw_server$url
   CSW_admin <- config$sdi$csw_server$user
   CSW_password <- config$sdi$csw_server$pwd
   csw <- CSWClient$new(CSW_URL, "2.0.2",  user = CSW_admin, CSW_password,logger="INFO")
-  insert <- csw$insertRecord(record = md)
+  record <-NULL
+  #get record by id
+  record <- csw$getRecordById(metadata_identifier)
   
-#   md$identificationInfo[[1]]$citation$setTitle("a new title")
-#   update <- csw$updateRecord(record = md)
-#   update$getResult() #TRUE if updated, FALSE otherwise
+  if(record){
+    cat("The metadata already exists: updating it !")
+    update <- csw$updateRecord(record = md)
+    update$getResult() #TRUE if updated, FALSE otherwise
+  } else{
+    cat("The metadata doesn't exist: creating it !")
+    insert <- csw$insertRecord(record = md)
+  }
   
   return(insert)
 }
