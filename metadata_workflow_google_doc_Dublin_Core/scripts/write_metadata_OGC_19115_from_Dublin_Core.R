@@ -542,13 +542,13 @@ push_metadata_in_csw_server <- function(config,metadata_identifier,md){
   record <- csw$getRecords(query = query)
   
   if(length(record)==0){
-    cat("The metadata doesn't exist: creating it !")
+    logger.info("The metadata doesn't exist: creating it !")
     insert <- csw$insertRecord(record = md)
+    return(insert)
   } else {
-    cat("The metadata already exists: updating it !")
+    logger.info("The metadata already exists: updating it !")
     update <- csw$updateRecord(record = md)
     update$getResult() #TRUE if updated, FALSE otherwise
+    return(update)
   }
-  
-  return(insert)
 }
