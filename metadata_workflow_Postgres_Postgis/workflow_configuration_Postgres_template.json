@@ -2,7 +2,7 @@
   "id": "Postgres_database",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "gsheet","httr", "XML", "uuid", "EML","googleVis"],
+      "cran": ["RPostgreSQL", "dplyr", "gsheet","httr", "XML", "uuid", "EML","googleVis"],
       "cran_force_install" : false,
       "github": [
         "openfigis/RFigisGeo",
