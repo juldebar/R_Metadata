@@ -2,6 +2,15 @@
 #@param Dublin_Core_metadata
 #@returns an object of class dataframe
 metadata_dataframe <- function(Dublin_Core_metadata){
+  
+  logger.info <- config$logger.info
+  logger.info("---------------------------------------------------------------------------------")  
+  logger.info("Collect metadata from google doc")  
+  logger.info("---------------------------------------------------------------------------------")  
+  con <- config$sdi$db$con
+  logger.warn <- config$logger.warn
+  logger.error <- config$logger.error
+  
   all_metadata <- NULL
   number_row<-nrow(Dublin_Core_metadata)
   
@@ -48,9 +57,9 @@ create_one_view_per_dataset <- function(config, metadata){
     view_name <- metadata$related_view_name[i]
     sql_view <- metadata$related_sql_query[i]
     # sql_view <- paste('SELECT ogc_fid, wkb_geometry AS geom, filename, gpslatitud AS lat,gpslongitu AS lon, gpsdatetim AS date,lightvalue,imagesize,model,path,parent_dir FROM "public"."photos_metadata" WHERE parent_dir = \'',view_name,'\';')
-    SQLquery <- paste('DROP VIEW IF EXISTS ',view_name,' CASCADE ; CREATE VIEW ',view_name,' AS ', sql_view, sep="");
+    SQLquery <- paste('DROP MATERIALIZED VIEW IF EXISTS ',view_name,' CASCADE ; CREATE MATERIALIZED VIEW  IF NOT EXISTS ',view_name,' AS ', sql_view,' WITH DATA ', sep="");
     resuling_view <- dbGetQuery(con, SQLquery)
   }
+  logger.info("MATERIALIZED VIEW has been created")  
   
 }
-
