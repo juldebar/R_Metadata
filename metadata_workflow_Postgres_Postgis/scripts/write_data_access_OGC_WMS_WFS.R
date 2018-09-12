@@ -4,7 +4,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
                                           SQL,   
                                           spatial_metadata,
                                           keywords_metadata
-                                          ){
+){
   # config=CFG
   logger.info <- config$logger.info
   logger.info("---------------------------------------------------------------------------------")  
@@ -24,12 +24,12 @@ write_data_access_OGC_WMS_WFS <- function(config,
   datastore<-config$sdi$geoserver$datastore
   # deleted <- gsman$deleteWorkspace(workspace, recurse = TRUE)
   # workspace <- gsman$createWorkspace("RTTP_workspace", "http://bluebridge.d4science.org/RTTP")
-#   unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
+  #   unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
   # ns<-NULL
-#   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
-#     created <- gsman$createWorkspace(workspace, "http://julien")
-    # created <- gsman$createDataStore(workspace, datastore)
-#   }
+  #   if (!is.null(ns <- gsman$getNamespace("RTTP_workspace"))){
+  #     created <- gsman$createWorkspace(workspace, "http://julien")
+  # created <- gsman$createDataStore(workspace, datastore)
+  #   }
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set general metadata elements")  
   logger.info("---------------------------------------------------------------------------------") 
@@ -92,11 +92,14 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   logger.info("Set and publish the complete layer (featuretype + layer)")  
   logger.info("---------------------------------------------------------------------------------")  
+  
   # si le layer existe déjà et unpublishLayer, voire deleteFeatureType
-  unpublished <- gsman$unpublishLayer(workspace, datastore, layer)
+  # unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
+  
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
-  layer$setDefaultStyle("generic") # julien => TO BE DONE (should not be hard coded : SLD for geometries)
+  layer$setDefaultStyle("generic")
   published <- gsman$publishLayer(workspace, datastore, featureType, layer)
+  
   return(published)
 }
