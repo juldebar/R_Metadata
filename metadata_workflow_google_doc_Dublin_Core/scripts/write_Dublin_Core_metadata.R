@@ -202,9 +202,9 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.warn("METADATA ISO/OGC 19115 generation/publication DISABLED")
     }
     
-    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("###############################################################################################################################")
     logger.info("New workflow step: EML Metadata")
-    logger.info("-------------------------------------------------------------------------------------------------------------------")
+    logger.info("###############################################################################################################################")
     
     if(config$actions$write_metadata_EML){
       EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
@@ -218,15 +218,30 @@ write_Dublin_Core_metadata <- function(config, source){
       logger.info(sprintf("EML metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
       filename <-paste("metadata_eml_", metadata$Permanent_Identifier,"_eml.xml", sep="")
       
-      
       setwd(file.path(getwd(), "metadata"))
       write_eml(EML_metatada_sheet, filename)
       eml_validate(filename)
       setwd("..")
       logger.info(sprintf("EML metadata '%s' has been created!", xml_file_name))
       
-      
     }
+    
+    logger.info("###############################################################################################################################")
+    logger.info("New workflow step: EML Metadata")
+    logger.info("###############################################################################################################################")
+    
+    if(config$actions$write_metadata_dataverse){
+      dataverse_metatada_sheet <- write_dataverse_metadata_from_Dublin_Core(config=config,
+                                                                metadata=metadata,
+                                                                contacts_metadata=contacts_metadata,
+                                                                spatial_metadata=spatial_metadata,
+                                                                temporal_metadata=temporal_metadata,
+                                                                keywords_metadata=keywords_metadata,
+                                                                urls_metadata=urls_metadata
+      )
+      logger.info(sprintf("Dataverse metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
+      
+    }    
     
   }
   logger.warn("ALL METADATA ISO/OGC 19115 have been created for the google doc")
