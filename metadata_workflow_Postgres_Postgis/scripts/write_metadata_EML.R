@@ -51,41 +51,41 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
   #                  physical = physical,
   #                  attributeList = attributeList)
   
-#   attributes <- data.frame(
-#     attributeName = c(
-#         "date",
-#         "geom",
-#         "species",
-#         "length"), 
-#     attributeDefinition = c(
-#         "This column contient la date",
-#         "la position",
-#         "l'espèce",
-#         "la taille"),
-#     formatString = c(
-#         "YYYY-DDD-hhmm",     
-#         "DD-MM-SS",     
-#         NA,     
-#         NA),
-#     definition = c(        
-#         "which run number",
-#         NA,
-#         NA,
-#         NA),
-#     unit = c(
-#         NA,
-#         NA,
-#         NA,
-#         "meter"),
-#     numberType = c(
-#         NA,
-#         NA,
-#         NA,
-#         "real"),
-#     stringsAsFactors = FALSE
-#     )
-#   
-#   attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
+  #   attributes <- data.frame(
+  #     attributeName = c(
+  #         "date",
+  #         "geom",
+  #         "species",
+  #         "length"), 
+  #     attributeDefinition = c(
+  #         "This column contient la date",
+  #         "la position",
+  #         "l'espèce",
+  #         "la taille"),
+  #     formatString = c(
+  #         "YYYY-DDD-hhmm",     
+  #         "DD-MM-SS",     
+  #         NA,     
+  #         NA),
+  #     definition = c(        
+  #         "which run number",
+  #         NA,
+  #         NA,
+  #         NA),
+  #     unit = c(
+  #         NA,
+  #         NA,
+  #         NA,
+  #         "meter"),
+  #     numberType = c(
+  #         NA,
+  #         NA,
+  #         NA,
+  #         "real"),
+  #     stringsAsFactors = FALSE
+  #     )
+  #   
+  #   attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
   
   logger.info("----------------------------------------------------")  
   logger.info("Coverage metadata => TO BE DONE => geographicCoverage / temporalCoverage / taxonomicCoverage.")  
@@ -127,46 +127,29 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
                           administrativeArea = contacts$administrativeArea[i],
                           postalCode = contacts$postalCode[i],
                           country = contacts$country[i])
-        
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="metadata"){eml_contact="associatedParty"
-        associatedParty <-  new(eml_contact,
-                                individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                                electronicMail = contacts$electronicMailAddress[i],
-                                address = HF_address,
-                                organizationName = contacts$organisationName[i],
-                                phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="pointOfContact"){eml_contact="contact"
-        creator <-  new(eml_contact,
-                        individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                        electronicMail = contacts$electronicMailAddress[i],
-                        address = HF_address,
-                        organizationName = contacts$organisationName[i],
-                        phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="principalInvestigator"){eml_contact="contact"
-        contact_eml <-  new(eml_contact,
-                            individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                            electronicMail = contacts$electronicMailAddress[i],
-                            address = HF_address,
-                            organizationName = contacts$organisationName[i],
-                            phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="publisher"){eml_contact="publisher"
-        publisher <-  new(eml_contact,
-                          individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                          electronicMail = contacts$electronicMailAddress[i],
-                          address = HF_address,
-                          organizationName = contacts$organisationName[i],
-                          phone = contacts$voice[i])
-        }
-      }else{
-        logger.info("No mapping has been found for the role of the conctact !")  
-        the_contact <- contacts[contacts$electronicMailAddress%in%contacts_metadata$contacts_roles$contact[i],]
-        cat(the_contact$electronicMailAddress)
-        cat(contacts_metadata$contacts_roles$RoleCode[i])
-        
+        eml_contact <-NULL
+        eml_contact <- switch(contacts_metadata$contacts_roles$RoleCode[i],
+                              "metadata" = "associatedParty",
+                              "pointOfContact" = "contact",
+                              "principalInvestigator" = "contact",
+                              "publisher" = "publisher",
+                              "owner" = "contact",
+                              "originator" = "contact"
+        )
+        new_eml_contact <-  new(eml_contact,
+                                  individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
+                                  electronicMail = contacts$electronicMailAddress[i],
+                                  address = HF_address,
+                                  organizationName = contacts$organisationName[i],
+                                  phone = contacts$voice[i])
       }
+      if(is.null(eml_contact)){
+        logger.info("No mapping has been found for the role of the conctact !")  
+#         the_contact <- contacts[contacts$electronicMailAddress%in%contacts_metadata$contacts_roles$contact[i],]
+#         cat(the_contact$electronicMailAddress)
+#         cat(contacts_metadata$contacts_roles$RoleCode[i])
+      }
+    
     }
   }
   
@@ -198,7 +181,7 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
       keywordSet[[t]]  <-  all_thesaurus
       class(all_thesaurus)
     }
-    }
+  }
   
   logger.info("----------------------------------------------------")  
   logger.info("WRITE EML METADATA")  
