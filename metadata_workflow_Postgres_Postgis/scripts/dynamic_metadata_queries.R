@@ -26,9 +26,9 @@ getSQLQueries <- function(config, metadata){
   SQL$query_dynamic_metadata_get_geometry_type <-  paste("SELECT type FROM geometry_columns WHERE f_table_name='",metadata$related_view_name,"';",sep="")
   SQL$query_dynamic_metadata_get_geometry_SRID <-  paste("SELECT SRID FROM geometry_columns WHERE f_table_name='",metadata$related_view_name,"';",sep="")
   SQL$query_dynamic_metadata_temporal_Extent <- paste("SELECT 'start='::text || MIN(date)::text || ';end='::text ||MAX(date)::text AS temporal_extent FROM",metadata$related_view_name,";",sep=" ")
-  # SQL$query_dynamic_list_keywords <- paste("SELECT DISTINCT (tag) FROM",metadata$related_view_name,";",sep=" ")
-  SQL$query_CSV <- paste("SELECT *, ST_AsText(geom) AS WKT  FROM  ",metadata$related_view_name," ;",sep=" ")# julien To BE Done => transform WKB in WKT ?
+  SQL$query_CSV <- paste("SELECT *, ST_AsText(geom) AS WKT  FROM  ",metadata$related_view_name," ;",sep=" ")# julien To BE Done => REMOVE WKB ?
   SQL$query_wfs_wms <- paste("SELECT * FROM  ",metadata$related_view_name," ;",sep=" ")
+  # SQL$query_dynamic_list_keywords <- paste("SELECT DISTINCT (tag) FROM",metadata$related_view_name,";",sep=" ")
   logger.info("######################################################################################################")
   logger.info("Execute all SQL queries")
   logger.info("######################################################################################################")
