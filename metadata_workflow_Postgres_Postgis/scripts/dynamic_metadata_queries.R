@@ -37,7 +37,6 @@ getSQLQueries <- function(config, metadata){
   SQL$geometry_name <- dbGetQuery(con, SQL$query_dynamic_metadata_get_geometry_name )
   SQL$geometry_type <- dbGetQuery(con, SQL$query_dynamic_metadata_get_geometry_type )
   SQL$SRID <- dbGetQuery(con, SQL$query_dynamic_metadata_get_geometry_SRID )
-  
   SQL$dynamic_metadata_temporal_Extent <- dbGetQuery(con, SQL$query_dynamic_metadata_temporal_Extent)
   # SQL$dynamic_list_keywords <- dbGetQuery(con, SQL$query_dynamic_list_keywords)
   logger.info("######################################################################################################")
