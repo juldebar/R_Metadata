@@ -3,6 +3,8 @@
 # https://www.rdocumentation.org/packages/dataverse/versions/0.2.0
 # https://cran.r-project.org/web/packages/dataverse/dataverse.pdf
 # http://guides.dataverse.org/en/4.8.6/api/dataaccess.html
+# http://guides.dataverse.org/en/latest/
+# http://guides.dataverse.org/en/latest/api/sword.html
 
 write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
                                                 metadata = NULL,
@@ -41,7 +43,7 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
                                title = metadata$Title,
                                # creator = dataverse_user_name,
                                description = metadata$Description,
-                               date=metadata$Date,
+                               # date=metadata$Date, IRD
                                type = metadata$Type,
                                # language = metadata$Language,
                                # relation = metadata$Relation,
@@ -76,7 +78,7 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
 #################################### DELETE ALL DATASETS FROM A GIVEN DATAVERSE #############################################
 # EXAMPLE IN THE 3 LINES BELOW => REMOVE ALL DATASETS FROM A DATAVERSE
 # my_dataverse <- get_dataverse(dataverse_name)
-# remove_all_datasets_from_a_dataverse(my_dataverse)
+# remove_all_datasets_from_a_dataverse(config,my_dataverse)
 # remove_all_datasets_from_a_dataverse("julien_dataverse")
 
 remove_all_datasets_from_a_dataverse <- function(config,dataverse){
