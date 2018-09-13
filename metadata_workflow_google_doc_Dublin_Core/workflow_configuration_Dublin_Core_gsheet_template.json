@@ -9,7 +9,8 @@
         "eblondel/geosapi",
         "eblondel/geometa",
         "eblondel/geonapi",
-        "eblondel/ows4R"
+        "eblondel/ows4R",
+        "iqss/dataverse-client-r"
       ],
       "github_force_install": false
     },
