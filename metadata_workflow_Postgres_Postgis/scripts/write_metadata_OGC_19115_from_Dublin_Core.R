@@ -147,56 +147,13 @@ prepareDataQualityWithLineage <- function(config, lineage_statement, lineage_ste
   return(dq)
 }
 
-#prepareDataQualityWithGenealogy
-#@param config
-#@param genealogy a data.frame given the genealogy from SARDARA
-#@returns an object of class ISODataQuality
-prepareDataQualityWithGenealogy <- function(config, genealogy){
-  
-  if(nrow(genealogy)==0) return(NULL)
-  
-  lineage_statement <- ""
-  tableTypes <- c("raw_dataset", "mapping", "codelist")
-  for(tableType in tableTypes){
-    
-    mappings <- genealogy[genealogy$table_type == tableType,]
-    if(nrow(mappings)>0){
-      section_title <- switch(tableType,
-                              "raw_dataset" = "Source dataset(s)",
-                              "mapping" = "Codelist mapping(s)",
-                              "codelist" = "Codelists"
-      )
-      lineage_statement <- paste0(lineage_statement, "* ", section_title, ":\n")
-      for(i in 1:nrow(mappings)){
-        mapping <- mappings[i,]
-        link <- sprintf("%s/srv/eng/catalog.search#/metadata/%s", config$sdi$geonetwork$url, mapping$dataset_permanent_identifier)
-        #TODO voir pour plus tard, comment ajouter une description
-        lineage_statement <- paste0(lineage_statement, "- ", link, " (",mapping$metadata_mapping_relation_type,")\n")
-      }
-      lineage_statement <- paste0(lineage_statement,"\n")
-    }
-  }
-  
-  #add lineage
-  dq <- NULL
-  if(lineage_statement != ""){
-    dq <- ISODataQuality$new()
-    scope <- ISOScope$new()
-    scope$setLevel("dataset")
-    dq$setScope(scope)
-    lineage <- ISOLineage$new()
-    lineage$setStatement(lineage_statement)
-    dq$setLineage(lineage)
-  }
-  return(dq)
-}
 
 #-----------------------------------------------------------------------------------------------------
-#extractLineage.SARDARA
-#@param lineage Lineage information as string extracted from Sardara metadata table
+#extractLineage
+#@param lineage Lineage information as string extracted from metadata table in the database
 #       ("step: text1. step: text2. .... step: textN.")
 #@returns an object of class "list" with the step contents
-extractLineage.SARDARA <- function(lineage){
+extractLineage <- function(lineage){
   lineage_steps <- as.list(unlist(strsplit(lineage, "step[0-9]:"))) #@eblondel 12/08/2017 apply regular expression to detect step nb
   lineage_steps <- lineage_steps[sapply(lineage_steps, function(x){return(nchar(x)>0)})]
   lineage_steps <- lapply(lineage_steps, function(x){
@@ -276,7 +233,6 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
       geomObject <- ISOGeometricObjects$new()
       geomObject$setGeometricObjectType(spatial_metadata$GeometricObjectType)
       if(is.null(spatial_metadata$dynamic_metadata_count_features)==FALSE){
-        # geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features$count) # SARDARA!!!!!!!!!!!!!!!!
         geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features) #number of features
       }
       # VSR$setGeometricObjects(geomObject)
@@ -338,11 +294,8 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   ct$setEditionDate(as.Date(mdDate)) #EditionDate should be of Date type
   # ct$setIdentifier(mdId)
   ct$setIdentifier(ISOMetaIdentifier$new(code = metadata$Permanent_Identifier)) #Julien code à vérifier
-  if (metadata$Dataset_Type=='raw_dataset'){
-    ct$setPresentationForm("mapDigital")
-  } else if(metadata$Dataset_Type=='mapping' | metadata$Dataset_Type=='codelist'){
-    ct$setPresentationForm("tableDigital")
-  }
+  ct$setPresentationForm("mapDigital")  # @julien check relevant value in ISO 19115 CODE LIST
+  
   # TODO @julien CHECK IF ADDED CONTACT IS CORRECT IN THIS CONTEXT (SHOULD NOT => LAST FROM LIST ABOVE)
   ct$setCitedResponsibleParty(listContact)
   IDENT$setCitation(ct)
@@ -370,7 +323,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   IDENT$setResourceMaintenance(mi)
   
   #adding legal constraint(s)
-  # Julien => devrait être dans Sardara
+  # Julien => information to be stored in the metadata table (not hard coded)
   lc <- ISOLegalConstraints$new()
   lc$addUseLimitation(metadata$Rights)
   # lc$addUseLimitation("Use limitation 2 e.g. Citation guidelines")
@@ -470,21 +423,8 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   # OGC 19115 SECTION => Identification with ISO 19119 Service Identification
   #-------------------------------------------------------------------------------------------------------------------
   
-  # TODO @julien => MANAGE THE CONDITION FOR GN2 
-  if(metadata$Dataset_Type=='raw_dataset'){
-    
-    logger.info("Add contacts and roles for SERVICE")  
-    expected_role=c("publisher","principalInvestigator")
-    listContacts <- add_contacts_and_roles_OGC_19115(config, metadata$Identifier, contacts_metadata$contacts_roles, expected_role)
-    
-    dataset_columns <- getDatasetColumns.SARDARA(config, metadata$Permanent_Identifier)
-    DICTIONNARY_FIELDS <- config$gsheets$dictionnary
-    dsd <- createDSD(config = config, fields = dataset_columns, dictionnary = DICTIONNARY_FIELDS)
-    dataset_last_year = 2015
-    SERVICE <-createTimeseriesServiceIdentification(config, dataset,dataset_last_year,listContacts,dsd)
-    md$addIdentificationInfo(SERVICE)
-  }
-  
+  # TODO @julien => REMOVED FROM TUNA ATLAS (NOT GENERIC)
+
   # OGC 19115 SECTION => Distribution
   #-------------------------------------------------------------------------------------------------------------------
   
@@ -532,35 +472,21 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   if(!is.na(lineage) & metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"){
     logger.info("Add Lineage process steps")  
     #create lineage
-    lineage_steps <- extractLineage.SARDARA(lineage)
+    lineage_steps <- extractLineage(lineage)
     DQ1 <- prepareDataQualityWithLineage(config, lineage_statement, lineage_steps, mdDate, metadata$Identifier, contacts_metadata$contacts_roles)
     md$addDataQualityInfo(DQ1)
   }
   
-  #Data Quality Genealogy
+  #Data Quality Genealogy => @julien REMOVED (TUNA ATLAS SPECIFIC)
   #----------------------
-  if(metadata$Dataset_Type!="NetCDF" & metadata$Dataset_Type!="google_doc"& metadata$Dataset_Type!="dataset stored in a database"){
-    
-  genealogy <- getRawGenealogy.SARDARA(config, dataset)
-  DQ2 <- prepareDataQualityWithGenealogy(config, genealogy)
-  # TODO @julien @paul @emmanuel => check why ths condition is needed 
-  if(is.null(DQ2)){logger.info("No lineage")}else{md$addDataQualityInfo(DQ2)}
-  }
+
+  
   logger.info("Data Quality Info section added")
   
   
-  # OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription
+  # OGC 19115 SECTION => Content Info -> FeatureCatalogueDescription => REMOVED FROM GENERIC WORKFLOW AT THIS STAGE
   #-------------------------------------------------------------------------------------------------------------------
   
-  # CF EXAMPLE HERE => https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19110_(Feature_Catalog)
-  if (metadata$Dataset_Type=='raw_dataset'){
-    logger.info("Adding Feature catalogue description to METADATA")
-    dsd_pid <- paste(metadata$Permanent_Identifier,"_data_structure_definition",sep="")
-    fcd <- createFeatureCatalogueDescription(config, dsd_pid)
-    md$addContentInfo(fcd)
-  }else{
-    logger.info("No Feature Catalogue description for codelists/mappings")
-  }
   
   return(md)
 }
