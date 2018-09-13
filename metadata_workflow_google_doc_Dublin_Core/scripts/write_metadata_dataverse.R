@@ -1,3 +1,6 @@
+# https://cran.r-project.org/web/packages/dataverse/vignettes/A-introduction.html
+# https://cran.r-project.org/web/packages/dataverse/vignettes/D-archiving.html#sword-based_data_archiving
+
 write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
                                                 metadata = NULL,
                                                 contacts_metadata = NULL,
@@ -8,6 +11,7 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
 )
 {
   library("dataverse")
+  
   #config shortcuts
   con <- config$sdi$dataverse
   dataverse_server=con$url
@@ -61,12 +65,27 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
     
     #################################### ADD THIS DATASET IN THE DATAVERSE #############################################
     add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = Dataverse_metadata)
+  
+  #@julien => should return the DOI of the created / updated dataset
 }
 
 
 #################################### DELETE ALL DATASETS FROM A GIVEN DATAVERSE #############################################
+# EXAMPLE IN THE 3 LINES BELOW => REMOVE ALL DATASETS FROM A DATAVERSE
+# my_dataverse <- get_dataverse(dataverse_name)
+# remove_all_datasets_from_a_dataverse(my_dataverse)
+# remove_all_datasets_from_a_dataverse("julien_dataverse")
 
-remove_all_datasets_from_a_dataverse <- function(dataverse){
+remove_all_datasets_from_a_dataverse <- function(config,dataverse){
+  
+  logger <- config$logger
+  logger.info <- config$logger.info
+  logger.warn <- config$logger.warn
+  logger.error <- config$logger.error
+  logger.info("----------------------------------------------------")  
+  logger.info("REMOVE ALL DATA IN THIS DATAVERSE")  
+  logger.info("----------------------------------------------------")  
+  
   dataverse_data <- dataverse_contents(dataverse)
   number_row<-length(dataverse_data)
   if(number_row>0){
@@ -78,7 +97,9 @@ remove_all_datasets_from_a_dataverse <- function(dataverse){
       cat(this_dataset$id)
       delete_dataset(dataverse_data[[i]])
     }
-  } else{cat("The dataverse is already empty !")}
+  } else{
+    logger.info("The dataverse is already empty !")
+    }
 }
 
 # update_dataset(ds, body = meta2)
