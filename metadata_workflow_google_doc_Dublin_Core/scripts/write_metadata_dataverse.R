@@ -66,7 +66,7 @@ write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
     #################################### ADD THIS DATASET IN THE DATAVERSE #############################################
     add_dataset_with_sword <- dataverse::initiate_sword_dataset(dataverse_name, body = Dataverse_metadata)
   
-  #@julien => should return the DOI of the created / updated dataset
+  #@julien => should return the DOI of the created / updated metadata & dataset (check update_dataset(ds, body = meta2) ?)
 }
 
 
@@ -101,8 +101,6 @@ remove_all_datasets_from_a_dataverse <- function(config,dataverse){
     logger.info("The dataverse is already empty !")
     }
 }
-
-# update_dataset(ds, body = meta2)
 
 #################################### COMMON FUNCTIONS FOR SPREADSHEETS (CSV, GOOGLE DOC...) #############################################
 # contacts<-Dublin_Core_metadata$Creator[1]
