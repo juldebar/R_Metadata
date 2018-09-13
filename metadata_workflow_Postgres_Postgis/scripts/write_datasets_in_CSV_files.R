@@ -1,5 +1,3 @@
-## static_metadata_dataset_name => Name of the dataset in Sardara (column dataset_name of table metadata.metadata). Corresponding table with same name should exist as a view or materialized view under the schema tunaatlas.
-
 # Clean unused input parameters
 # @param config
 # @param the_current_dataset
