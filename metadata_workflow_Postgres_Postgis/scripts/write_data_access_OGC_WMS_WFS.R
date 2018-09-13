@@ -1,4 +1,5 @@
 # https://github.com/eblondel/geosapi/wiki#publishFeatureLayer-publish
+# http://docs.geoserver.org/stable/en/user/rest/api/featuretypes.html
 write_data_access_OGC_WMS_WFS <- function(config,
                                           metadata,
                                           SQL,   
