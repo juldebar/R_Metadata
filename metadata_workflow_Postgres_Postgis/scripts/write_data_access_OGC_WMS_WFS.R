@@ -94,7 +94,7 @@ write_data_access_OGC_WMS_WFS <- function(config,
   logger.info("---------------------------------------------------------------------------------")  
   
   # si le layer existe déjà et unpublishLayer, voire deleteFeatureType
-  # unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
+  unpublished <- gsman$unpublishLayer(workspace, datastore, metadata$Permanent_Identifier)
   
   layer <- GSLayer$new()
   layer$setName(metadata$Permanent_Identifier)
