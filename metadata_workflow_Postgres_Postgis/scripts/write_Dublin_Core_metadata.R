@@ -295,7 +295,7 @@ write_Dublin_Core_metadata <- function(config, source){
       write_eml(EML_metatada_sheet, filename)
       eml_validate(filename)
       setwd("..")
-      logger.info(sprintf("EML metadata '%s' has been created!", xml_file_name))
+      logger.info(sprintf("EML metadata '%s' has been created!", filename))
       
       
     }
