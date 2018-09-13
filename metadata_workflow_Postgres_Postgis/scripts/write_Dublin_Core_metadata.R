@@ -92,7 +92,7 @@ write_Dublin_Core_metadata <- function(config, source){
     contacts_roles=NULL
     all_keywords=NULL
     logger.info("-------------------------------------------------------------------------------------------------------------------")
-    logger.info("Get SQL Sardara queries for current dataset...")
+    logger.info("Get & Excecute some SQL queries for the current dataset...")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     SQL <- getSQLQueries(config, metadata)
     logger.info("-------------------------------------------------------------------------------------------------------------------")
