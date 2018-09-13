@@ -160,6 +160,9 @@ write_Dublin_Core_metadata <- function(config, source){
     # static_keywords<-NULL
     keywords_metadata<-return_keywords_and_thesaurus_as_data_frame(metadata$Subject)
     
+    # Management of dynamic keywords is possible depending on the SQL query ("tag" column required)
+    # SQL$dynamic_list_keywords
+    
     logger.info("-------------------------------------------------------------------------------------------------------------------")
     logger.info("Set Metadata elements to describe the DCMI RELATION (OGC ONLINE RESOURCES)")
     logger.info("-------------------------------------------------------------------------------------------------------------------")
