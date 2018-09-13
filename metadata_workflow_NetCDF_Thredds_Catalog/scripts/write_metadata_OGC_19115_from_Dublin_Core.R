@@ -197,7 +197,6 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
       geomObject <- ISOGeometricObjects$new()
       geomObject$setGeometricObjectType(spatial_metadata$GeometricObjectType)
       if(is.null(spatial_metadata$dynamic_metadata_count_features)==FALSE){
-        # geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features$count) # SARDARA!!!!!!!!!!!!!!!!
         geomObject$setGeometricObjectCount(spatial_metadata$dynamic_metadata_count_features) #number of features
       }
       # VSR$setGeometricObjects(geomObject)
@@ -261,12 +260,9 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   ct$setEditionDate(as.Date(mdDate)) #EditionDate should be of Date type
   # ct$setIdentifier(mdId)
   ct$setIdentifier(ISOMetaIdentifier$new(code = metadata$Permanent_Identifier)) #Julien code à vérifier
-  if (metadata$Dataset_Type=='raw_dataset'){
-    ct$setPresentationForm("mapDigital")
-  } else if(metadata$Dataset_Type=='mapping' | metadata$Dataset_Type=='codelist'){
-    ct$setPresentationForm("tableDigital")
-  }
-  # TODO @julien CHECK IF ADDED CONTACT IS CORRECT IN THIS CONTEXT (SHOULD NOT => LAST FROM LIST ABOVE)
+  ct$setPresentationForm("mapDigital")
+
+    # TODO @julien CHECK IF ADDED CONTACT IS CORRECT IN THIS CONTEXT (SHOULD NOT => LAST FROM LIST ABOVE)
   ct$setCitedResponsibleParty(listContact)
   IDENT$setCitation(ct)
   
@@ -293,7 +289,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
   IDENT$setResourceMaintenance(mi)
   
   #adding legal constraint(s)
-  # Julien => devrait être dans Sardara
+  # Julien => information to be stored in the database (not hard coded)
   lc <- ISOLegalConstraints$new()
   lc$addUseLimitation(metadata$Rights)
   # lc$addUseLimitation("Use limitation 2 e.g. Citation guidelines")
@@ -453,7 +449,7 @@ write_metadata_OGC_19115_from_Dublin_Core <- function(config = NULL,
     lineage$setStatement(lineage_statement)
     dq$setLineage(lineage)
     genealogy <- lineage
-    md$addDataQualityInfo(dq) # @julien => passage à vérifier et comparer avec les exemples de Sardara et google doc
+    md$addDataQualityInfo(dq) # @julien => passage à vérifier et comparer avec les worklow google doc et postgres
     }
   
   logger.info("Data Quality Info section added")
