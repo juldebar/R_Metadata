@@ -1,5 +1,8 @@
 # https://cran.r-project.org/web/packages/dataverse/vignettes/A-introduction.html
 # https://cran.r-project.org/web/packages/dataverse/vignettes/D-archiving.html#sword-based_data_archiving
+# https://www.rdocumentation.org/packages/dataverse/versions/0.2.0
+# https://cran.r-project.org/web/packages/dataverse/dataverse.pdf
+# http://guides.dataverse.org/en/4.8.6/api/dataaccess.html
 
 write_dataverse_metadata_from_Dublin_Core <- function(config = NULL,
                                                 metadata = NULL,
@@ -82,6 +85,15 @@ remove_all_datasets_from_a_dataverse <- function(config,dataverse){
   logger.info <- config$logger.info
   logger.warn <- config$logger.warn
   logger.error <- config$logger.error
+  #config shortcuts
+  con <- config$sdi$dataverse
+  dataverse_server=con$url
+  dataverse_key=con$pwd
+  dataverse_name=con$dataverse_name
+  dataverse_user_name=con$user
+  Sys.setenv("DATAVERSE_SERVER" = dataverse_server)
+  Sys.setenv("DATAVERSE_KEY" = dataverse_key)
+  
   logger.info("----------------------------------------------------")  
   logger.info("REMOVE ALL DATA IN THIS DATAVERSE")  
   logger.info("----------------------------------------------------")  
