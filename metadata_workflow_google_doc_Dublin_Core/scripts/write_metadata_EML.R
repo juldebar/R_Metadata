@@ -51,41 +51,41 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
   #                  physical = physical,
   #                  attributeList = attributeList)
   
-#   attributes <- data.frame(
-#     attributeName = c(
-#         "date",
-#         "geom",
-#         "species",
-#         "length"), 
-#     attributeDefinition = c(
-#         "This column contient la date",
-#         "la position",
-#         "l'espèce",
-#         "la taille"),
-#     formatString = c(
-#         "YYYY-DDD-hhmm",     
-#         "DD-MM-SS",     
-#         NA,     
-#         NA),
-#     definition = c(        
-#         "which run number",
-#         NA,
-#         NA,
-#         NA),
-#     unit = c(
-#         NA,
-#         NA,
-#         NA,
-#         "meter"),
-#     numberType = c(
-#         NA,
-#         NA,
-#         NA,
-#         "real"),
-#     stringsAsFactors = FALSE
-#     )
-#   
-#   attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
+  #   attributes <- data.frame(
+  #     attributeName = c(
+  #         "date",
+  #         "geom",
+  #         "species",
+  #         "length"), 
+  #     attributeDefinition = c(
+  #         "This column contient la date",
+  #         "la position",
+  #         "l'espèce",
+  #         "la taille"),
+  #     formatString = c(
+  #         "YYYY-DDD-hhmm",     
+  #         "DD-MM-SS",     
+  #         NA,     
+  #         NA),
+  #     definition = c(        
+  #         "which run number",
+  #         NA,
+  #         NA,
+  #         NA),
+  #     unit = c(
+  #         NA,
+  #         NA,
+  #         NA,
+  #         "meter"),
+  #     numberType = c(
+  #         NA,
+  #         NA,
+  #         NA,
+  #         "real"),
+  #     stringsAsFactors = FALSE
+  #     )
+  #   
+  #   attributeList <- set_attributes(attributes, NA, col_classes = c("Date", "numeric", "character", "character"))
   
   logger.info("----------------------------------------------------")  
   logger.info("Coverage metadata => TO BE DONE => geographicCoverage / temporalCoverage / taxonomicCoverage.")  
@@ -114,59 +114,42 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info("----------------------------------------------------")  
   contacts <- config$gsheets$contacts
   
-  if(is.null(contacts_metadata$contacts_roles)==FALSE && nrow(contacts_metadata$contacts_roles) > 0){
-    number_row<-nrow(contacts_metadata$contacts_roles)
+  number_row<-nrow(contacts_metadata$contacts_roles)
+  if(is.null(contacts_metadata$contacts_roles)==FALSE && number_row > 0){
     for(i in 1:number_row){
-      if(contacts_metadata$contacts_roles$dataset[i]== metadata$Identifier){
+      if(contacts_metadata$contacts_roles$dataset[i]== metadata$Identifier){#@julien => condition inutile ?
         the_contact <- contacts[contacts$electronicMailAddress%in%contacts_metadata$contacts_roles$contact[i],]
         cat(the_contact$electronicMailAddress)
         cat(contacts_metadata$contacts_roles$RoleCode[i])
         HF_address <- new("address",
-                          deliveryPoint = contacts$deliveryPoint[i],
-                          city = contacts$city[i],
-                          administrativeArea = contacts$administrativeArea[i],
-                          postalCode = contacts$postalCode[i],
-                          country = contacts$country[i])
-        
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="metadata"){eml_contact="associatedParty"
-        associatedParty <-  new(eml_contact,
-                                individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                                electronicMail = contacts$electronicMailAddress[i],
+                          deliveryPoint = the_contact$deliveryPoint,
+                          city = the_contact$city,
+                          administrativeArea = the_contact$administrativeArea,
+                          postalCode = the_contact$postalCode,
+                          country = the_contact$country)
+        eml_contact_role <-NULL
+        eml_contact_role <- switch(contacts_metadata$contacts_roles$RoleCode[i],
+                              "metadata" = "associatedParty",
+                              "pointOfContact" = "contact",
+                              "principalInvestigator" = "contact",
+                              "publisher" = "contact",
+                              "owner" = "contact",
+                              "originator" = "contact"
+        )
+        new_eml_contact <-  new(eml_contact_role,
+                                individualName = paste(the_contact$Name,the_contact$firstname, sep=" "),
+                                electronicMail = the_contact$electronicMailAddress,
                                 address = HF_address,
-                                organizationName = contacts$organisationName[i],
-                                phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="pointOfContact"){eml_contact="contact"
-        creator <-  new(eml_contact,
-                        individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                        electronicMail = contacts$electronicMailAddress[i],
-                        address = HF_address,
-                        organizationName = contacts$organisationName[i],
-                        phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="principalInvestigator"){eml_contact="contact"
-        contact_eml <-  new(eml_contact,
-                            individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                            electronicMail = contacts$electronicMailAddress[i],
-                            address = HF_address,
-                            organizationName = contacts$organisationName[i],
-                            phone = contacts$voice[i])
-        }
-        if (contacts_metadata$contacts_roles$RoleCode[i]=="publisher"){eml_contact="publisher"
-        publisher <-  new(eml_contact,
-                          individualName = paste(contacts$Name[i],contacts$firstname[i], sep=" "),
-                          electronicMail = contacts$electronicMailAddress[i],
-                          address = HF_address,
-                          organizationName = contacts$organisationName[i],
-                          phone = contacts$voice[i])
-        }
-      }else{
-        logger.info("No mapping has been found for the role of the conctact !")  
-        the_contact <- contacts[contacts$electronicMailAddress%in%contacts_metadata$contacts_roles$contact[i],]
-        cat(the_contact$electronicMailAddress)
-        cat(contacts_metadata$contacts_roles$RoleCode[i])
-        
+                                organizationName = the_contact$organisationName,
+                                phone = the_contact$voice)
       }
+      if(is.null(eml_contact_role)){
+        logger.info("No mapping has been found for the role of the conctact !")  
+        #         the_contact <- contacts[contacts$electronicMailAddress%in%contacts_metadata$contacts_roles$contact[i],]
+        #         cat(the_contact$electronicMailAddress)
+        #         cat(contacts_metadata$contacts_roles$RoleCode[i])
+      }
+      
     }
   }
   
@@ -198,21 +181,22 @@ write_EML_metadata_from_Dublin_Core <- function(config = NULL,
       keywordSet[[t]]  <-  all_thesaurus
       class(all_thesaurus)
     }
-    }
+  }
   
   logger.info("----------------------------------------------------")  
   logger.info("WRITE EML METADATA")  
   logger.info("----------------------------------------------------")  
   dataset <- new("dataset",
                  title = title,
-                 creator = publisher,
+                 creator = new_eml_contact,
                  pubDate = pubDate,
                  intellectualRights = intellectualRights,
                  abstract = abstract,
-                 associatedParty = associatedParty,
+                 associatedParty = new_eml_contact,#@julien => select new_eml_contact where role=associatedParty
+                 # associatedParty = new_eml_contact[new_eml_contact$eml_contact_role%in%"associatedParty",],
                  keywordSet = keywordSet,
                  coverage = coverage,
-                 contact = publisher,
+                 contact = new_eml_contact,
                  # methods = methods,
                  dataTable = NULL)
   
