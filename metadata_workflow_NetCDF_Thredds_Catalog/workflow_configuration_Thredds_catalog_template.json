@@ -2,13 +2,9 @@
   "id": "thredds_catalogs",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid", "raster", "ncdf4","googleVis"],
+      "cran": ["gsheet", "httr", "XML", "uuid", "raster", "ncdf4","googleVis", "rgeos", "geometa", "geosapi", "geonapi", "ows4R"],
       "cran_force_install" : false,
       "github": [
-        "openfigis/RFigisGeo",
-        "eblondel/geosapi",
-        "eblondel/geometa",
-        "eblondel/geonapi",
         "btupper/threddscrawler"
 
       ],
