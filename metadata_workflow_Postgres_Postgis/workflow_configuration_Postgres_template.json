@@ -2,14 +2,9 @@
   "id": "Postgres_database",
   "dependencies": {
     "packages": {
-      "cran": ["RPostgreSQL", "dplyr", "gsheet","httr", "XML", "uuid", "EML","googleVis"],
+      "cran": ["RPostgreSQL", "dplyr", "gsheet","httr", "XML", "uuid", "EML","googleVis", "rgeos", "geometa", "geosapi", "geonapi", "ows4R"],
       "cran_force_install" : false,
-      "github": [
-        "openfigis/RFigisGeo",
-        "eblondel/geosapi",
-        "eblondel/geometa",
-        "eblondel/geonapi"
-      ],
+      "github": [],
       "github_force_install": false
     },
     "scripts": [

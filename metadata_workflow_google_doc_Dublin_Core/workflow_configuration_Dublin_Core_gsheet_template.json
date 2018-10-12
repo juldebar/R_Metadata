@@ -2,14 +2,9 @@
   "id": "spreadsheet_data_source",
   "dependencies": {
     "packages": {
-      "cran": ["gsheet", "httr", "XML", "uuid","EML","googleVis"],
+      "cran": ["gsheet", "httr", "XML", "uuid","EML","googleVis", "rgeos", "geometa", "geosapi", "geonapi", "ows4R"],
       "cran_force_install" : false,
       "github": [
-        "openfigis/RFigisGeo",
-        "eblondel/geosapi",
-        "eblondel/geometa",
-        "eblondel/geonapi",
-        "eblondel/ows4R",
         "iqss/dataverse-client-r"
       ],
       "github_force_install": false
