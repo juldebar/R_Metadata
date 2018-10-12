@@ -43,7 +43,7 @@ If rgdal is not available for your version of R install it from source or update
 
 Installation of R packages on Linux might require the installation of following OS underlying packages (tested on Debian / Ubuntu):
 ```{r setup, include=FALSE}
-(sudo) apt-get install libcurl4-openssl-dev  libssl-dev r-cran-ncdf4 libxml2-dev libgdal-dev gdal-bin libgeos-dev udunits-bin libudunits2-dev
+(sudo) apt-get install netcdf-bin libcurl4-openssl-dev  libssl-dev r-cran-ncdf4 libxml2-dev libgdal-dev gdal-bin libgeos-dev udunits-bin libudunits2-dev
 ```
  <!-- following [list of potential issues](https://docs.google.com/document/d/1ngZGiMGcTeGvHTmHDttekaQsL9NOHbozyWtlbGWna5c/edit?usp=sharing) -->
 
@@ -68,7 +68,7 @@ If it works properly, you should see all datasets described in the  [spreadsheet
 
 ## Usual Errors
 
-- Your token is not set if you use Geonetwork / Geoserver in the BlueBridge infrasrtructure
+- Your token is not set if you use Geonetwork / Geoserver in the BlueBridge infrastructure
 - You are using emails in the ** metadata spreadsheet ** which are not declared in the ** contacts spreadsheet **
 - You didn't comply with syntactic rules
   - contacts: see related wiki section
@@ -106,7 +106,7 @@ dateStamp Emilie
 -->
 
 
-##  Postgres data source use case <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Database-postgres.svg" width="20">
+##  Postgres data source use case <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Database-postgres.svg" width="50">
 
 
 In this case, it is required:
@@ -138,8 +138,8 @@ The different steps of the workflow can be (des)activated independantly accordin
 ```
 
 
-##  NetCDF / NCML (OPeNDAP / Thredds server) use case
-
+##  NetCDF / NCML (OPeNDAP / Thredds server) use case <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://ghrc.nsstc.nasa.gov/home/sites/default/files/styles/large/public/thredds_icon.jpg?itok=25lirCdC" width="50">
+ 
 
 
 
@@ -147,13 +147,14 @@ The different steps of the workflow can be (des)activated independantly accordin
 
 
 The most important scripts for metadata creation are the following 
-- [write_Dublin_Core_metadata.R]() is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
+- **write_Dublin_Core_metadata.R** is the file in charge of processing the DCMI metadata elements to load a metadata object in R,
+  - [write_Dublin_Core_metadata.R]() 
+  - [write_Dublin_Core_metadata.R]() 
+  - [write_Dublin_Core_metadata.R]() 
 - [write_metadata_OGC_19115_from_Dublin_Core.R]() is the file which contains functions called in [write_Dublin_Core_metadata.R]() to turn the R metadata object into OGC metadata and push it into geonetwork or any CSW server.
 
 
 
-
-  
 
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://mdst-macroes.ird.fr/tmp/logo_IRD.svg" width="100">
 
