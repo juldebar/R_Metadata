@@ -227,11 +227,28 @@ write_Dublin_Core_metadata <- function(config, source){
     }
     
     logger.info("###############################################################################################################################")
-    logger.info("New workflow step: EML Metadata")
+    logger.info("New workflow step: Zenodo Metadata")
     logger.info("###############################################################################################################################")
     
     if(config$actions$write_metadata_dataverse){
       dataverse_metatada_sheet <- write_dataverse_metadata_from_Dublin_Core(config=config,
+                                                                            metadata=metadata,
+                                                                            contacts_metadata=contacts_metadata,
+                                                                            spatial_metadata=spatial_metadata,
+                                                                            temporal_metadata=temporal_metadata,
+                                                                            keywords_metadata=keywords_metadata,
+                                                                            urls_metadata=urls_metadata
+      )
+      logger.info(sprintf("Dataverse metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
+      
+    }
+    
+    logger.info("###############################################################################################################################")
+    logger.info("New workflow step: Dataverse Metadata")
+    logger.info("###############################################################################################################################")
+    
+    if(config$actions$deposit_data_zenodo){
+      dataverse_metatada_sheet <- write_zenodo_metadata_from_Dublin_Core(config=config,
                                                                 metadata=metadata,
                                                                 contacts_metadata=contacts_metadata,
                                                                 spatial_metadata=spatial_metadata,
