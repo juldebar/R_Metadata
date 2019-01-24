@@ -5,7 +5,8 @@
       "cran": ["gsheet", "httr", "XML", "uuid","EML","googleVis", "rgeos", "geometa", "geosapi", "geonapi", "ows4R"],
       "cran_force_install" : false,
       "github": [
-        "iqss/dataverse-client-r"
+        "iqss/dataverse-client-r",
+        "eblondel/zen4R"
       ],
       "github_force_install": false
     },
@@ -26,6 +27,7 @@
       "write_metadata_OGC_19115_from_Dublin_Core.R",
       "write_metadata_EML.R",
       "write_metadata_dataverse.R",
+      "write_metadata_zenodo.R",
       "write_Dublin_Core_metadata.R"
           ]
   },
@@ -51,12 +53,17 @@
       "user": "Snow, Jon",
       "pwd": "243df-apikey-41df2-52f-52df42ds23f",
       "dataverse_name":"dataverse_id_as_it_appears_in_the_url_of_the_dataverse"
+    },
+      "zenodo": {
+      "token": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx",
+      "communities":"fisheries"
     }
   },
   "actions": {
     "metadata_iso_19115": true,
     "write_metadata_EML": true,
     "write_metadata_dataverse": false,
+    "deposit_data_zenodo": true,
     "geonetwork_publication": false,
     "CSW-T_publication": true,
     "main": "write_Dublin_Core_metadata"
