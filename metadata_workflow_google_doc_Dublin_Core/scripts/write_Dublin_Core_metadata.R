@@ -227,7 +227,7 @@ write_Dublin_Core_metadata <- function(config, source){
     }
     
     logger.info("###############################################################################################################################")
-    logger.info("New workflow step: Zenodo Metadata")
+    logger.info("New workflow step: Dataverse Metadata")
     logger.info("###############################################################################################################################")
     
     if(config$actions$write_metadata_dataverse){
@@ -244,7 +244,7 @@ write_Dublin_Core_metadata <- function(config, source){
     }
     
     logger.info("###############################################################################################################################")
-    logger.info("New workflow step: Dataverse Metadata")
+    logger.info("New workflow step: Zenodo Metadata")
     logger.info("###############################################################################################################################")
     
     if(config$actions$deposit_data_zenodo){
