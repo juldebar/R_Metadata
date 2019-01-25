@@ -1,7 +1,7 @@
-#https://github.com/eblondel/zen4R/wiki
-write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
-                                                   OGC_metadata = "/home/julien/Bureau/CODES/R_Metadata/metadata_workflow_google_doc_Dublin_Core/jobs/20190124-074759-julien.barde/metadata/template_sampling_area_and_stations.xml"
-                                                   )
+# https://github.com/juldebar/R_Metadata/blob/master/metadata_workflow_google_doc_Dublin_Core/scripts/write_R_metadata_from_OGC.R
+write_R_metadata_from_OGC <- function(config = NULL,
+                                      OGC_metadata = "/home/julien/Bureau/CODES/R_Metadata/metadata_workflow_google_doc_Dublin_Core/jobs/20190124-074759-julien.barde/metadata/template_sampling_area_and_stations.xml"
+                                      )
 {
   #config shortcuts
   contacts <- config$gsheets$contacts
@@ -21,17 +21,32 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info("Geometa : mapping with R metadata")  
   logger.info("----------------------------------------------------")  
   
+  R_metadata <- NULL
   metadata <- NULL
   metadata$Identifier  <-   md$identificationInfo[[1]]$citation$identifier$code
+  metadata$Permanent_Identifier  <-   md$identificationInfo[[1]]$citation$identifier$code
   metadata$Title  <-  md$identificationInfo[[1]]$citation$title
   metadata$Description <- md$identificationInfo[[1]]$abstract
   metadata$Date  <- md$identificationInfo[[1]]$citation$date[[1]]$date
-#   metadata$Type  <- Dublin_Core_metadata$Type[i]
-#   metadata$Format  <- Dublin_Core_metadata$Format[i]
-#   metadata$Language  <- Dublin_Core_metadata$Language[i]
-#   metadata$Lineage  <- Dublin_Core_metadata$Provenance[i]
+  metadata$Type  <- md$hierarchyLevel[[1]]$value
+  metadata$addHierarchyLevel <- md$hierarchyLevel[[1]]$value
+  if(md$identificationInfo[[1]]$language[[1]]$valueDescription=="French"){metadata$Language="fra"}
+  #   metadata$Format  <- Dublin_Core_metadata$Format[i]
+  
+  metadata$Lineage  <- "TBD properly"
 #   metadata$Rights  <- Dublin_Core_metadata$Rights[i]
   
+  metadata$Dataset_Type  <- "google_doc" # @jbarde => we should define a proper typology of datasets same as "file type" ?
+  
+  # metadata$Purpose <- "describe Purpose"
+  # metadata$Update_frequency <- "annually" # TO BE DONE PROPERLY
+  # metadata$dataset_access_query <- NULL # @jbarde => Needed to load and browse the data itself (can be SQL query / http or OPeNDAP ACCESS)
+  # metadata$Credits <- NULL # Credits=NULL # @jbarde should be added ?
+  # metadata$Parent_Metadata_Identifier  <- NULL
+  
+  
+  metadata
+  R_metadata$metadata <-metadata
   
   logger.info("----------------------------------------------------")  
   logger.info("Data frame for thesaurus & keywords")  
@@ -54,7 +69,7 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   }
   
   keywords_metadata
-  
+  R_metadata$keywords_metadata <-keywords_metadata
   
   logger.info("----------------------------------------------------")  
   logger.info("Data frame for spatial extent")  
@@ -75,8 +90,9 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   # spatial_metadata$dynamic_metadata_count_features <-NULL
   # spatial_metadata$geographic_identifier="Mauritius"
   
-  spatial_metadata
   
+  spatial_metadata
+  R_metadata$spatial_metadata <-spatial_metadata
   
   logger.info("----------------------------------------------------")  
   logger.info("Data frame for temporal extent")  
@@ -87,7 +103,9 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   end_date <- as.POSIXct(md$identificationInfo[[1]]$extent[[1]]$temporalElement[[1]]$extent$endPosition$value,format='%Y')
   dynamic_metadata_temporal_Extent <- data.frame(start_date, end_date, stringsAsFactors=FALSE)
   temporal_metadata$dynamic_metadata_temporal_Extent <- dynamic_metadata_temporal_Extent
+  
   temporal_metadata
+  R_metadata$temporal_metadata <-temporal_metadata
   
   logger.info("----------------------------------------------------")  
   logger.info("Data frame for contacts")  
@@ -147,10 +165,10 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   
   contacts
     
-    
-  contacts_roles <- data.frame(contact=contact_email, RoleCode=contact_role, dataset=metadata$Identifier,stringsAsFactors=FALSE)
+  contacts_roles <- data.frame(contact=electronicMailAddress, RoleCode=contact_role, dataset=metadata$Identifier,stringsAsFactors=FALSE)
   contacts_metadata$contacts_roles <- contacts_roles
   
+  R_metadata$contacts_metadata <-contacts_metadata
   
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   logger.info("Data frame for Relation / References")  
@@ -178,12 +196,12 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
       http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, http_URLs_names,http_URLs_descriptions,http_URLs_protocols,http_URLs_functions)
     }
   }
-  
-  
+  ######################################### A FAIRE => GERER LES APERCUS  ######################################### 
   http_urls
-  urls_metadata
+  urls_metadata$http_urls <- http_urls
+  R_metadata$urls_metadata <-urls_metadata
   
-  return(metadata)
+  return(R_metadata)
   
 #   contacts_metadata
 #   spatial_metadata
@@ -191,3 +209,29 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
 #   keywords_metadata
 #   urls_metadata
 }
+
+
+
+######################################################################################################################################################################
+########################################################### TEST DE LA FONCTION POUR REECRIRE LA METADONNEE OGC d'origine##################################################################################
+######################################################################################################################################################################
+
+toto <- write_R_metadata_from_OGC(config=CFG)
+
+
+ogc_metatada_sheet <- write_metadata_OGC_19115_from_Dublin_Core(config=config,
+                                                                metadata=toto$metadata,
+                                                                contacts_metadata=toto$contacts_metadata,
+                                                                spatial_metadata=toto$spatial_metadata,
+                                                                temporal_metadata=toto$temporal_metadata,
+                                                                keywords_metadata=toto$keywords_metadata,
+                                                                urls_metadata=toto$urls_metadata
+)
+# config=config
+# metadata=toto$metadata
+# contacts_metadata=toto$contacts_metadata
+# spatial_metadata=toto$spatial_metadata
+# temporal_metadata=toto$temporal_metadata
+# keywords_metadata=toto$keywords_metadata
+# urls_metadata=toto$urls_metadata
+ogc_metatada_sheet
