@@ -112,21 +112,22 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
                         stringsAsFactors=FALSE)
   # for(contact in md$identificationInfo[[1]]$citation$citedResponsibleParty){
   
-  contact_role <- md$identificationInfo[[1]]$citation$citedResponsibleParty$role$value
-  electronicMailAddress <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$electronicMailAddress
-  Name <- md$identificationInfo[[1]]$citation$citedResponsibleParty$individualName
-  firstname <- md$identificationInfo[[1]]$citation$citedResponsibleParty$individualName
-  organisationName <- md$identificationInfo[[1]]$citation$citedResponsibleParty$organisationName
-  positionName<- md$identificationInfo[[1]]$citation$citedResponsibleParty$positionName
-  deliveryPoint <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$deliveryPoint
-  city <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$city
-  if(is.null(md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$administrativeArea)==FALSE){administrativeArea <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$administrativeArea}else{administrativeArea <- "-"}
-  postalCode <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$postalCode
-  country <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$country
-  voice <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$voice
-  if(length(md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$facsimile)==0){facsimile <- "-"}else{facsimile <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$facsimile}
-  setNameISOOnlineResource <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$onlineResource$name
-  ISOOnlineResource <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$onlineResource$linkage$value
+  the_contact <- md$identificationInfo[[1]]$citation$citedResponsibleParty
+  contact_role <- the_contact$role$value
+  electronicMailAddress <- the_contact$contactInfo$address$electronicMailAddress
+  Name <- the_contact$individualName
+  firstname <- the_contact$individualName
+  organisationName <- the_contact$organisationName
+  positionName<- the_contact$positionName
+  deliveryPoint <- the_contact$contactInfo$address$deliveryPoint
+  city <- the_contact$contactInfo$address$city
+  if(is.null(the_contact$contactInfo$address$administrativeArea)==FALSE){administrativeArea <- the_contact$contactInfo$address$administrativeArea}else{administrativeArea <- "-"}
+  postalCode <- the_contact$contactInfo$address$postalCode
+  country <- the_contact$contactInfo$address$country
+  voice <- the_contact$contactInfo$phone$voice
+  if(length(the_contact$contactInfo$phone$facsimile)==0){facsimile <- "-"}else{facsimile <- the_contact$contactInfo$phone$facsimile}
+  setNameISOOnlineResource <- the_contact$contactInfo$onlineResource$name
+  ISOOnlineResource <- the_contact$contactInfo$onlineResource$linkage$value
   
   # }
   contacts[nrow(contacts)+1,] <- c(electronicMailAddress = electronicMailAddress, 
