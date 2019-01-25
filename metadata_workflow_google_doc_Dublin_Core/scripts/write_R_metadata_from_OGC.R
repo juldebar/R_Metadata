@@ -120,11 +120,11 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   positionName<- md$identificationInfo[[1]]$citation$citedResponsibleParty$positionName
   deliveryPoint <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$deliveryPoint
   city <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$city
-  administrativeArea <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$administrativeArea
+  if(is.null(md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$administrativeArea)==FALSE){administrativeArea <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$administrativeArea}else{administrativeArea <- "-"}
   postalCode <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$postalCode
   country <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$address$country
   voice <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$voice
-  facsimile <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$facsimile
+  if(length(md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$facsimile)==0){facsimile <- "-"}else{facsimile <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$phone$facsimile}
   setNameISOOnlineResource <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$onlineResource$name
   ISOOnlineResource <- md$identificationInfo[[1]]$citation$citedResponsibleParty$contactInfo$onlineResource$linkage$value
   
@@ -155,7 +155,6 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info("Data frame for Relation / References")  
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   
-  # metadata$Relation  <- Dublin_Core_metadata$Relation[i]
   Relation <- metadata$Relation # to be done => should be a URL and used to list identifiers of other related reources.
   urls_metadata <- NULL
   http_urls <- NULL
