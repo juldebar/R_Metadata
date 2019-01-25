@@ -156,18 +156,33 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info("Data frame for Relation / References")  
   logger.info("-------------------------------------------------------------------------------------------------------------------")
   
-  Relation <- metadata$Relation # to be done => should be a URL and used to list identifiers of other related reources.
   urls_metadata <- NULL
   http_urls <- NULL
-  http_urls <-data.frame(http_URLs_links = character(), http_URLs_names = character(),http_URLs_descriptions = character(),http_URLs_protocols = character(), http_URLs_functions = character(),stringsAsFactors=FALSE)
-  http_URLs_links=NULL
-  http_URLs_names=NULL
-  http_URLs_descriptions=NULL
-  http_URLs_protocols=NULL
-  http_URLs_functions=NULL
+  http_urls <-data.frame(http_URLs_links = character(), 
+                         http_URLs_names = character(),
+                         http_URLs_descriptions = character(),
+                         http_URLs_protocols = character(), 
+                         http_URLs_functions = character(),
+                         stringsAsFactors=FALSE)
+  
+  # md$distributionInfo$transferOptions$onLine
+  
+  for (u in 1:length(md$distributionInfo$transferOptions$onLine)){
+    this_link <- md$distributionInfo$transferOptions$onLine[[u]]
+    if(class(this_link$linkage)[1]=='ISOURL'){
+      http_URLs_links <- this_link$linkage$value
+      http_URLs_names <- this_link$name
+      http_URLs_descriptions <- this_link$description
+      http_URLs_protocols <- this_link$protocol
+      http_URLs_functions <- "donwload"
+      http_urls[nrow(http_urls)+1,] <- c(http_URLs_links, http_URLs_names,http_URLs_descriptions,http_URLs_protocols,http_URLs_functions)
+    }
+  }
   
   
-    
+  http_urls
+  urls_metadata
+  
   return(metadata)
   
 #   contacts_metadata
