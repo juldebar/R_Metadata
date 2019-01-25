@@ -34,7 +34,7 @@ write_R_metadata_from_OGC <- function(config = NULL,
   #   metadata$Format  <- Dublin_Core_metadata$Format[i]
   
   metadata$Lineage  <- "TBD properly"
-#   metadata$Rights  <- Dublin_Core_metadata$Rights[i]
+  metadata$Rights  <- "intellectualRights" # needed for EML
   
   metadata$Dataset_Type  <- "google_doc" # @jbarde => we should define a proper typology of datasets same as "file type" ?
   
@@ -238,3 +238,39 @@ ogc_metatada_sheet <- write_metadata_OGC_19115_from_Dublin_Core(config=config,
 metatada_sheet_xml <- ogc_metatada_sheet$encode()
 xml_file_name <- paste0("toto",metadata$Identifier,".xml")
 saveXML(metatada_sheet_xml, file = xml_file_name)
+
+
+
+
+EML_metatada_sheet <- write_EML_metadata_from_Dublin_Core(config=config,
+                                                          metadata=toto$metadata,
+                                                          contacts_metadata=toto$contacts_metadata,
+                                                          spatial_metadata=toto$spatial_metadata,
+                                                          temporal_metadata=toto$temporal_metadata,
+                                                          keywords_metadata=toto$keywords_metadata,
+                                                          urls_metadata=toto$urls_metadata
+)
+logger.info(sprintf("EML metadata for dataset with permanent id '%s' has been created!", metadata$Permanent_Identifier))
+filename <-paste("metadata_eml_", metadata$Permanent_Identifier,"_eml.xml", sep="")
+write_eml(EML_metatada_sheet, filename)
+eml_validate(filename)
+
+config=config
+metadata=toto$metadata
+contacts_metadata=toto$contacts_metadata
+spatial_metadata=toto$spatial_metadata
+temporal_metadata=toto$temporal_metadata
+keywords_metadata=toto$keywords_metadata
+urls_metadata=toto$urls_metadata
+
+
+
+zenodo_metatada_sheet <- write_zenodo_metadata_from_Dublin_Core(config=config,
+                                                                   metadata=toto$metadata,
+                                                                   contacts_metadata=toto$contacts_metadata,
+                                                                   spatial_metadata=toto$spatial_metadata,
+                                                                   temporal_metadata=toto$temporal_metadata,
+                                                                   keywords_metadata=toto$keywords_metadata,
+                                                                   urls_metadata=toto$urls_metadata
+)
+
