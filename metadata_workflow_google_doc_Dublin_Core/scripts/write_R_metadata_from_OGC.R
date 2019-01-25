@@ -22,10 +22,10 @@ write_zenodo_metadata_from_Dublin_Core <- function(config = NULL,
   logger.info("----------------------------------------------------")  
   
   metadata <- NULL
-  # metadata$Identifier  <- Dublin_Core_metadata$Identifier[i]
+  metadata$Identifier  <-   md$identificationInfo[[1]]$citation$identifier$code
   metadata$Title  <-  md$identificationInfo[[1]]$citation$title
   metadata$Description <- md$identificationInfo[[1]]$abstract
-  # metadata$Date  <- md$identificationInfo[[1]]$citation$date
+  metadata$Date  <- md$identificationInfo[[1]]$citation$date[[1]]$date
 #   metadata$Type  <- Dublin_Core_metadata$Type[i]
 #   metadata$Format  <- Dublin_Core_metadata$Format[i]
 #   metadata$Language  <- Dublin_Core_metadata$Language[i]
