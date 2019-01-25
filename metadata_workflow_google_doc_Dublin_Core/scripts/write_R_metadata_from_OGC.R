@@ -234,4 +234,7 @@ ogc_metatada_sheet <- write_metadata_OGC_19115_from_Dublin_Core(config=config,
 # temporal_metadata=toto$temporal_metadata
 # keywords_metadata=toto$keywords_metadata
 # urls_metadata=toto$urls_metadata
-ogc_metatada_sheet
+
+metatada_sheet_xml <- ogc_metatada_sheet$encode()
+xml_file_name <- paste0("toto",metadata$Identifier,".xml")
+saveXML(metatada_sheet_xml, file = xml_file_name)
