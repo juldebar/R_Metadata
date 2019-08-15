@@ -7,6 +7,10 @@
 ############################################################
 rm(list=ls())
 
+
+working_directory <- "/tmp"
+setwd(working_directory)
+
 require(stringr)
 require(gsheet)
 require(dplyr)
@@ -15,9 +19,6 @@ library(googledrive)
 library(httr)
 library(XML)
 
-
-working_directory <- "/tmp"
-setwd(working_directory)
 
 projets_COI_gsheet <-"https://docs.google.com/spreadsheets/d/1dQLucq5OAm1qBHPuJv_7mDEOWq9x0Cyknp6ecVtGtS4/edit?usp=sharing"
 projets_COI_metadata <- as.data.frame(gsheet::gsheet2tbl(projets_COI_gsheet))
@@ -94,10 +95,10 @@ for (i in 1:number_row) {
   if (!file.exists(file_name)){
     download.file(paste0("http://thredds.oreme.org:8080/geonetwork/srv/fre/xml.metadata.get?uuid=",geonetwork_metadata$uuid[i]),destfile = file_name)
   }
-  # OGC_19139 <- geometa::readISO19139(paste0(geonetwork_metadata$uuid[i],".xml"))
+    OGC_19139 <- ISOMetadata$new()
+  #   # OGC_19139 <- geometa::readISO19139(paste0(geonetwork_metadata$uuid[i],".xml"))
   xml <- xmlParse(paste0("/tmp/OGC_19139_xml_files/",geonetwork_metadata$uuid[i],".xml"))
-  # xml <- xmlParse("/tmp/OGC_19139_xml_files/d1ecc38a-9418-4915-870d-58e4751f8af4.xml")
-  OGC_19139 <- ISOMetadata$new()
+#   # xml <- xmlParse("/tmp/OGC_19139_xml_files/d1ecc38a-9418-4915-870d-58e4751f8af4.xml")
   OGC_19139$decode(xml = xml)
   setwd(this_wd)
   
@@ -210,7 +211,7 @@ for (i in 1:number_row) {
             title_zotero <- jsonRespParsed$data$title
             type_zotero <- jsonRespParsed$data$itemType
             
-            new_line <- paste0("http:",paste0(type_zotero,": ", title_zotero),"[Lien vers la référence Zotero du document qui mentionne la donnée]@",new_url)
+            new_line <- paste0("http:",paste0(title_zotero,"(",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",new_url)
             } else if(grepl("http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/",new_url)){
               new_line <- paste0("http:NEW OLD Metadata [related metadata link]@",new_url)
               }
@@ -220,8 +221,8 @@ for (i in 1:number_row) {
             jsonRespParsed<-content(resp,as="parsed") 
             title_zotero <- jsonRespParsed$data$title
             type_zotero <- jsonRespParsed$data$itemType
-            new_line <- paste0("http:",paste0(type_zotero,": ", title_zotero),"[Lien vers la référence Zotero du document qui mentionne la donnée]@",url)
-            } else {# || grepl("OLD metadata",prefix)
+            new_line <- paste0("http:",paste0(title_zotero,"(",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",url)
+          } else {# || grepl("OLD metadata",prefix)
               # cat("URL conservé \n")
               cat(paste0(" \n Pas touché : \n ", url, "\n"))
               new_line <- line
@@ -252,16 +253,19 @@ for (i in 1:number_row) {
   ##########################################################################################################################
   Rights <- "use:to be done"
   
-  provenance=OGC_19139$dataQualityInfo[[1]]$lineage$statement[1]
+  provenance <-NA
+  if(length(OGC_19139$dataQualityInfo)>0){
+    provenance=OGC_19139$dataQualityInfo[[1]]$lineage$statement[1]
+  }
   if(!is.na(provenance)){
-    Provenance <- provenance
+    Provenance <- paste0("statement:",provenance)
   }else{
     Provenance <- "statement:to be done"
   }
   Provenance
   
-  # Data <- "source:test@http://mdst-macroes.ird.fr/tmp/BET_YFT_SKJ.svg;\ntype:other;"
-  Data <- ""
+  Data <- "source:test@http://mdst-macroes.ird.fr/tmp/BET_YFT_SKJ.svg;\ntype:other;"
+  # Data <- ""
   ##########################################################################################################################
   
   # Geoflow entities Data Structure => Identifier	Title	Description	Subject	Creator	Date	Type	Language	SpatialCoverage	TemporalCoverage	Relation	Rights	Provenance	Data		
