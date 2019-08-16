@@ -25,7 +25,7 @@ projets_COI_metadata <- as.data.frame(gsheet::gsheet2tbl(projets_COI_gsheet))
 projets_COI_metadata$Projet_Acronym
 
 # geonetwork_csv_gsheet <-"https://docs.google.com/spreadsheets/d/1fiprnSskIEsEgeL4IEU2cja4O0xSAHFrCgrfgW6LG_U/edit?usp=sharing"
-geonetwork_csv_gsheet <-"https://docs.google.com/spreadsheets/d/1EpXhvRG20AsbSlsw0LCxGonrL3-pZ3Kq_0YoAM2ZQbU/edit?usp=sharing"
+geonetwork_csv_gsheet <-"htt2ps://docs.google.com/spreadsheets/d/1EpXhvRG20AsbSlsw0LCxGonrL3-pZ3Kq_0YoAM2ZQbU/edit?usp=sharing"
 geonetwork_metadata <- as.data.frame(gsheet::gsheet2tbl(geonetwork_csv_gsheet))
 head(geonetwork_metadata)
 
@@ -88,7 +88,9 @@ for (i in 1:number_row) {
     }
     }
   Identifier <- paste0("id:",substr(clean_identifier,2,nchar(clean_identifier)),";")
+  ##########################################################################################################################
   
+  ##########################################################################################################################
   this_wd<-getwd()
   file_name <- paste0(geonetwork_metadata$uuid[i],".xml")
   setwd("/tmp/OGC_19139_xml_files")
@@ -101,20 +103,102 @@ for (i in 1:number_row) {
 #   # xml <- xmlParse("/tmp/OGC_19139_xml_files/d1ecc38a-9418-4915-870d-58e4751f8af4.xml")
   OGC_19139$decode(xml = xml)
   setwd(this_wd)
+  ##########################################################################################################################
   
   
+  ##########################################################################################################################
   Title <- geonetwork_metadata$title[i]
-  # Creator <- geonetwork_metadata$responsibleParty[i]
-  Creator <- paste0("creator:",project_email,";\npublisher:secretariat@coi-ioc.org;\nowner:secretariat@coi-ioc.org;\npointOfContact:julien.barde@ird.fr,alexandre.noel@coi-ioc.org,COI-CdD@coi-ioc.org,",charge_mission_COI,";")
-  Subject <- paste0("GENERAL:",paste0("Projet ",project_name," (FED/COI)"),",",gsub("###",",",geonetwork_metadata$keyword[i]),";\ntopicCategory:society,economy,biota,oceans,environment;")
-  Description <- paste0("abstract:",gsub("###","",geonetwork_metadata$abstract[i]),";")
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
+  originator <-NA
+  originators <-NA
+  contact_originators <-""
+  contacts <- OGC_19139$identificationInfo[[1]]$pointOfContact
+  for (c in 1:length(contacts)){
+    cat(contacts[[c]]$role$value)
+    if(contacts[[c]]$role$value=="originator"){
+      cat(contacts[[c]]$individualName)
+      originator <- contacts[[c]]$individualName
+      originators <-  paste0(originators,",",originator)
+    }
+  }
+  if(!is.na(originators)){
+    contact_originators <- paste0("\noriginator:",sub(",","",originators),";")
+  }
+  Creator <- paste0("creator:",project_email,";\npublisher:secretariat@coi-ioc.org;\nowner:secretariat@coi-ioc.org;\npointOfContact:julien.barde@ird.fr,alexandre.noel@coi-ioc.org,COI-CdD@coi-ioc.org,",charge_mission_COI,";",contact_originators)
+  ##########################################################################################################################
+  
+  
+  ##########################################################################################################################
+  topics <-""
+  for (t in 1:length(OGC_19139$identificationInfo[[1]]$topicCategory)){
+    topic <- OGC_19139$identificationInfo[[1]]$topicCategory[[t]]$value
+    topics <-paste0(topics,",",topic)
+  }
+  topics <- paste0("\ntopicCategory:",sub(",","",topics),";")
+  
+  
+  type <-NULL
+  thesaurus <-NULL
+  all_keywords <-NULL
+  all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
+  
+  
+  for(i in 1:length(OGC_19139$identificationInfo[[1]]$descriptiveKeywords)){
+    # thesaurus <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$thesaurusName$title
+    type <-  OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$type$value
+    if (nchar(type)==0){
+      type <- "partners"
+    }
+    keywords <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword
+    for(k in 1:length(keywords)){
+      if(is.character(keywords[k][[1]])){
+        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]
+      } else {
+        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]$value
+      }
+      
+      all_keywords[nrow(all_keywords)+1,] <- c(keyword, type)
+      
+    }
+  }
+  thesaurus_lines <-""
+  for (theme in all_keywords %>% distinct(thesaurus) %>% pull()){
+    df <- all_keywords %>% select(keyword,thesaurus)  %>%  filter(thesaurus == theme)
+    thesaurus_line <- paste0(theme,":")
+    for (ky in 1:length(df$keyword)){
+      thesaurus_line <- paste0(thesaurus_line,",",df$keyword[ky])
+    }
+    thesaurus_lines <- sub("\n","",gsub(":,",":",paste0(thesaurus_lines,"\n",thesaurus_line,";")))
+  }
+  
+  Subject <- paste0(thesaurus_lines,"\n;",topics)
+  
+  # Subject <- paste0("GENERAL:",paste0("Projet ",project_name," (FED/COI)"),",",gsub("###",",",geonetwork_metadata$keyword[i]),";",topics)
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
+  Description <- paste0("abstract:",gsub("###","",gsub(":",",",geonetwork_metadata$abstract[i])),";")
   if(Description=="abstract:;"){
     Description="abstract:To be done;"
   }
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   Date <- geonetwork_metadata$metadatacreationdate[i]
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   Type <- "dataset"
   # Format <- geonetwork_metadata$Format[i]
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   Language <- "fra"
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   thumbnail <-""
   link <-""
   old_metadata <- paste0("http:OLD metadata@http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/",geonetwork_metadata$uuid[i])
@@ -202,32 +286,29 @@ for (i in 1:number_row) {
 #                          "http://data.unep-wcmc.org/datasets/1"="",
 #                          "http://data.unep-wcmc.org/pdfs/1/WCMC-008-CoralReefs2010-ver1.3.pdf?1434713557"
         )
-        if (!is.null(new_url) && !grepl("OLD metadata",prefix)){
+        if (!is.null(new_url)  && !grepl("OLD metadata",prefix)){
           # cat("URL à changer \n")
           if(grepl("www.zotero.org",new_url)){
             url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",new_url),"?v=3")
             resp<-GET(url_zotero)
             jsonRespParsed<-content(resp,as="parsed") 
-            title_zotero <- jsonRespParsed$data$title
-            type_zotero <- jsonRespParsed$data$itemType
-            
-            new_line <- paste0("http:",paste0(title_zotero,"(",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",new_url)
+            title_zotero <- gsub(":",",",jsonRespParsed$data$title)
+            type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
+            new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",new_url)
             } else if(grepl("http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/",new_url)){
-              new_line <- paste0("http:NEW OLD Metadata [related metadata link]@",new_url)
+              new_line <- paste0("http:Related Metadata [related metadata link]@",new_url)
               }
           } else if (grepl("zotero",url)){# a verifier
             url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",url),"?v=3")
             resp<-GET(url_zotero)
             jsonRespParsed<-content(resp,as="parsed") 
-            title_zotero <- jsonRespParsed$data$title
-            type_zotero <- jsonRespParsed$data$itemType
-            new_line <- paste0("http:",paste0(title_zotero,"(",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",url)
+            title_zotero <- gsub(":",",",jsonRespParsed$data$title)
+            type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
+            new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",url)
           } else {# || grepl("OLD metadata",prefix)
               # cat("URL conservé \n")
               cat(paste0(" \n Pas touché : \n ", url, "\n"))
               new_line <- line
-              # download.file(paste0("http://thredds.oreme.org:8080/geonetwork/srv/fre/xml.metadata.get?uuid=",geonetwork_metadata$uuid[i]),destfile = paste0(geonetwork_metadata$uuid[i],".xml"))
-              # OGC_19139 <- geometa::readISO19139(paste0(geonetwork_metadata$uuid[i],".xml"))
             }
         }
       new_Relation <- paste0(new_Relation,"\n",new_line)
@@ -235,8 +316,10 @@ for (i in 1:number_row) {
   
   Relation <-paste0(sub("\n", "",new_Relation),logo,";")
   Relation <-gsub("\n", ";\n",Relation)
+  ##########################################################################################################################
   
   
+  ##########################################################################################################################
   bbox <- str_split(geonetwork_metadata$geoBox[i],pattern = "###")
   xmin <- bbox[[1]][1]
   xmax <- bbox[[1]][2]
@@ -247,15 +330,22 @@ for (i in 1:number_row) {
   if(SpatialCoverage=="SRID=4326;POLYGON((,,,,))" || SpatialCoverage== "SRID=4326;POLYGON(( , , , , ))" || SpatialCoverage== "SRID=4326;POLYGON((NA NA,NA NA,NA NA,NA NA,NA NA))"){
     SpatialCoverage <-"SRID=4326;POLYGON((-180 -90,-180 90,180 90,180 -90,-180 -90))"
     }
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   if(!is.na(geonetwork_metadata$temporalExtent[i])){
     TemporalCoverage <- paste0(substr(geonetwork_metadata$temporalExtent[i], 1, nchar(geonetwork_metadata$temporalExtent[i])/2),"/",substr(geonetwork_metadata$temporalExtent[i], 1+nchar(geonetwork_metadata$temporalExtent[i])/2, nchar(geonetwork_metadata$temporalExtent[i])))
   } else {TemporalCoverage <- ""}
   ##########################################################################################################################
-  Rights <- "use:to be done"
   
+  ##########################################################################################################################
+  Rights <- "use:to be done"
+  ##########################################################################################################################
+  
+  ##########################################################################################################################
   provenance <-NA
   if(length(OGC_19139$dataQualityInfo)>0){
-    provenance=OGC_19139$dataQualityInfo[[1]]$lineage$statement[1]
+    provenance=gsub("\n"," ",gsub(":",",",OGC_19139$dataQualityInfo[[1]]$lineage$statement[1]))
   }
   if(!is.na(provenance)){
     Provenance <- paste0("statement:",provenance)
@@ -263,9 +353,11 @@ for (i in 1:number_row) {
     Provenance <- "statement:to be done"
   }
   Provenance
+  ##########################################################################################################################
   
-  Data <- "source:test@http://mdst-macroes.ird.fr/tmp/BET_YFT_SKJ.svg;\ntype:other;"
-  # Data <- ""
+  ##########################################################################################################################
+  # Data <- "source:test@http://mdst-macroes.ird.fr/tmp/BET_YFT_SKJ.svg;\ntype:other;"
+  Data <- ""
   ##########################################################################################################################
   
   # Geoflow entities Data Structure => Identifier	Title	Description	Subject	Creator	Date	Type	Language	SpatialCoverage	TemporalCoverage	Relation	Rights	Provenance	Data		
@@ -295,3 +387,38 @@ for (i in 1:number_row) {
 file_name <- paste0("geoflow_metadata_all_projects",".csv")
 write.csv(geoflow_metadata,file = file_name,row.names = F)
 nrow(geoflow_metadata)
+
+
+
+
+
+
+
+
+# 
+# type <-NULL
+# thesaurus <-NULL
+# all_keywords <-NULL
+# all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
+# 
+# 
+# for(i in 1:length(OGC_19139$identificationInfo[[1]]$descriptiveKeywords)){
+#   # thesaurus <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$thesaurusName$title
+#   type <-  OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$type$value
+#   if (nchar(type)==0){
+#     type <- "partners"
+#   }
+#   keywords <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword
+#   for(k in 1:length(keywords)){
+#     if(is.character(keywords[k][[1]])){
+#       keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]
+#     } else {
+#       keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]$value
+#     }
+#     
+#     all_keywords[nrow(all_keywords)+1,] <- c(keyword, type)
+#     
+#   }
+# }
+# 
+# all_keywords
