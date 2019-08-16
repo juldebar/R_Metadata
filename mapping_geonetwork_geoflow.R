@@ -170,11 +170,12 @@ for (i in 1:number_row) {
     for (ky in 1:length(df$keyword)){
       thesaurus_line <- paste0(thesaurus_line,",",df$keyword[ky])
     }
-    thesaurus_lines <- sub("\n","",gsub(":,",":",paste0(thesaurus_lines,"\n",thesaurus_line,";")))
+    thesaurus_lines <- gsub(":,",":",paste0(thesaurus_lines,";\n",thesaurus_line))
   }
   
-  Subject <- paste0(thesaurus_lines,"\n;",topics)
-  
+  # thesaurus_lines <- sub("\n","",gsub(":,",":",thesaurus_lines))
+  Subject <- sub(";\n","",paste0(thesaurus_lines,";",topics))
+  Subject
   # Subject <- paste0("GENERAL:",paste0("Projet ",project_name," (FED/COI)"),",",gsub("###",",",geonetwork_metadata$keyword[i]),";",topics)
   ##########################################################################################################################
   
