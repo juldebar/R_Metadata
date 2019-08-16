@@ -145,18 +145,18 @@ for (i in 1:number_row) {
   all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
   
   
-  for(i in 1:length(OGC_19139$identificationInfo[[1]]$descriptiveKeywords)){
-    # thesaurus <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$thesaurusName$title
-    type <-  OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$type$value
+  for(word in 1:length(OGC_19139$identificationInfo[[1]]$descriptiveKeywords)){
+    # thesaurus <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[word]]$thesaurusName$title
+    type <-  OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[word]]$type$value
     if (nchar(type)==0){
       type <- "partners"
     }
-    keywords <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword
+    keywords <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[word]]$keyword
     for(k in 1:length(keywords)){
       if(is.character(keywords[k][[1]])){
-        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]
+        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[word]]$keyword[[k]]
       } else {
-        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]$value
+        keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[word]]$keyword[[k]]$value
       }
       
       all_keywords[nrow(all_keywords)+1,] <- c(keyword, type)
