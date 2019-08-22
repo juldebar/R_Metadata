@@ -12,6 +12,7 @@ working_directory <- "/tmp"
 setwd(working_directory)
 
 require(stringr)
+require(jsonlite)
 require(gsheet)
 require(dplyr)
 require(geoflow)
@@ -25,7 +26,7 @@ projets_COI_metadata <- as.data.frame(gsheet::gsheet2tbl(projets_COI_gsheet))
 projets_COI_metadata$Projet_Acronym
 
 # geonetwork_csv_gsheet <-"https://docs.google.com/spreadsheets/d/1fiprnSskIEsEgeL4IEU2cja4O0xSAHFrCgrfgW6LG_U/edit?usp=sharing"
-geonetwork_csv_gsheet <-"htt2ps://docs.google.com/spreadsheets/d/1EpXhvRG20AsbSlsw0LCxGonrL3-pZ3Kq_0YoAM2ZQbU/edit?usp=sharing"
+geonetwork_csv_gsheet <-"https://docs.google.com/spreadsheets/d/1EpXhvRG20AsbSlsw0LCxGonrL3-pZ3Kq_0YoAM2ZQbU/edit?usp=sharing"
 geonetwork_metadata <- as.data.frame(gsheet::gsheet2tbl(geonetwork_csv_gsheet))
 head(geonetwork_metadata)
 
@@ -47,29 +48,29 @@ geoflow_metadata <- data.frame(Projet=character(),
                                Rights=character(),
                                Provenance=character(),
                                Data=character()
-                               )
+)
 # head(geoflow_metadata)
 
 number_row<-nrow(geonetwork_metadata)
 for (i in 1:number_row) {
-#   fe834fa6-2b0e-4dab-b819-c676be113ab5.xml
-#   fb569ade-6ff5-4199-812d-5661c7f135a8.xml
-#   e83a33c1-2f11-4aff-9aba-6a6e20c19a67.xml
-#   e61a4407-8441-409b-8bc1-115229043892.xml
-#   d0bba57e-bad5-4c0e-b4ec-623f7d053974.xml
-#   cf6c0c14-aeff-465f-beb6-baf4ca8b846e.xml
-#   b3989639-67ea-4482-b4e7-a668cc1b12ad.xml
-#   a7a60757-b19e-4fd9-9765-f500c317bb9b.xml
-#   11884899-ccd5-44c3-a977-60706e80e5fe.xml
-#   837197a1-d6e5-4945-a9c8-4f0802e3a0ff.xml
-#   049879b2-4a6c-4b30-8bd4-30d526221d91.xml
-#   682f74cd-a5ba-4f3e-ab23-602c56dbcf01.xml
-#   676d69f0-bba2-42e9-84df-135b15942479.xml
-#   075b378b-112d-4da8-afc8-5ce1325616cc.xml
-#   48a96d90-85c7-4842-8e12-a431fae92378.xml
-#   5b62079c-0987-410b-b8ca-6777eb9bd397.xml
-#   4a068dbe-f4c7-4617-8813-fdcdc56994aa.xml
-#   03eb3cb8-0b8d-4efe-b592-1e24709e5a93.xml
+  #   fe834fa6-2b0e-4dab-b819-c676be113ab5.xml
+  #   fb569ade-6ff5-4199-812d-5661c7f135a8.xml
+  #   e83a33c1-2f11-4aff-9aba-6a6e20c19a67.xml
+  #   e61a4407-8441-409b-8bc1-115229043892.xml
+  #   d0bba57e-bad5-4c0e-b4ec-623f7d053974.xml
+  #   cf6c0c14-aeff-465f-beb6-baf4ca8b846e.xml
+  #   b3989639-67ea-4482-b4e7-a668cc1b12ad.xml
+  #   a7a60757-b19e-4fd9-9765-f500c317bb9b.xml
+  #   11884899-ccd5-44c3-a977-60706e80e5fe.xml
+  #   837197a1-d6e5-4945-a9c8-4f0802e3a0ff.xml
+  #   049879b2-4a6c-4b30-8bd4-30d526221d91.xml
+  #   682f74cd-a5ba-4f3e-ab23-602c56dbcf01.xml
+  #   676d69f0-bba2-42e9-84df-135b15942479.xml
+  #   075b378b-112d-4da8-afc8-5ce1325616cc.xml
+  #   48a96d90-85c7-4842-8e12-a431fae92378.xml
+  #   5b62079c-0987-410b-b8ca-6777eb9bd397.xml
+  #   4a068dbe-f4c7-4617-8813-fdcdc56994aa.xml
+  #   03eb3cb8-0b8d-4efe-b592-1e24709e5a93.xml
   
   cat(paste0("\nCurrent line: ",i))
   project_name <- geonetwork_metadata$Projet[i]
@@ -86,7 +87,7 @@ for (i in 1:number_row) {
     if (nchar(Identifier[[1]][j]) > 3 && Identifier[[1]][j]!="pour" && Identifier[[1]][j]!="dans"){
       clean_identifier <- paste0(clean_identifier,"_",Identifier[[1]][j])
     }
-    }
+  }
   Identifier <- paste0("id:",substr(clean_identifier,2,nchar(clean_identifier)),";")
   ##########################################################################################################################
   
@@ -97,10 +98,10 @@ for (i in 1:number_row) {
   if (!file.exists(file_name)){
     download.file(paste0("http://thredds.oreme.org:8080/geonetwork/srv/fre/xml.metadata.get?uuid=",geonetwork_metadata$uuid[i]),destfile = file_name)
   }
-    OGC_19139 <- ISOMetadata$new()
+  OGC_19139 <- ISOMetadata$new()
   #   # OGC_19139 <- geometa::readISO19139(paste0(geonetwork_metadata$uuid[i],".xml"))
   xml <- xmlParse(paste0("/tmp/OGC_19139_xml_files/",geonetwork_metadata$uuid[i],".xml"))
-#   # xml <- xmlParse("/tmp/OGC_19139_xml_files/d1ecc38a-9418-4915-870d-58e4751f8af4.xml")
+  #   # xml <- xmlParse("/tmp/OGC_19139_xml_files/d1ecc38a-9418-4915-870d-58e4751f8af4.xml")
   OGC_19139$decode(xml = xml)
   setwd(this_wd)
   ##########################################################################################################################
@@ -111,22 +112,47 @@ for (i in 1:number_row) {
   ##########################################################################################################################
   
   ##########################################################################################################################
-  originator <-NA
-  originators <-NA
+  originators <-""
   contact_originators <-""
   contacts <- OGC_19139$identificationInfo[[1]]$pointOfContact
   for (c in 1:length(contacts)){
+    originator <-NA
     cat(contacts[[c]]$role$value)
-    if(contacts[[c]]$role$value=="originator"){
+    if(contacts[[c]]$role$value=="originator" && length(contacts[[c]]$individualName) >0){
       cat(contacts[[c]]$individualName)
       originator <- contacts[[c]]$individualName
-      originators <-  paste0(originators,",",originator)
-    }
+      
+      originator <- switch(originator,
+                           "Rezah BADAL"="mrbadal@govmu.org",
+                           "Didier SLACHMUYLDERS"="didierslach@gmail.com",
+                           "Lionel BIGOT"="Lionel.Bigot@univ-reunion.fr",
+                           "Eric DUTRIEUX"="dutrieux@creocean.fr",
+                           "Jean MAHARAVO"="jmmaharavo@gmail.com",
+                           "Jean Pascal QUOD"="jpascal.quod@arvam.com",
+                           "Roland TROADEC"="roland.troadec@wanadoo.fr",
+                           "O.R.J RATOMAHENINA"="unknown@memail.org",
+                           "Aurélie Thomassin"="aurelie.thomassin@developpement-durable.gouv.fr",
+                           "Emilie Anderson"="info@mmcs-ngo.org",
+                           "Sharveen PERSAND"="spersand@gmail.com",
+                           "Sandy Davies"="sDavies@nfds.info",
+                           "Pierre VALADE"="pierre.valade@ocea.re",
+                           "David OBURA"="dobura@cordioea.net",
+                           contacts[[c]]$individualName
+      )
+      
+      
+      
+      }
+      # if(is.null(originator)){originator <-NA}
+      if(!is.na(originator)){originators <-  paste0(originators,",",originator)}
   }
   if(!is.na(originators)){
     contact_originators <- paste0("\noriginator:",sub(",","",originators),";")
+    if(contact_originators=="\noriginator:;"){
+      contact_originators <-""
+    }
   }
-  Creator <- paste0("creator:",project_email,";\npublisher:secretariat@coi-ioc.org;\nowner:secretariat@coi-ioc.org;\npointOfContact:julien.barde@ird.fr,alexandre.noel@coi-ioc.org,COI-CdD@coi-ioc.org,",charge_mission_COI,";",contact_originators)
+  Creator <- paste0("creator:",project_email,";\npublisher:secretariat@coi-ioc.org;\nowner:secretariat@coi-ioc.org;\nmetadata:julien.barde@ird.fr,alexandre.noel@coi-ioc.org,COI-CdD@coi-ioc.org,",charge_mission_COI,";",contact_originators)
   ##########################################################################################################################
   
   
@@ -207,7 +233,7 @@ for (i in 1:number_row) {
     logo <- paste0("\nthumbnail:Logo du projet ",project_name,"@",gsub("open", "uc",this_project$Projet_Logo))
   }else{
     logo <- paste0("\nthumbnail:Logo du projet ",project_name,"@","https://www.commissionoceanindien.org/wp-content/uploads/2019/02/french-coi-logo-100px-french-logo.png")
-    }
+  }
   
   if(!is.na(geonetwork_metadata$link[i])){
     link <- gsub("###","\nhttp:OLD Geonetwork link@",gsub("######", "\nhttp:OLD Geonetwork link@",geonetwork_metadata$link[i]))
@@ -217,103 +243,161 @@ for (i in 1:number_row) {
   
   old_Relation <-paste0(old_metadata,link,old_thumbnails)
   
-  new_Relation <-""  
+  new_Relation <-"" 
+  new_line <-"" 
   relation_geonetwork <- str_split(old_Relation,pattern = "\n")
-    for (f in 1:length(relation_geonetwork[[1]])){
-      line <- relation_geonetwork[[1]][f]
-      prefix <- str_split(line,pattern = "@")[[1]][1]
-      url <- sub(".*@","",line)
-      #we check if the url comes is delivered by geonetwork  and upload the file in google drive (required to keep the file when metadat will be removed)
-      if(grepl("&fname=",url)){
-        # cat("Drive\n")
-        file_name_drive <- sub('&access=public','',sub('.*&fname=','', url))
-        filter=paste0("name contains '",file_name_drive,"'")
-        google_drive_file <- drive_find(q = filter)
-        # we check if the file already exists on google drive
-        if(nrow(google_drive_file)>0){
-          same_relation_on_drive <-""
-          # we just use the first result if the same file is stored in different drive repositories
-          for(file in google_drive_file$id[1]){
-            if(is_mine(as_dribble(as_id(file)))){
-              google_drive_file_url <- paste0("https://drive.google.com/uc?id=",file)
-              if(grepl(".zip",file_name_drive) || grepl(".xls",file_name_drive)){
-                same_relation_on_drive <-paste0("http:",file_name_drive,"[Get the file ",file_name_drive," on drive]@",google_drive_file_url)
-                # new_line <- paste0(line,"\n",same_relation_on_drive)
-                new_line <- paste0(same_relation_on_drive) 
-                }else if(prefix=="thumbnail:OLD aperçu"){
-                  # same_relation_on_drive <-paste0("thumbnail:NEW aperçu [see ",file_name_drive," on Drive]@",google_drive_file_url)
-                  same_relation_on_drive <-paste0("thumbnail:NEW aperçu@",google_drive_file_url)
-                  new_line <- paste0(same_relation_on_drive) 
-                }else if (grepl(".png",file_name_drive) || grepl(".jpeg",file_name_drive) || grepl(".jpg",file_name_drive)){
-                  same_relation_on_drive <-paste0("http:NEW IMAGE [see ",file_name_drive," on Drive]@",google_drive_file_url)
-                  # new_line <- paste0(line,"\n",same_relation_on_drive)
-                  new_line <- paste0(same_relation_on_drive) 
-                }else{
-                  same_relation_on_drive <-paste0("http:NEW STUFF [see ",file_name_drive," on drive]@",url)
-                  new_line <- paste0(line,"\n",same_relation_on_drive)
-                }
+  for (f in 1:length(relation_geonetwork[[1]])){
+    
+    line <- relation_geonetwork[[1]][f]
+    prefix <- str_split(line,pattern = "@")[[1]][1]
+    url <- sub(".*@","",line)
+    #we check if the url comes is delivered by geonetwork  and upload the file in google drive (required to keep the file when metadat will be removed)
+    if(grepl("&fname=",url)){
+      cat("Drive\n")
+      file_name_drive <- sub('&access=public','',sub('.*&fname=','', url))
+      filter=paste0("name contains '",file_name_drive,"'")
+      google_drive_file <- drive_find(q = filter)
+      # we check if the file already exists on google drive
+      if(nrow(google_drive_file)>0){
+        cat("is Drive \n")
+        
+        same_relation_on_drive <-""
+        # we just use the first result if the same file is stored in different drive repositories
+        for(file in google_drive_file$id){
+          if(is_mine(as_dribble(as_id(file)))){
+            google_drive_file_url <- paste0("https://drive.google.com/uc?id=",file)
+            if(grepl(".zip",file_name_drive) || grepl(".xls",file_name_drive)){
+              cat("Drive zip \n")
+              
+              same_relation_on_drive <-paste0("http:",file_name_drive,"[Get the file ",file_name_drive," on drive]@",google_drive_file_url)
+              # new_line <- paste0(line,"\n",same_relation_on_drive)
+              new_line <- paste0(same_relation_on_drive) 
+            }else if(prefix=="thumbnail:OLD aperçu"){
+              cat("Drive thumbnail \n")
+              
+              # same_relation_on_drive <-paste0("thumbnail:NEW aperçu [see ",file_name_drive," on Drive]@",google_drive_file_url)
+              same_relation_on_drive <-paste0("thumbnail:NEW aperçu@",google_drive_file_url)
+              new_line <- paste0(same_relation_on_drive) 
+            }else if (grepl(".png",file_name_drive) || grepl(".jpeg",file_name_drive) || grepl(".jpg",file_name_drive)){
+              cat("Drive Image \n")
+              
+              same_relation_on_drive <-paste0("http:NEW IMAGE [see ",file_name_drive," on Drive]@",google_drive_file_url)
+              # new_line <- paste0(line,"\n",same_relation_on_drive)
+              new_line <- paste0(same_relation_on_drive) 
+            }else{
+              cat("Drive Z \n")
+              
+              same_relation_on_drive <-paste0("http:NEW STUFF [see ",file_name_drive," on drive]@",url)
+              new_line <- paste0(line,"\n",same_relation_on_drive)
             }
-            # new_line <- paste0(same_relation_on_drive) 
-            # new_line <- paste0(line,"\n",same_relation_on_drive) 
           }
-          # if the file is not on google drive we download it to upload it later
-          }else{
-            cat(paste0("Nothing for: ",file_name_drive,"\n"))
-            download_url <- sub("&access=public","",url)
-            download.file(download_url, destfile=paste0("/tmp/download/",file_name_drive))
-            new_line <- line
-          }
-        
-        # Relation <-paste0(Relation,same_relation_on_drive)
-        
+          # new_line <- paste0(same_relation_on_drive) 
+          # new_line <- paste0(line,"\n",same_relation_on_drive) 
+        }
+        # if the file is not on google drive we download it to upload it later
       }else{
-        # cat("Pas Drive\n")
+        cat(paste0("Nothing for: ",file_name_drive,"\n"))
+        download_url <- sub("&access=public","",url)
+        download.file(download_url, destfile=paste0("/tmp/download/",file_name_drive))
+        new_line <- line
+      }
+      # Relation <-paste0(Relation,same_relation_on_drive)
+      }else{
+        cat("Pas Drive\n")
         new_url <-NULL
         new_url <- switch(url,
-                         "https://drive.google.com/file/d/0B0FxQQrHqkh0VC1ZS0huQk1DLW8/view"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/I7ZKQRCP",
-                         "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/Review_of_Coral_Reef_Ecosystem_Management_Approaches_in_the_ESA_IO_FINAL_with_Exec_Summ.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/TUMSVSZ9",
-                         "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Mauritius_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/46QWHMVM",
-                         "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Madagascar_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/EHZE9FI7",
-                         "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Comores_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/PFVQRSKF",
-                         "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Zanzibar_Final_Draft_report.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/X54RW4PL/itemKey/5RB8E9J3",
-                         "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/projets/smartfish/FAO/Fish_Consumption_Survey___Mauritius.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/T2T4ZFDA",
-                         "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/projets/smartfish/Rapport/SF46.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/UTZ488FS",
-                         "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/Review_of_Coral_Reef_Ecosystem_Management_Approaches_in_the_ESA_IO_FINAL_with_Exec_Summ.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/X54RW4PL/itemKey/FKC47KAU",
-                         "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/6aff3a69-62f9-4afb-86b4-2563cf23e18b"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/geomorphologie_sensibilite_marine_recifale_sud-est_maurice",
-                         "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/d1ecc38a-9418-4915-870d-58e4751f8af4"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/ensemble_points_richesse_ecologique_relative_marine_recifale_sud-est_maurice",
-                         "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/fbb93b89-8e5d-4a45-9c93-b7b3428dd9f4"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/couverture_urbaine_villes_moheli_comores"
-#                          "http://moi.govmu.org/mesa/"="",
-#                          "http://moi.govmu.org/mesa/images/observations/857.JPG"="",
-#                          "http://data.unep-wcmc.org/datasets/1"="",
-#                          "http://data.unep-wcmc.org/pdfs/1/WCMC-008-CoralReefs2010-ver1.3.pdf?1434713557"
-        )
-        if (!is.null(new_url)  && !grepl("OLD metadata",prefix)){
-          # cat("URL à changer \n")
-          if(grepl("www.zotero.org",new_url)){
-            url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",new_url),"?v=3")
-            resp<-GET(url_zotero)
+                        "https://drive.google.com/file/d/0B0FxQQrHqkh0VC1ZS0huQk1DLW8/view"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/I7ZKQRCP",
+                        "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/Review_of_Coral_Reef_Ecosystem_Management_Approaches_in_the_ESA_IO_FINAL_with_Exec_Summ.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/TUMSVSZ9",
+                        "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Mauritius_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/46QWHMVM",
+                        "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Madagascar_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/EHZE9FI7",
+                        "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Comores_Final_Draft_report.pdf"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/PFVQRSKF",
+                        "http://commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/ISLANDS_Programme_for_financial_protection_against_climatic_and_natural_disasters_Zanzibar_Final_Draft_report.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/X54RW4PL/itemKey/5RB8E9J3",
+                        "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/projets/smartfish/FAO/Fish_Consumption_Survey___Mauritius.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/T2T4ZFDA",
+                        "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/projets/smartfish/Rapport/SF46.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/UTZ488FS",
+                        "http://mdst-macroes.ird.fr/COI/www.commissionoceanindien.org/fileadmin/resources/ISLANDSpdf/Review_of_Coral_Reef_Ecosystem_Management_Approaches_in_the_ESA_IO_FINAL_with_Exec_Summ.pdf"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/X54RW4PL/itemKey/FKC47KAU",
+                        "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/6aff3a69-62f9-4afb-86b4-2563cf23e18b"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/geomorphologie_sensibilite_marine_recifale_sud-est_maurice",
+                        "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/d1ecc38a-9418-4915-870d-58e4751f8af4"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/ensemble_points_richesse_ecologique_relative_marine_recifale_sud-est_maurice",
+                        "http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/fbb93b89-8e5d-4a45-9c93-b7b3428dd9f4"="http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/couverture_urbaine_villes_moheli_comores",
+                        "https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/FBNNCWFP/q/Djibouti.json"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/collectionKey/VWE2KPMW/itemKey/FBNNCWFP",
+                        "https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/2XW6QNHJ/q/climatique"="https://www.zotero.org/groups/303882/commission_ocean_indien/items/itemKey/2XW6QNHJ",
+                        "https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/FBNNCWFP/q/Djibouti"="https://www.zotero.org/groups/commission_ocean_indien/items/itemKey/FBNNCWFP"
+                        # http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/couverture_urbaine_villes_moheli_comores
+                        
+                        #                          "http://moi.govmu.org/mesa/"="",
+                        #                          "http://moi.govmu.org/mesa/images/observations/857.JPG"="",
+                        #                          "http://data.unep-wcmc.org/datasets/1"="",
+                        #                          "http://data.unep-wcmc.org/pdfs/1/WCMC-008-CoralReefs2010-ver1.3.pdf?1434713557"
+      )
+      if (!is.null(new_url)  && !grepl("OLD metadata",prefix)){
+        # cat("URL à changer \n")
+        if(grepl("www.zotero.org",new_url)){
+          cat(new_url)
+          # impossible d'ouvrir le fichier 'FBNNCWFP/q/Djibouti.json' : Aucun fichier ou dossier de ce type
+          json_file_name2 <- paste0(sub(".*itemKey/","",new_url),".json")
+          url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",new_url),"?v=3")
+          json_file_name <- paste0(geonetwork_metadata$uuid[i],".json")
+          cat("ici ? \n")
+          this_wd<-getwd()
+          setwd("/tmp/OGC_19139_xml_files")
+          resp <-NA
+          if (!file.exists(json_file_name)){
+            resp<-httr::GET(url_zotero)
             jsonRespParsed<-content(resp,as="parsed") 
-            title_zotero <- gsub(":",",",jsonRespParsed$data$title)
-            type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
-            new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",new_url)
-            } else if(grepl("http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/",new_url)){
-              new_line <- paste0("http:Related Metadata [related metadata link]@",new_url)
-              }
-          } else if (grepl("zotero",url)){# a verifier
-            url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",url),"?v=3")
-            resp<-GET(url_zotero)
-            jsonRespParsed<-content(resp,as="parsed") 
-            title_zotero <- gsub(":",",",jsonRespParsed$data$title)
-            type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
-            new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",url)
-          } else {# || grepl("OLD metadata",prefix)
-              # cat("URL conservé \n")
-              cat(paste0(" \n Pas touché : \n ", url, "\n"))
-              new_line <- line
-            }
+            writeLines(content(resp, "text"), json_file_name)
+            writeLines(content(resp, "text"), json_file_name2)
+            cat(json_file_name2)
+            
+          }else{
+            jsonRespParsed<-fromJSON(json_file_name)
+          }
+          if (file.exists(json_file_name) && !file.exists(json_file_name2)){
+            system(command = paste("cp", json_file_name, json_file_name2,sep=" "))
+          }
+          
+          setwd(this_wd)
+          
+          title_zotero <- gsub(":",",",jsonRespParsed$data$title)
+          type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
+          new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",new_url)
+        } else if(grepl("http://thredds.oreme.org:8080/geonetwork/srv/fre/catalog.search#/metadata/",new_url)){
+          new_line <- paste0("http:Related Metadata [related metadata link]@",new_url)
         }
-      new_Relation <- paste0(new_Relation,"\n",new_line)
+      } else if (grepl("zotero",url)){# a verifier
+        cat(url)
+        
+        json_file_name2 <- paste0(sub(".*itemKey/","",url),".json")
+        url_zotero <-paste0("https://api.zotero.org/groups/303882/items/", sub(".*itemKey/","",url),"?v=3")
+        json_file_name <- paste0(geonetwork_metadata$uuid[i],".json")
+        cat(" \n ici ? \n")
+        this_wd<-getwd()
+        setwd("/tmp/OGC_19139_xml_files")
+        resp <-NA
+        if (!file.exists(json_file_name)){
+          resp<-httr::GET(url_zotero)
+          jsonRespParsed<-content(resp,as="parsed") 
+          writeLines(content(resp, "text"), json_file_name)
+          writeLines(content(resp, "text"), json_file_name2)
+          cat(json_file_name2)
+        }else{
+          jsonRespParsed<-fromJSON(json_file_name)
+        }
+        if (file.exists(json_file_name) && !file.exists(json_file_name2)){
+          system(command = paste("cp", json_file_name, json_file_name2,sep=" "))
+        }
+        setwd(this_wd)
+        cat(" \n ou là ? \n")
+        
+        title_zotero <- gsub(":",",",jsonRespParsed$data$title)
+        type_zotero <-   paste0(toupper(substr(jsonRespParsed$data$itemType, 1, 1)), substr(jsonRespParsed$data$itemType, 2, nchar(jsonRespParsed$data$itemType)))
+        new_line <- paste0("http:",paste0(title_zotero," (",type_zotero,")"),"[Lien vers la référence Zotero d'un document qui mentionne la donnée]@",url)
+      } else {# || grepl("OLD metadata",prefix)
+        # cat("URL conservé \n")
+        cat(paste0(" \n Pas touché : \n ", url, "\n"))
+        new_line <- line
+      }
     }
+    new_Relation <- paste0(new_Relation,"\n",new_line)
+  }
   
   Relation <-paste0(sub("\n", "",new_Relation),logo,";")
   Relation <-gsub("\n", ";\n",Relation)
@@ -330,7 +414,7 @@ for (i in 1:number_row) {
   SpatialCoverage <-paste0("SRID=4326;POLYGON((",xmin," ",ymin,",",xmin," ",ymax,",",xmax," ",ymax,",",xmax," ",ymin,",",xmin," ",ymin,"))")
   if(SpatialCoverage=="SRID=4326;POLYGON((,,,,))" || SpatialCoverage== "SRID=4326;POLYGON(( , , , , ))" || SpatialCoverage== "SRID=4326;POLYGON((NA NA,NA NA,NA NA,NA NA,NA NA))"){
     SpatialCoverage <-"SRID=4326;POLYGON((-180 -90,-180 90,180 90,180 -90,-180 -90))"
-    }
+  }
   ##########################################################################################################################
   
   ##########################################################################################################################
@@ -378,48 +462,13 @@ for (i in 1:number_row) {
                        Rights=Rights,
                        Provenance=Provenance,
                        Data=Data
-                       )
+  )
   geoflow_metadata <- rbind(geoflow_metadata,newRow)
   
-  }
+}
 
 
 # file_name <- paste0("geoflow_metadata_",project_name,".csv")
 file_name <- paste0("geoflow_metadata_all_projects",".csv")
 write.csv(geoflow_metadata,file = file_name,row.names = F)
 nrow(geoflow_metadata)
-
-
-
-
-
-
-
-
-# 
-# type <-NULL
-# thesaurus <-NULL
-# all_keywords <-NULL
-# all_keywords <-data.frame(keyword = character(), thesaurus = character(),stringsAsFactors=FALSE)
-# 
-# 
-# for(i in 1:length(OGC_19139$identificationInfo[[1]]$descriptiveKeywords)){
-#   # thesaurus <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$thesaurusName$title
-#   type <-  OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$type$value
-#   if (nchar(type)==0){
-#     type <- "partners"
-#   }
-#   keywords <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword
-#   for(k in 1:length(keywords)){
-#     if(is.character(keywords[k][[1]])){
-#       keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]
-#     } else {
-#       keyword <- OGC_19139$identificationInfo[[1]]$descriptiveKeywords[[i]]$keyword[[k]]$value
-#     }
-#     
-#     all_keywords[nrow(all_keywords)+1,] <- c(keyword, type)
-#     
-#   }
-# }
-# 
-# all_keywords
